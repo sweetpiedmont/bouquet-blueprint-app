@@ -114,4 +114,97 @@ def run_optimization(selected_month, retail_price, num_bouquets,
         use_filler * avg_costs["Filler"] +
         use_floater * avg_costs["Floater"] +
         use_finisher * avg_costs["Finisher"] +
-        use_fol
+        use_foliage * avg_costs["Foliage"]
+    )
+
+    num_bouquets = int(num_bouquets)
+
+    # Constraints
+    model += use_focal * num_bouquets <= num_focal
+    model += use_foundation * num_bouquets <= num_foundation
+    model += use_filler * num_bouquets <= num_filler
+    model += use_floater * num_bouquets <= num_floater
+    model += use_finisher * num_bouquets <= num_finisher
+    model += use_foliage * num_bouquets <= num_foliage
+    model += (total_cost >= price_range_lower)
+    model += (total_cost <= price_range_upper)
+
+    # Objective: minimize cost
+    model += total_cost
+    model.solve()
+
+    # Results
+    optimized_results = {
+        "optimized_use_focal": use_focal.varValue,
+        "optimized_use_foundation": use_foundation.varValue,
+        "optimized_use_filler": use_filler.varValue,
+        "optimized_use_floater": use_floater.varValue,
+        "optimized_use_finisher": use_finisher.varValue,
+        "optimized_use_foliage": use_foliage.varValue,
+        "leftover_focal": num_focal - (use_focal.varValue * num_bouquets),
+        "leftover_foundation": num_foundation - (use_foundation.varValue * num_bouquets),
+        "leftover_filler": num_filler - (use_filler.varValue * num_bouquets),
+        "leftover_floater": num_floater - (use_floater.varValue * num_bouquets),
+        "leftover_finisher": num_finisher - (use_finisher.varValue * num_bouquets),
+        "leftover_foliage": num_foliage - (use_foliage.varValue * num_bouquets),
+        "actual_bouquet_retail_price": "{:.2f}".format(
+            use_focal.varValue * avg_costs["Focal"] +
+            use_foundation.varValue * avg_costs["Foundation"] +
+            use_filler.varValue * avg_costs["Filler"] +
+            use_floater.varValue * avg_costs["Floater"] +
+            use_finisher.varValue * avg_costs["Finisher"] +
+            use_foliage.varValue * avg_costs["Foliage"]
+        ),
+    }
+
+    return optimized_results
+
+# ------------------------------------------------
+# Streamlit UI
+# ------------------------------------------------
+# Preview some of the Excel data
+df_preview = pd.read_excel(
+    "data/Copy of Bouquet Recipe Master Sheet v5 09.07.2025.xlsx",
+    sheet_name="Master Variety List"
+)
+st.write("Preview of Master Variety List:", df_preview.head())
+
+# User inputs
+selected_month = st.selectbox("Select Month", [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+])
+
+retail_price = st.number_input("Target Price per Bouquet ($)", min_value=0.0, step=0.5)
+num_bouquets = st.number_input("Number of Bouquets", min_value=1, step=1)
+
+num_focal = st.number_input("Available Focal Flowers", min_value=0, step=1)
+num_foundation = st.number_input("Available Foundation Flowers", min_value=0, step=1)
+num_filler = st.number_input("Available Filler Flowers", min_value=0, step=1)
+num_floater = st.number_input("Available Floater Flowers", min_value=0, step=1)
+num_finisher = st.number_input("Available Finisher Flowers", min_value=0, step=1)
+num_foliage = st.number_input("Available Foliage Stems", min_value=0, step=1)
+
+if st.button("Run Optimization"):
+    try:
+        optimized_results = run_optimization(
+            selected_month, retail_price, num_bouquets,
+            num_focal, num_foundation, num_filler,
+            num_floater, num_finisher, num_foliage
+        )
+
+        st.subheader("Bouquet Recipe")
+        st.write({
+            "Focal Flowers": optimized_results["optimized_use_focal"],
+            "Foundation Flowers": optimized_results["optimized_use_foundation"],
+            "Filler Flowers": optimized_results["optimized_use_filler"],
+            "Floater Flowers": optimized_results["optimized_use_floater"],
+            "Finisher Flowers": optimized_results["optimized_use_finisher"],
+            "Foliage Stems": optimized_results["optimized_use_foliage"],
+        })
+
+        st.subheader("Optimization Results")
+        st.write(optimized_results)
+
+    except Exception as e:
+        st.error(f"An error occurred: {str(e)}")
