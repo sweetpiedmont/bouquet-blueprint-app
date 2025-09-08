@@ -13,6 +13,9 @@ def run_optimization(selected_month, retail_price, num_bouquets,
         sheet_name="Master Variety List"
     )
 
+    st.write("### Debug: Data columns straight from Excel")
+    st.write(list(data.columns))
+
     # Clean up price column: force numeric, replace errors/NaN with 0
     data["Avg. WS Price"] = pd.to_numeric(
         data["Avg. WS Price"], errors="coerce"
