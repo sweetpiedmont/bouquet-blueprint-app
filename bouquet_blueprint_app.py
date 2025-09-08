@@ -59,7 +59,7 @@ def run_optimization(selected_month, retail_price, num_bouquets,
 
     # Filter by season and type
     filtered_data = data[
-        (data["Season"] == selected_season) &
+        (data["Season"].str.contains(selected_season, na=False)) &
         (data["FlowerType"].isin(selected_flower_type))
     ]
 
