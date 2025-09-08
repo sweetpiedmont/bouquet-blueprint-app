@@ -3,7 +3,7 @@ import pandas as pd   # <-- THIS needs to be here
 import pulp
 from datetime import datetime
 
-def run_optimization(selected_month, retail_price, num_bouquets,
+def run_optimization(selected_month, wholesale_price, num_bouquets,
                      num_focal, num_foundation, num_filler,
                      num_floater, num_finisher, num_foliage):
 
@@ -26,6 +26,9 @@ def run_optimization(selected_month, retail_price, num_bouquets,
     st.write("### Debug: Data columns straight from Excel")
     st.write(list(data.columns))
 
+    st.write("Filtered data shape:", filtered_data.shape)
+    st.write("Filtered data columns:", list(filtered_data.columns))
+
     # Clean up price column: force numeric, replace errors/NaN with 0
     data["Avg. WS Price"] = pd.to_numeric(
         data["Avg. WS Price"], errors="coerce"
@@ -34,7 +37,7 @@ def run_optimization(selected_month, retail_price, num_bouquets,
     # Standardize column names for optimizer
     data = data.rename(columns={
         "Category": "FlowerType",
-        "Avg. WS Price": "RetailCostPerStem"
+        "Avg. WS Price": "WholesaleCostPerStem"
     })
 
     # Clean up FlowerType (remove "2 - " etc.)
@@ -47,8 +50,8 @@ def run_optimization(selected_month, retail_price, num_bouquets,
     )
 
     # Ensure price is numeric
-    data["RetailCostPerStem"] = pd.to_numeric(
-        data["RetailCostPerStem"], errors="coerce"
+    data["WholesaleCostPerStem"] = pd.to_numeric(
+        data["WholesaleCostPerStem"], errors="coerce"
     )
 
     # Strip whitespace from Season
@@ -64,8 +67,8 @@ def run_optimization(selected_month, retail_price, num_bouquets,
     selected_season = month_to_season.get(selected_month, "Unknown Season")
 
     # Price range around user price
-    price_range_lower = retail_price - 0.5
-    price_range_upper = retail_price + 1.0
+    price_range_lower = wholesale_price - 0.5
+    price_range_upper = wholesale_price + 1.0
 
     # Flower categories
     selected_flower_type = ["Focal", "Foundation", "Filler", "Floater", "Finisher", "Foliage"]
@@ -96,25 +99,25 @@ def run_optimization(selected_month, retail_price, num_bouquets,
     st.dataframe(filtered_data)
 
     st.write(f"### Debug: Filtered data for {selected_month} ({selected_season})")
-    st.dataframe(filtered_data[["Flower", "FlowerType", "Season", "RetailCostPerStem"]])
+    st.dataframe(filtered_data[["Flower", "FlowerType", "Season", "WholesaleCostPerStem"]])
 
     # Average cost per flower type
-    average_retail_costs = (
-        filtered_data.groupby("FlowerType")["RetailCostPerStem"]
+    average_wholesale_costs = (
+        filtered_data.groupby("FlowerType")["WholesaleCostPerStem"]
         .mean()
         .to_dict()
     )
 
     avg_costs = {
-        "Focal": average_retail_costs.get("Focal", 0.0),
-        "Foundation": average_retail_costs.get("Foundation", 0.0),
-        "Filler": average_retail_costs.get("Filler", 0.0),
-        "Floater": average_retail_costs.get("Floater", 0.0),
-        "Finisher": average_retail_costs.get("Finisher", 0.0),
-        "Foliage": average_retail_costs.get("Foliage", 0.0),
+        "Focal": average_wholesale_costs.get("Focal", 0.0),
+        "Foundation": average_wholesale_costs.get("Foundation", 0.0),
+        "Filler": average_wholesale_costs.get("Filler", 0.0),
+        "Floater": average_wholesale_costs.get("Floater", 0.0),
+        "Finisher": average_wholesale_costs.get("Finisher", 0.0),
+        "Foliage": average_wholesale_costs.get("Foliage", 0.0),
     }
 
-    retail_price = float(retail_price)
+    wholesale_price = float(wholesale_price)
 
    # Base upper bounds (assumes $35 bouquet baseline)
     if selected_season == "Late Spring":
@@ -129,12 +132,12 @@ def run_optimization(selected_month, retail_price, num_bouquets,
 
     # Scale bounds by bouquet price
     adjusted_bounds = {
-        "Focal": round(base_upper_bound_focal * (retail_price / 35)),
-        "Foundation": round(base_upper_bound_foundation * (retail_price / 35)),
-        "Filler": round(base_upper_bound_filler * (retail_price / 35)),
-        "Floater": round(base_upper_bound_floater * (retail_price / 35)),
-        "Finisher": round(base_upper_bound_finisher * (retail_price / 35)),
-        "Foliage": round(base_upper_bound_foliage * (retail_price / 35)),
+        "Focal": round(base_upper_bound_focal * (wholesale_price / 35)),
+        "Foundation": round(base_upper_bound_foundation * (wholesale_price / 35)),
+        "Filler": round(base_upper_bound_filler * (wholesale_price / 35)),
+        "Floater": round(base_upper_bound_floater * (wholesale_price / 35)),
+        "Finisher": round(base_upper_bound_finisher * (wholesale_price / 35)),
+        "Foliage": round(base_upper_bound_foliage * (wholesale_price / 35)),
     }
 
     # PuLP model
@@ -187,7 +190,7 @@ def run_optimization(selected_month, retail_price, num_bouquets,
         "leftover_floater": num_floater - (use_floater.varValue * num_bouquets),
         "leftover_finisher": num_finisher - (use_finisher.varValue * num_bouquets),
         "leftover_foliage": num_foliage - (use_foliage.varValue * num_bouquets),
-        "actual_bouquet_retail_price": "{:.2f}".format(
+        "actual_bouquet_wholesale_price": "{:.2f}".format(
             use_focal.varValue * avg_costs["Focal"] +
             use_foundation.varValue * avg_costs["Foundation"] +
             use_filler.varValue * avg_costs["Filler"] +
@@ -215,7 +218,7 @@ selected_month = st.selectbox("Select Month", [
     "July", "August", "September", "October", "November", "December"
 ])
 
-retail_price = st.number_input("Target Price per Bouquet ($)", min_value=0.0, step=0.5)
+wholesale_price = st.number_input("Target Price per Bouquet ($)", min_value=0.0, step=0.5)
 num_bouquets = st.number_input("Number of Bouquets", min_value=1, step=1)
 
 num_focal = st.number_input("Available Focal Flowers", min_value=0, step=1)
@@ -228,7 +231,7 @@ num_foliage = st.number_input("Available Foliage Stems", min_value=0, step=1)
 if st.button("Run Optimization"):
     try:
         optimized_results = run_optimization(
-            selected_month, retail_price, num_bouquets,
+            selected_month, wholesale_price, num_bouquets,
             num_focal, num_foundation, num_filler,
             num_floater, num_finisher, num_foliage
         )
