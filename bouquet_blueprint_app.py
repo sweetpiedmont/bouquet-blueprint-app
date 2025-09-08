@@ -13,6 +13,11 @@ def run_optimization(selected_month, retail_price, num_bouquets,
         sheet_name="Master Variety List"
     )
 
+    # Clean up price column: force numeric, replace errors/NaN with 0
+    data["Avg. WS Price"] = pd.to_numeric(
+        data["Avg. WS Price"], errors="coerce"
+    ).fillna(0)
+
     # Standardize column names for optimizer
     data = data.rename(columns={
         "Category": "FlowerType",
@@ -137,7 +142,6 @@ def run_optimization(selected_month, retail_price, num_bouquets,
     # Objective: minimize cost
     model += total_cost
     from pulp import COIN_CMD
-    model += total_cost
     model.solve(COIN_CMD(path="/usr/local/bin/cbc", msg=1))
 
     # Results
