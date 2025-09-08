@@ -29,7 +29,18 @@ def run_optimization(selected_month, wholesale_price, num_bouquets,
     st.write("Filtered data shape:", filtered_data.shape)
     st.write("Filtered data columns:", list(filtered_data.columns))
 
-    # Clean up price column: force numeric, replace errors/NaN with 0
+    missing_cols = [c for c in ["Season", "FlowerType"] if c not in data.columns]
+    if missing_cols:
+        st.error(f"Missing required columns in data: {missing_cols}")
+    else:
+     # Filter by season and type
+        filtered_data = data[
+            (data["Season"].str.contains(selected_season, na=False)) &
+            (data["FlowerType"].isin(selected_flower_type))
+        ]
+        st.write("DEBUG: Filtered data shape:", filtered_data.shape)
+        st.write("DEBUG: Filtered data columns:", list(filtered_data.columns))# Clean up price column: force numeric, replace errors/NaN with 0
+    
     data["Avg. WS Price"] = pd.to_numeric(
         data["Avg. WS Price"], errors="coerce"
     ).fillna(0)
