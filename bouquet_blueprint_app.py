@@ -79,6 +79,9 @@ def run_optimization(selected_month, retail_price, num_bouquets,
     # -----------------------
     # Debug: show filtered data in Streamlit
     # -----------------------
+    st.write("### Debug: filtered_data before optimization")
+    st.dataframe(filtered_data)
+
     st.write(f"### Debug: Filtered data for {selected_month} ({selected_season})")
     st.dataframe(filtered_data[["Flower", "FlowerType", "Season", "RetailCostPerStem"]])
 
