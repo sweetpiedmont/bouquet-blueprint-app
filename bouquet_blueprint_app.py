@@ -7,11 +7,21 @@ def run_optimization(selected_month, retail_price, num_bouquets,
                      num_focal, num_foundation, num_filler,
                      num_floater, num_finisher, num_foliage):
 
-    # Load Excel Master Variety List
+    # Load Excel Master Variety List cleanly
     data = pd.read_excel(
         "data/Copy of Bouquet Recipe Master Sheet v5 09.07.2025.xlsx",
-        sheet_name="Master Variety List"
+        sheet_name="Master Variety List",
+            header=0  # explicitly take first row as header
     )
+
+    # Drop completely empty columns
+    data = data.dropna(axis=1, how="all")
+
+    # Strip spaces from column names
+    data.columns = data.columns.astype(str).str.strip()
+
+    # Debug: show cleaned column names
+    st.write("Debug: Cleaned data columns", list(data.columns))
 
     st.write("### Debug: Data columns straight from Excel")
     st.write(list(data.columns))
