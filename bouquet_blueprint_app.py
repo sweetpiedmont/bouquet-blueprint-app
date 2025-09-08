@@ -73,6 +73,10 @@ def run_optimization(selected_month, wholesale_price, num_bouquets,
     # Flower categories
     selected_flower_type = ["Focal", "Foundation", "Filler", "Floater", "Finisher", "Foliage"]
 
+    st.write("DEBUG: Columns available in data", list(data.columns))
+    st.write("DEBUG: Selected season", selected_season)
+    st.write("DEBUG: Flower types we’re filtering on", selected_flower_type)
+    
     # Filter by season and type
     filtered_data = data[
         (data["Season"].str.contains(selected_season, na=False)) &
