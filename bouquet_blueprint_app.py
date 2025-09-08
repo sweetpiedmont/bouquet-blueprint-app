@@ -92,10 +92,10 @@ def run_optimization(selected_month, wholesale_price, num_bouquets,
     ]
 
     # Ensure numeric cost column
-    filtered_data["Avg. WS Price"] = pd.to_numeric(
-        filtered_data["Avg. WS Price"], errors="coerce"
+    filtered_data["WholesaleCostPerStem"] = pd.to_numeric(
+        filtered_data["WholesaleCostPerStem"], errors="coerce"
     )
-    filtered_data = filtered_data.dropna(subset=["Avg. WS Price"])
+    filtered_data = filtered_data.dropna(subset=["WholesaleCostPerStem"])
 
     # Safety: remove any flower types that have no rows after filtering
     filtered_data = filtered_data[filtered_data["FlowerType"].isin(selected_flower_type)]
