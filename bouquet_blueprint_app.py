@@ -63,6 +63,19 @@ def run_optimization(selected_month, retail_price, num_bouquets,
         (data["FlowerType"].isin(selected_flower_type))
     ]
 
+    # Ensure numeric cost column
+    filtered_data["Avg. WS Price"] = pd.to_numeric(
+        filtered_data["Avg. WS Price"], errors="coerce"
+    )
+    filtered_data = filtered_data.dropna(subset=["Avg. WS Price"])
+
+    # Safety: remove any flower types that have no rows after filtering
+    filtered_data = filtered_data[filtered_data["FlowerType"].isin(selected_flower_type)]
+
+    # Debug: show category counts
+    st.write("### Debug: Flower counts by type")
+    st.write(filtered_data.groupby("FlowerType").size())
+
     # -----------------------
     # Debug: show filtered data in Streamlit
     # -----------------------
