@@ -131,25 +131,22 @@ def run_optimization(selected_month, wholesale_price, num_bouquets,
 
     wholesale_price = float(wholesale_price)
 
-   # Base upper bounds (assumes $35 bouquet baseline)
-    if selected_season == "Late Spring":
-        base_upper_bound_focal = 1
-    else:
-        base_upper_bound_focal = 3
-        base_upper_bound_foundation = 20
-        base_upper_bound_filler = 2
-        base_upper_bound_floater = 3
-        base_upper_bound_finisher = 2
-        base_upper_bound_foliage = 2
+    # Base upper bounds (assumes $25 wholesale bouquet baseline)
+    base_upper_bound_focal = 6
+    base_upper_bound_foundation = 25
+    base_upper_bound_filler = 4
+    base_upper_bound_floater = 3
+    base_upper_bound_finisher = 2
+    base_upper_bound_foliage = 3
 
     # Scale bounds by bouquet price
     adjusted_bounds = {
-        "Focal": round(base_upper_bound_focal * (wholesale_price / 35)),
-        "Foundation": round(base_upper_bound_foundation * (wholesale_price / 35)),
-        "Filler": round(base_upper_bound_filler * (wholesale_price / 35)),
-        "Floater": round(base_upper_bound_floater * (wholesale_price / 35)),
-        "Finisher": round(base_upper_bound_finisher * (wholesale_price / 35)),
-        "Foliage": round(base_upper_bound_foliage * (wholesale_price / 35)),
+        "Focal": round(base_upper_bound_focal * (wholesale_price / 25)),
+        "Foundation": round(base_upper_bound_foundation * (wholesale_price / 25)),
+        "Filler": round(base_upper_bound_filler * (wholesale_price / 25)),
+        "Floater": round(base_upper_bound_floater * (wholesale_price / 25)),
+        "Finisher": round(base_upper_bound_finisher * (wholesale_price / 25)),
+        "Foliage": round(base_upper_bound_foliage * (wholesale_price / 25)),
     }
 
     # PuLP model
