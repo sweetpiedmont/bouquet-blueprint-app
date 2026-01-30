@@ -28,6 +28,47 @@ CANONICAL_RECIPES = {
     },
 }
 
+def calculate_stem_recipe(total_stems, recipe_percentages):
+    """
+    Convert percentage-based recipe into exact stem counts
+    while guaranteeing total stems and BB-style redistribution.
+    """
+
+    # 1. Raw float counts
+    raw_counts = {
+        k: recipe_percentages[k] * total_stems
+        for k in recipe_percentages
+    }
+
+    # 2. Floor everything
+    stem_counts = {
+        k: int(raw_counts[k])
+        for k in raw_counts
+    }
+
+    # 3. Calculate remainder
+    used_stems = sum(stem_counts.values())
+    remainder = total_stems - used_stems
+
+    # 4. BB-style redistribution order
+    redistribution_order = [
+        "Foundation",
+        "Focal",
+        "Foliage",
+        "Filler",
+        "Floater",
+        "Finisher",
+    ]
+
+    i = 0
+    while remainder > 0:
+        category = redistribution_order[i % len(redistribution_order)]
+        stem_counts[category] += 1
+        remainder -= 1
+        i += 1
+
+    return stem_counts
+
 # ------------------------------------------------
 # Streamlit UI
 # ------------------------------------------------
