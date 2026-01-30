@@ -105,10 +105,10 @@ if st.button("Run Pricing MVP"):
 
     st.subheader("Ideal Bouquet Recipe (by stem count)")
 
-    recipe_counts = {
-        k: round(v * total_stems)
-        for k, v in recipe.items()
-    }
+    recipe_counts = calculate_stem_recipe(
+        total_stems=total_stems,
+        recipe_percentages=recipe
+)
 
     st.write(recipe_counts)
 
