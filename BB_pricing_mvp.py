@@ -1,200 +1,5 @@
 import streamlit as st
-import pandas as pd   # <-- THIS needs to be here
-import pulp
-from datetime import datetime
-
-def run_optimization(selected_month, wholesale_price, num_bouquets,
-                     num_focal, num_foundation, num_filler,
-                     num_floater, num_finisher, num_foliage):
-
-    # Load Excel Master Variety List cleanly
-    data = pd.read_excel(
-        "data/Copy of Bouquet Recipe Master Sheet v5 09.07.2025.xlsx",
-        sheet_name="Master Variety List",
-            header=0  # explicitly take first row as header
-    )
-
-    # Drop completely empty columns
-    data = data.dropna(axis=1, how="all")
-
-    # Strip spaces from column names
-    data.columns = data.columns.astype(str).str.strip()
-
-    # Debug: show cleaned column names
-
-    missing_cols = [c for c in ["Season", "FlowerType"] if c not in data.columns]
-    if missing_cols:
-        st.error(f"Missing required columns in data: {missing_cols}")
-    else:
-     # Filter by season and type
-        filtered_data = data[
-            (data["Season"].str.contains(selected_season, na=False)) &
-            (data["FlowerType"].isin(selected_flower_type))
-        ]
-        st.write("DEBUG: Filtered data shape:", filtered_data.shape)
-        st.write("DEBUG: Filtered data columns:", list(filtered_data.columns))# Clean up price column: force numeric, replace errors/NaN with 0
-
-    data["Avg. WS Price"] = pd.to_numeric(
-        data["Avg. WS Price"], errors="coerce"
-    ).fillna(0)
-
-    # Standardize column names for optimizer
-    data = data.rename(columns={
-        "Category": "FlowerType",
-        "Avg. WS Price": "WholesaleCostPerStem"
-    })
-
-    # After renaming
-    required_cols = ["Season", "FlowerType", "WholesaleCostPerStem"]
-    missing_cols = [c for c in required_cols if c not in data.columns]
-    if missing_cols:
-        st.stop()
-    
-    # Clean up FlowerType (remove "2 - " etc.)
-    data["FlowerType"] = (
-        data["FlowerType"]
-        .astype(str)
-        .str.split("-")
-        .str[-1]
-        .str.strip()
-    )
-
-    # Ensure price is numeric
-    data["WholesaleCostPerStem"] = pd.to_numeric(
-        data["WholesaleCostPerStem"], errors="coerce"
-    )
-
-    # Strip whitespace from Season
-    data["Season"] = data["Season"].astype(str).str.strip()
-
-    # Map month to season
-    month_to_season = {
-        "January": "Winter", "February": "Winter", "March": "Early Spring",
-        "April": "Early Spring", "May": "Late Spring", "June": "Late Spring",
-        "July": "Summer", "August": "Summer", "September": "Fall",
-        "October": "Fall", "November": "Winter", "December": "Winter"
-    }
-    selected_season = month_to_season.get(selected_month, "Unknown Season")
-
-    # Price range around user price
-    price_range_lower = wholesale_price - 0.5
-    price_range_upper = wholesale_price + 1.0
-
-    # Flower categories
-    selected_flower_type = ["Focal", "Foundation", "Filler", "Floater", "Finisher", "Foliage"]
-    
-    # Filter by season and type
-    filtered_data = data[
-        (data["Season"].str.contains(selected_season, na=False)) &
-        (data["FlowerType"].isin(selected_flower_type))
-    ]
-
-    # Ensure numeric cost column
-    filtered_data["WholesaleCostPerStem"] = pd.to_numeric(
-        filtered_data["WholesaleCostPerStem"], errors="coerce"
-    )
-    filtered_data = filtered_data.dropna(subset=["WholesaleCostPerStem"])
-
-    # Safety: remove any flower types that have no rows after filtering
-    filtered_data = filtered_data[filtered_data["FlowerType"].isin(selected_flower_type)]
-
-    # Average cost per flower type
-    average_wholesale_costs = (
-        filtered_data.groupby("FlowerType")["WholesaleCostPerStem"]
-        .mean()
-        .to_dict()
-    )
-
-    avg_costs = {
-        "Focal": average_wholesale_costs.get("Focal", 0.0),
-        "Foundation": average_wholesale_costs.get("Foundation", 0.0),
-        "Filler": average_wholesale_costs.get("Filler", 0.0),
-        "Floater": average_wholesale_costs.get("Floater", 0.0),
-        "Finisher": average_wholesale_costs.get("Finisher", 0.0),
-        "Foliage": average_wholesale_costs.get("Foliage", 0.0),
-    }
-
-    wholesale_price = float(wholesale_price)
-
-    # Base upper bounds (assumes $25 wholesale bouquet baseline)
-    base_upper_bound_focal = 6
-    base_upper_bound_foundation = 25
-    base_upper_bound_filler = 4
-    base_upper_bound_floater = 3
-    base_upper_bound_finisher = 2
-    base_upper_bound_foliage = 3
-
-    # Scale bounds by bouquet price
-    adjusted_bounds = {
-        "Focal": round(base_upper_bound_focal * (wholesale_price / 25)),
-        "Foundation": round(base_upper_bound_foundation * (wholesale_price / 25)),
-        "Filler": round(base_upper_bound_filler * (wholesale_price / 25)),
-        "Floater": round(base_upper_bound_floater * (wholesale_price / 25)),
-        "Finisher": round(base_upper_bound_finisher * (wholesale_price / 25)),
-        "Foliage": round(base_upper_bound_foliage * (wholesale_price / 25)),
-    }
-
-    # PuLP model
-    model = pulp.LpProblem("Bouquet_Optimization", pulp.LpMinimize)
-
-    use_focal = pulp.LpVariable("use_focal", 1, adjusted_bounds["Focal"], cat="Integer")
-    use_foundation = pulp.LpVariable("use_foundation", 3, adjusted_bounds["Foundation"], cat="Integer")
-    use_filler = pulp.LpVariable("use_filler", 1, adjusted_bounds["Filler"], cat="Integer")
-    use_floater = pulp.LpVariable("use_floater", 2, adjusted_bounds["Floater"], cat="Integer")
-    use_finisher = pulp.LpVariable("use_finisher", 1, adjusted_bounds["Finisher"], cat="Integer")
-    use_foliage = pulp.LpVariable("use_foliage", 2, adjusted_bounds["Foliage"], cat="Integer")
-
-    total_cost = (
-        use_focal * avg_costs["Focal"] +
-        use_foundation * avg_costs["Foundation"] +
-        use_filler * avg_costs["Filler"] +
-        use_floater * avg_costs["Floater"] +
-        use_finisher * avg_costs["Finisher"] +
-        use_foliage * avg_costs["Foliage"]
-    )
-
-    num_bouquets = int(num_bouquets)
-
-    # Constraints
-    model += use_focal * num_bouquets <= num_focal
-    model += use_foundation * num_bouquets <= num_foundation
-    model += use_filler * num_bouquets <= num_filler
-    model += use_floater * num_bouquets <= num_floater
-    model += use_finisher * num_bouquets <= num_finisher
-    model += use_foliage * num_bouquets <= num_foliage
-    model += (total_cost >= price_range_lower)
-    model += (total_cost <= price_range_upper)
-
-    # Objective: minimize cost
-    model += total_cost
-    from pulp import COIN_CMD
-    model.solve(COIN_CMD(path="/usr/local/bin/cbc", msg=1))
-
-    # Results
-    optimized_results = {
-        "optimized_use_focal": use_focal.varValue,
-        "optimized_use_foundation": use_foundation.varValue,
-        "optimized_use_filler": use_filler.varValue,
-        "optimized_use_floater": use_floater.varValue,
-        "optimized_use_finisher": use_finisher.varValue,
-        "optimized_use_foliage": use_foliage.varValue,
-        "leftover_focal": num_focal - (use_focal.varValue * num_bouquets),
-        "leftover_foundation": num_foundation - (use_foundation.varValue * num_bouquets),
-        "leftover_filler": num_filler - (use_filler.varValue * num_bouquets),
-        "leftover_floater": num_floater - (use_floater.varValue * num_bouquets),
-        "leftover_finisher": num_finisher - (use_finisher.varValue * num_bouquets),
-        "leftover_foliage": num_foliage - (use_foliage.varValue * num_bouquets),
-        "actual_bouquet_wholesale_price": "{:.2f}".format(
-            use_focal.varValue * avg_costs["Focal"] +
-            use_foundation.varValue * avg_costs["Foundation"] +
-            use_filler.varValue * avg_costs["Filler"] +
-            use_floater.varValue * avg_costs["Floater"] +
-            use_finisher.varValue * avg_costs["Finisher"] +
-            use_foliage.varValue * avg_costs["Foliage"]
-        ),
-    }
-
-    return optimized_results
+import pandas as pd
 
 # ------------------------------------------------
 # Streamlit UI
@@ -216,26 +21,23 @@ num_floater = st.number_input("Available Floater Flowers", min_value=0, step=1)
 num_finisher = st.number_input("Available Finisher Flowers", min_value=0, step=1)
 num_foliage = st.number_input("Available Foliage Stems", min_value=0, step=1)
 
-if st.button("Run Optimization"):
-    try:
-        optimized_results = run_optimization(
-            selected_month, wholesale_price, num_bouquets,
-            num_focal, num_foundation, num_filler,
-            num_floater, num_finisher, num_foliage
-        )
+st.markdown("---")
 
-        st.subheader("Bouquet Recipe")
-        st.write({
-            "Focal Flowers": optimized_results["optimized_use_focal"],
-            "Foundation Flowers": optimized_results["optimized_use_foundation"],
-            "Filler Flowers": optimized_results["optimized_use_filler"],
-            "Floater Flowers": optimized_results["optimized_use_floater"],
-            "Finisher Flowers": optimized_results["optimized_use_finisher"],
-            "Foliage Stems": optimized_results["optimized_use_foliage"],
-        })
+if st.button("Run Pricing MVP"):
+    st.subheader("Bouquet Recipe (Preview)")
+    st.write({
+        "Focal Flowers": 2,
+        "Foundation Flowers": 5,
+        "Filler Flowers": 1,
+        "Floater Flowers": 1,
+        "Finisher Flowers": 0,
+        "Foliage Stems": 3,
+    })
 
-        st.subheader("Optimization Results")
-        st.write(optimized_results)
-
-    except Exception as e:
-        st.error(f"An error occurred: {str(e)}")
+    st.subheader("Pricing Summary (Preview)")
+    st.write({
+        "Estimated wholesale value": "$19.50",
+        "GEF applied": "Not yet",
+        "Labor included": "Not yet",
+        "Final pricing range": "Coming next"
+    })
