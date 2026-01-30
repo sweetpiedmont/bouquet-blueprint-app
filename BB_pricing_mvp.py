@@ -42,18 +42,25 @@ season_choice = st.radio(
     ]
 )
 
+if "early spring" in season_choice:
+    season_key = "early_spring"
+elif "late spring" in season_choice:
+    season_key = "late_spring"
+else:
+    season_key = "summer_fall"
+
 st.markdown("---")
 
 if st.button("Run Pricing MVP"):
-    st.subheader("Bouquet Recipe (Preview)")
+    recipe = CANONICAL_RECIPES[season_key]
+
+    st.subheader("Ideal Bouquet Composition (by stem share)")
     st.write({
-        "Focal Flowers": 2,
-        "Foundation Flowers": 5,
-        "Filler Flowers": 1,
-        "Floater Flowers": 1,
-        "Finisher Flowers": 0,
-        "Foliage Stems": 3,
+        k: f"{int(v * 100)}%"
+        for k, v in recipe.items()
     })
+
+    st.info("This is the ideal seasonal recipe before adjusting for availability or pricing.")
 
     st.subheader("Pricing Summary (Preview)")
     st.write({
