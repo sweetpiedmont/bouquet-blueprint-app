@@ -51,14 +51,25 @@ else:
 
 st.markdown("---")
 
+total_stems = st.number_input(
+    "How many stems are in this bouquet?",
+    min_value=10,
+    max_value=80,
+    value=20,
+    step=1
+)
+
 if st.button("Run Pricing MVP"):
     recipe = CANONICAL_RECIPES[season_key]
 
-    st.subheader("Ideal Bouquet Composition (by stem share)")
-    st.write({
-        k: f"{int(v * 100)}%"
+    st.subheader("Ideal Bouquet Recipe (by stem count)")
+
+    recipe_counts = {
+        k: round(v * total_stems)
         for k, v in recipe.items()
-    })
+    }
+
+    st.write(recipe_counts)
 
     st.info("This is the ideal seasonal recipe before adjusting for availability or pricing.")
 
