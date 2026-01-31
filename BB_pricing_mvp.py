@@ -86,6 +86,8 @@ def load_master_pricing(local_path: str) -> pd.DataFrame:
     # --- Drop rows that cannot be priced ---
     df = df.dropna(subset=["wholesale_price"])
 
+    df = df.where(pd.notnull(df), None)
+
     return df
 
 pricing_df = load_master_pricing(
