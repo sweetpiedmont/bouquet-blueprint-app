@@ -11,8 +11,8 @@ CANONICAL_RECIPES = {
         "Foliage": 0.15,
     },
     "late_spring": {
-        "Focal": 0.10,
-        "Foundation": 0.45,
+        "Focal": 0.09,
+        "Foundation": 0.46,
         "Filler": 0.10,
         "Floater": 0.10,
         "Finisher": 0.10, 
