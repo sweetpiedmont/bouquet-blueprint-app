@@ -28,6 +28,12 @@ CANONICAL_RECIPES = {
     },
 }
 
+SEASON_KEY_TO_RECIPE_SEASON = {
+    "early_spring": "Early Spring",
+    "late_spring": "Late Spring",
+    "summer_fall": "Summer/Fall",
+}
+
 @st.cache_data
 def load_master_pricing(local_path: str) -> pd.DataFrame:
     """
