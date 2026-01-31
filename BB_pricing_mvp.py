@@ -269,6 +269,6 @@ if st.button("Run Pricing MVP"):
 
     st.subheader("Cost Summary")
 
-st.write({
-    "Estimated material cost (your flowers)": f"${estimated_material_cost:.2f}",
-})
+    st.write({
+        "Estimated material cost (your flowers)": f"${estimated_material_cost:.2f}",
+    })
