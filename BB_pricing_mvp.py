@@ -137,6 +137,36 @@ def calculate_stem_recipe(total_stems, recipe_percentages):
 
     return stem_counts
 
+# --- Recipe season selection (temporary, for testing) ---
+recipe_season = "Summer/Fall"  # change later via UI
+
+# --- Season mapping ---
+SEASON_MAP = {
+    "Early Spring": ["Early Spring"],
+    "Late Spring": ["Late Spring"],
+    "Summer/Fall": ["Summer", "Fall"],
+}
+
+# --- Filter pricing data by recipe season ---
+valid_seasons = SEASON_MAP[recipe_season]
+
+season_pricing_df = pricing_df[
+    pricing_df["season_raw"].str.contains("|".join(valid_seasons), na=False)
+]
+
+# --- Compute average price per category ---
+category_avg_prices = (
+    season_pricing_df
+    .groupby("category")["wholesale_price"]
+    .mean()
+    .round(2)
+    .to_dict()
+)
+
+# --- Display for sanity check only ---
+st.subheader(f"Category Averages — {recipe_season}")
+st.write(category_avg_prices)
+
 # ------------------------------------------------
 # Streamlit UI
 # ------------------------------------------------
