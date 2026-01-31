@@ -269,7 +269,7 @@ if st.button("Run Pricing MVP"):
     
     st.subheader("Pricing Summary (Preview)")
     st.write({
-        "Estimated wholesale value": "$19.50",
+        "Estimated wholesale value": f"${estimated_wholesale_value:.2f}",
         "GEF applied": "Not yet",
         "Labor included": "Not yet",
         "Final pricing range": "Coming next"
