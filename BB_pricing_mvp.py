@@ -226,6 +226,7 @@ total_stems = st.number_input(
 
 if st.button("Run Pricing MVP"):
     recipe = CANONICAL_RECIPES[season_key]
+    recipe_season = SEASON_KEY_TO_RECIPE_SEASON[season_key]
 
     st.subheader("Ideal Bouquet Recipe (by stem count)")
 
