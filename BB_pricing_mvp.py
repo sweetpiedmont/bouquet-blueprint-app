@@ -237,8 +237,36 @@ if st.button("Run Pricing MVP"):
 
     st.write(recipe_counts)
 
-    st.info("This is the ideal seasonal recipe before adjusting for availability or pricing.")
+    st.info("This is the ideal seasonal recipe.")
 
+        # --- Season mapping for pricing (LOCKED) ---
+    SEASON_MAP = {
+        "Early Spring": ["Early Spring"],
+        "Late Spring": ["Late Spring"],
+        "Summer/Fall": ["Summer", "Fall"],
+    }
+
+    # --- Filter pricing data by recipe season ---
+    valid_seasons = SEASON_MAP[recipe_season]
+
+    season_pricing_df = pricing_df[
+        pricing_df["season_raw"].str.contains("|".join(valid_seasons), na=False)
+    ]
+
+    # --- Compute average price per category ---
+    category_avg_prices = (
+        season_pricing_df
+        .groupby("category")["wholesale_price"]
+        .mean()
+        .to_dict()
+    )
+
+    # --- Compute estimated wholesale value ---
+    estimated_wholesale_value = sum(
+        recipe_counts.get(category, 0) * category_avg_prices.get(category, 0)
+        for category in recipe_counts
+    )
+    
     st.subheader("Pricing Summary (Preview)")
     st.write({
         "Estimated wholesale value": "$19.50",
