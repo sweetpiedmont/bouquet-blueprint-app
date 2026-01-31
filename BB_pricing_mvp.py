@@ -164,8 +164,28 @@ category_avg_prices = (
 )
 
 # --- Display for sanity check only ---
+# TAKE THIS OUT LATER
 st.subheader(f"Category Averages — {recipe_season}")
 st.write(category_avg_prices)
+
+# --- Temporary bouquet recipe (counts per category) ---
+recipe_counts = {
+    "Focal": 3,
+    "Foundation": 5,
+    "Filler": 4,
+    "Floater": 2,
+    "Finisher": 1,
+    "Foliage": 5,
+}
+
+# --- Compute estimated wholesale value ---
+estimated_wholesale_value = sum(
+    recipe_counts.get(category, 0) * category_avg_prices.get(category, 0)
+    for category in recipe_counts
+)
+
+st.subheader("Estimated Wholesale Value")
+st.write(f"${estimated_wholesale_value:.2f}")
 
 # ------------------------------------------------
 # Streamlit UI
