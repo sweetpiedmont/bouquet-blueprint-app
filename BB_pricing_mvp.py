@@ -107,7 +107,7 @@ def calculate_stem_recipe(
     recipe_percentages,
     breakpoint=25,
     foliage_key="Foliage",
-    foliage_damping_factor=0.5,
+    foliage_damping_factor=0.6,
 ):
     """
     Convert percentage-based recipe into exact stem counts.
