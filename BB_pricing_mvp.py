@@ -19,8 +19,8 @@ CANONICAL_RECIPES = {
         "Foliage": 0.15,
     },
     "summer_fall": {
-        "Focal": 0.20,
-        "Foundation": 0.35,
+        "Focal": 0.25,
+        "Foundation": 0.30,
         "Filler": 0.08,
         "Floater": 0.11,
         "Finisher": 0.11,
