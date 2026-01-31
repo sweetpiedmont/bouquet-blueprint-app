@@ -94,7 +94,7 @@ pricing_df = load_master_pricing(
     "/Users/sharon/Library/CloudStorage/OneDrive-Personal/Bouquet Recipes/CANONICAL Bouquet Recipe Master Sheet.xlsx"
 )
 
-st.write(pricing_df.head())
+st.dataframe(pricing_df[["season_raw", "category", "wholesale_price"]])
 
 def calculate_stem_recipe(total_stems, recipe_percentages):
     """
