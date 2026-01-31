@@ -102,49 +102,79 @@ pricing_df = load_master_pricing(
 
 st.dataframe(pricing_df[["season_raw", "category", "wholesale_price"]])
 
-def calculate_stem_recipe(total_stems, recipe_percentages):
+def calculate_stem_recipe(
+    total_stems,
+    recipe_percentages,
+    breakpoint=25,
+    foliage_key="Foliage",
+    foliage_damping_factor=0.5,
+):
     """
-    Convert percentage-based recipe into exact stem counts
-    while guaranteeing total stems and BB-style redistribution.
+    Convert percentage-based recipe into exact stem counts.
+
+    - ≤ breakpoint: normal BB scaling
+    - > breakpoint: foliage scales more slowly, all other ratios preserved
     """
 
-    # 1. Raw float counts
-    raw_counts = {
-        k: recipe_percentages[k] * total_stems
+    def bb_round(stems, percentages):
+        # 1. Raw float counts
+        raw = {k: percentages[k] * stems for k in percentages}
+
+        # 2. Floor
+        counts = {k: int(raw[k]) for k in raw}
+
+        # 3. Remainder
+        remainder = stems - sum(counts.values())
+
+        # 4. BB redistribution order
+        redistribution_order = [
+            "Foundation",
+            "Focal",
+            "Foliage",
+            "Filler",
+            "Floater",
+            "Finisher",
+        ]
+
+        i = 0
+        while remainder > 0:
+            cat = redistribution_order[i % len(redistribution_order)]
+            counts[cat] += 1
+            remainder -= 1
+            i += 1
+
+        return counts
+
+    # --- Case 1: at or below breakpoint ---
+    if total_stems <= breakpoint:
+        return bb_round(total_stems, recipe_percentages)
+
+    # --- Case 2: above breakpoint ---
+    base_counts = bb_round(breakpoint, recipe_percentages)
+    extra_stems = total_stems - breakpoint
+
+    foliage_share = recipe_percentages.get(foliage_key, 0)
+    non_foliage = {
+        k: v for k, v in recipe_percentages.items()
+        if k != foliage_key
+    }
+
+    non_foliage_total = sum(non_foliage.values())
+    dampened_foliage_share = foliage_share * foliage_damping_factor
+    remaining_share = 1.0 - dampened_foliage_share
+
+    adjusted_extra_percentages = {
+        k: (v / non_foliage_total) * remaining_share
+        for k, v in non_foliage.items()
+    }
+    adjusted_extra_percentages[foliage_key] = dampened_foliage_share
+
+    extra_counts = bb_round(extra_stems, adjusted_extra_percentages)
+
+    return {
+        k: base_counts.get(k, 0) + extra_counts.get(k, 0)
         for k in recipe_percentages
     }
-
-    # 2. Floor everything
-    stem_counts = {
-        k: int(raw_counts[k])
-        for k in raw_counts
-    }
-
-    # 3. Calculate remainder
-    used_stems = sum(stem_counts.values())
-    remainder = total_stems - used_stems
-
-    # 4. BB-style redistribution order
-    redistribution_order = [
-        "Foundation",
-        "Focal",
-        "Foliage",
-        "Filler",
-        "Floater",
-        "Finisher",
-    ]
-
-    i = 0
-    while remainder > 0:
-        category = redistribution_order[i % len(redistribution_order)]
-        stem_counts[category] += 1
-        remainder -= 1
-        i += 1
-
-    return stem_counts
-
-# --- Recipe season selection (temporary, for testing) ---
-recipe_season = "Summer/Fall"  # change later via UI
 
 # --- Season mapping ---
 SEASON_MAP = {
@@ -168,30 +198,6 @@ category_avg_prices = (
     .round(2)
     .to_dict()
 )
-
-# --- Display for sanity check only ---
-# TAKE THIS OUT LATER
-st.subheader(f"Category Averages — {recipe_season}")
-st.write(category_avg_prices)
-
-# --- Temporary bouquet recipe (counts per category) ---
-recipe_counts = {
-    "Focal": 3,
-    "Foundation": 5,
-    "Filler": 4,
-    "Floater": 2,
-    "Finisher": 1,
-    "Foliage": 5,
-}
-
-# --- Compute estimated wholesale value ---
-estimated_wholesale_value = sum(
-    recipe_counts.get(category, 0) * category_avg_prices.get(category, 0)
-    for category in recipe_counts
-)
-
-st.subheader("Estimated Wholesale Value")
-st.write(f"${estimated_wholesale_value:.2f}")
 
 # ------------------------------------------------
 # Streamlit UI
@@ -239,7 +245,7 @@ if st.button("Run Pricing MVP"):
 
     st.info("This is the ideal seasonal recipe.")
 
-        # --- Season mapping for pricing (LOCKED) ---
+        # --- Season mapping for pricing ---
     SEASON_MAP = {
         "Early Spring": ["Early Spring"],
         "Late Spring": ["Late Spring"],
