@@ -209,6 +209,19 @@ total_stems = st.number_input(
     step=1
 )
 
+gef = st.slider(
+    "Grower Efficiency Factor (GEF)",
+    min_value=0.50,
+    max_value=0.75,
+    value=0.65,
+    step=0.01,
+    help=(
+        "Estimate how efficiently you grow compared to wholesale benchmarks.\n\n"
+        "Lower = more efficient growing systems.\n"
+        "Higher = higher costs, smaller scale, or early-stage systems."
+    ),
+)
+
 if st.button("Run Pricing MVP"):
     recipe = CANONICAL_RECIPES[season_key]
     recipe_season = SEASON_KEY_TO_RECIPE_SEASON[season_key]
@@ -252,10 +265,10 @@ if st.button("Run Pricing MVP"):
         for category in recipe_counts
     )
     
-    st.subheader("Pricing Summary (Preview)")
-    st.write({
-        "Estimated wholesale value": f"${estimated_wholesale_value:.2f}",
-        "GEF applied": "Not yet",
-        "Labor included": "Not yet",
-        "Final pricing range": "Coming next"
-    })
+    estimated_material_cost = estimated_wholesale_value * gef
+
+    st.subheader("Cost Summary")
+
+st.write({
+    "Estimated material cost (your flowers)": f"${estimated_material_cost:.2f}",
+})
