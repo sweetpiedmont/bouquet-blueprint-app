@@ -129,11 +129,11 @@ def calculate_stem_recipe(
         # 4. BB redistribution order
         redistribution_order = [
             "Foundation",
+            "Floater",
+            "Filler",
+            "Finisher",
             "Focal",
             "Foliage",
-            "Filler",
-            "Floater",
-            "Finisher",
         ]
 
         i = 0
@@ -176,29 +176,6 @@ def calculate_stem_recipe(
         for k in recipe_percentages
     }
 
-# --- Season mapping ---
-SEASON_MAP = {
-    "Early Spring": ["Early Spring"],
-    "Late Spring": ["Late Spring"],
-    "Summer/Fall": ["Summer", "Fall"],
-}
-
-# --- Filter pricing data by recipe season ---
-valid_seasons = SEASON_MAP[recipe_season]
-
-season_pricing_df = pricing_df[
-    pricing_df["season_raw"].str.contains("|".join(valid_seasons), na=False)
-]
-
-# --- Compute average price per category ---
-category_avg_prices = (
-    season_pricing_df
-    .groupby("category")["wholesale_price"]
-    .mean()
-    .round(2)
-    .to_dict()
-)
-
 # ------------------------------------------------
 # Streamlit UI
 # ------------------------------------------------
@@ -219,6 +196,8 @@ elif "late spring" in season_choice:
     season_key = "late_spring"
 else:
     season_key = "summer_fall"
+
+recipe_season = SEASON_KEY_TO_RECIPE_SEASON[season_key]
 
 st.markdown("---")
 
