@@ -50,6 +50,9 @@ def load_master_pricing(local_path: str) -> pd.DataFrame:
     # --- Normalize column names ---
     df.columns = df.columns.str.strip()
 
+    # 🔑 DROP unnamed / blank columns
+    df = df.loc[:, ~df.columns.str.contains("^Unnamed")]
+
     # --- Rename to internal-safe names ---
     df = df.rename(columns={
         "Season": "season_raw",
