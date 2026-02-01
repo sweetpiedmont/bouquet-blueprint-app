@@ -21,10 +21,10 @@ def pricing_zone_from_markup(markup):
 CANONICAL_RECIPES = {
     "early_spring": {
         "Focal": 0.20,
-        "Foundation": 0.45,
-        "Filler": 0.05,
+        "Foundation": 0.39,
+        "Filler": 0.08,
         "Floater": 0.10,
-        "Finisher": 0.05,
+        "Finisher": 0.08,
         "Foliage": 0.15,
     },
     "late_spring": {
