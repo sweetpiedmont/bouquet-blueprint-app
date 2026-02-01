@@ -390,8 +390,8 @@ if "break_even_price" in st.session_state:
         <div style="display: flex; height: 6px; border-radius: 3px; overflow: hidden;">
             <div style="flex: 0.1; background-color: rgba(204, 0, 0, 0.45);"></div>
             <div style="flex: 0.9; background-color: #e6eb99;"></div>
-            <div style="flex: 0.6; background-color: #ffdee7;"></div>
-            <div style="flex: 0.4; background-color: #d7f4ff;"></div>
+            <div style="flex: 0.4; background-color: #ffdee7;"></div>
+            <div style="flex: 0.6; background-color: #d7f4ff;"></div>
         </div>
 
             <div style="
@@ -409,12 +409,12 @@ if "break_even_price" in st.session_state:
                     <span style="font-size: 11px; opacity: 0.7;">Zone</span>
                 </div>
 
-                <div style="flex: 0.6; text-align: center;">
+                <div style="flex: 0.4; text-align: center;">
                     Mother’s Day<br/>Made-to-Order<br/>
                     <span style="font-size: 11px; opacity: 0.7;">Zone</span>
                 </div>
 
-                <div style="flex: 0.4; text-align: center;">
+                <div style="flex: 0.6; text-align: center;">
                     Weddings<br/>Events<br/>
                     <span style="font-size: 11px; opacity: 0.7;">Zone</span>
                 </div>
