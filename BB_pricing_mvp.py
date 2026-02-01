@@ -264,7 +264,7 @@ components.html(
             margin-top: 6px;
             align-items: flex-start;
         ">
-            <div style="flex: 1; text-align: left; color: #e6eb99;">
+            <div style="flex: 1; text-align: left; color: #435445;">
                 Highly efficient<br/>growing operation
             </div>
 
