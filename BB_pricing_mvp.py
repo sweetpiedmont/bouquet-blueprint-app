@@ -276,7 +276,7 @@ components.html(
             </div>
 
             <div style="flex: 1; text-align: right; color: #435445;">
-                Highly inefficient<br/>growing operation
+                Highly <u><strong>in</strong></u>efficient<br/>growing operation
             </div>
         </div>
     </div>
