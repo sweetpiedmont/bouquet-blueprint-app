@@ -275,7 +275,7 @@ components.html(
                 </span>
             </div>
 
-            <div style="flex: 1; text-align: right; color: #7a0000;">
+            <div style="flex: 1; text-align: right; color: #435445;">
                 Highly inefficient<br/>growing operation
             </div>
         </div>
