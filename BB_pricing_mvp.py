@@ -498,7 +498,7 @@ if "break_even_price" in st.session_state:
     st.markdown(
         "<p style='font-size: 0.85em; opacity: 0.75; text-align: center;'>"
         "<em>Pricing zones are approximate guides, not rules, and do not include costs associated with selling.</em> "
-        "Your final price should reflect what your market will bear "
+        "Your final price should reflect these costs, as well as what your market will bear "
         "and the profit you need this bouquet to earn. "
         "Use the zones as context — then choose the price that fits your business."
         "</p>",
