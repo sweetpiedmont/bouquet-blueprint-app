@@ -387,15 +387,15 @@ if "break_even_price" in st.session_state:
     st.markdown(
         """
         <div style="display: flex; justify-content: space-between; font-size: 0.85em; margin-top: -10px;">
-            <span>Break-even</span>
-            <span>Market / Subscriptions</span>
-            <span>Mother’s Day</span>
-            <span>Weddings & Events</span>
+            <span><span style="color:#cc0000;">●</span> Break-even</span>
+            <span><span style="color:#2e8b57;">●</span> Market / Subscriptions</span>
+            <span><span style="color:#b565d9;">●</span> Mother’s Day</span>
+            <span><span style="color:#2b6cb0;">●</span> Weddings & Events</span>
         </div>
         """,
         unsafe_allow_html=True,
     )
-    
+
     st.markdown(
         f"<h2 style='text-align: center;'>${selling_price:.2f}</h2>",
         unsafe_allow_html=True
