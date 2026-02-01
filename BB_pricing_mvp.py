@@ -340,28 +340,28 @@ if st.button("Run Pricing MVP"):
     # Round to nearest $0.10 to remove false precision
     break_even_price = round(break_even_price_raw, 1)
 
-st.markdown("### 💵 Choose Your Selling Price")
+    st.markdown("### 💵 Choose Your Selling Price")
 
-max_price = round(break_even_price * 4.0, 0)
+    max_price = round(break_even_price * 4.0, 0)
 
-selling_price = st.slider(
-    label="",
-    min_value=break_even_price,
-    max_value=max_price,
-    value=round(break_even_price * 1.5, 1),
-    step=0.1,
-)
+    selling_price = st.slider(
+        label="",
+        min_value=break_even_price,
+        max_value=max_price,
+        value=round(break_even_price * 1.5, 1),
+        step=0.1,
+    )
 
-st.markdown("### 🏷️ Your Price")
-st.markdown(
-    f"<h2 style='text-align: center;'>${selling_price:.2f}</h2>",
-    unsafe_allow_html=True
-)
+    st.markdown("### 🏷️ Your Price")
+    st.markdown(
+        f"<h2 style='text-align: center;'>${selling_price:.2f}</h2>",
+        unsafe_allow_html=True
+    )
 
-markup = selling_price / break_even_price
-profit_per_bouquet = selling_price - break_even_price
+    markup = selling_price / break_even_price
+    profit_per_bouquet = selling_price - break_even_price
 
-st.caption(
-    f"Markup: {markup:.2f}×  |  "
-    f"Profit per bouquet: ${profit_per_bouquet:.2f}"
-)
+    st.caption(
+        f"Markup: {markup:.2f}×  |  "
+        f"Profit per bouquet: ${profit_per_bouquet:.2f}"
+    )
