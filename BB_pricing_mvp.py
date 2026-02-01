@@ -181,7 +181,7 @@ def calculate_stem_recipe(
 # ------------------------------------------------
 
 # User inputs
-st.header("Choose Your Season")
+st.subheader("Choose Your Season")
 
 season_choice = st.radio(
     "Are peonies available for you to harvest and use right now?",
@@ -203,7 +203,7 @@ recipe_season = SEASON_KEY_TO_RECIPE_SEASON[season_key]
 
 st.markdown("---")
 
-st.header("Desired Bouquet Size")
+st.subheader("Desired Bouquet Size")
 
 total_stems = st.number_input(
     "How many stems are in this bouquet?",
@@ -213,29 +213,37 @@ total_stems = st.number_input(
     step=1
 )
 
-st.header("Your Growing Efficiency")
+st.markdown("---")
 
-st.markdown(
-    """
-This reflects how much it costs YOU to grow flowers compared to wholesale benchmark prices.
-If your systems are efficient, with few unsold stems and minimal inputs, your costs are lower.
-If you have unsold stems and/or inefficient processes, your costs are higher.
-"""
+st.subheader("Your Growing Efficiency")
+
+st.caption(
+    "This adjusts industry benchmark prices to reflect what it costs *you* to grow flowers."
 )
 
 gef = st.slider(
-    "How efficient is your growing system?",
+    "",
     min_value=0.50,
     max_value=1.00,
-    value=0.75,
+    value=0.65,
     step=0.01,
 )
 
-col1, col2 = st.columns([1, 1])
-with col1:
-    st.caption("⬅️ Very efficient systems")
-with col2:
-    st.caption("Higher-cost systems ➡️")
+left, middle, right = st.columns([1, 6, 1])
+
+with left:
+    st.caption("⬅️ Very efficient")
+
+with middle:
+    st.caption("")
+
+with right:
+    st.markdown(
+        "<div style='text-align: right;'>Higher-cost systems ➡️</div>",
+        unsafe_allow_html=True
+    )
+
+st.markdown("---")
 
 st.subheader("Labor (Bouquet Assembly Only)")
 
@@ -261,6 +269,8 @@ labor_rate_per_hour = st.number_input(
 )
 
 labor_cost_per_bouquet = (labor_minutes / 60) * labor_rate_per_hour
+
+st.markdown("---")
 
 st.subheader("Materials (Minimum Supplies)")
 
