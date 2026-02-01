@@ -260,7 +260,7 @@ components.html(
         <!-- BAR -->
         <div style="display: flex; height: 6px; border-radius: 3px; overflow: hidden;">
             <div style="width: {left_pct}%; background-color: #e6eb99;"></div>
-            <div style="width: {right_pct}%; background-color: #b22222;"></div>
+            <div style="width: {right_pct}%; background-color: #ff4582;"></div>
         </div>
 
         <!-- LABELS -->
@@ -271,7 +271,8 @@ components.html(
             position: relative;
         ">
             <div style="width: {left_pct}%; text-align: left;">
-                Efficient
+                Highly efficient<br/>
+                growing operation
             </div>
 
             <div style="
@@ -282,11 +283,14 @@ components.html(
                 white-space: nowrap;
                 font-weight: 600;
             ">
-                ≈ wholesale parity (1.0)
+                Above this point, it costs you more to grow your flowers than it would
+                (on average) to purchase them wholesale. Getting your growing costs down
+                is critical to your profitability potential.
             </div>
 
             <div style="width: {right_pct}%; text-align: right;">
-                <u><strong>in</strong></u>efficient
+                Highly <u><strong>in</strong></u>efficient<br/>
+                growing operation
             </div>
         </div>
     </div>
