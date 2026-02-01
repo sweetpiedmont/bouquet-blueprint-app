@@ -257,7 +257,7 @@ with middle:
 
 with right:
     st.markdown(
-        "<div style='text-align: right;'>Higher-cost systems ➡️</div>",
+        "<div style='text-align: right;'>Less efficient ➡️</div>",
         unsafe_allow_html=True
     )
 
