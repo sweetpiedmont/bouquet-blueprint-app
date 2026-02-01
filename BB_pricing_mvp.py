@@ -294,8 +294,6 @@ materials_cost = st.slider(
     on_change=invalidate_pricing,
 )
 
-st.markdown("---")
-
 if st.button("Lock in My Assumptions"):
     recipe = CANONICAL_RECIPES[season_key]
     recipe_season = SEASON_KEY_TO_RECIPE_SEASON[season_key]
