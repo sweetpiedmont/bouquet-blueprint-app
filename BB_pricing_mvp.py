@@ -320,7 +320,13 @@ if st.button("Lock in My Assumptions"):
         recipe_percentages=recipe
 )
 
-    st.write(recipe_counts)
+    recipe_df = (
+        pd.DataFrame.from_dict(recipe_counts, orient="index", columns=["Stems"])
+        .rename_axis("Flower Type")
+        .reset_index()
+    )
+
+    st.table(recipe_df)
 
     # --- Season mapping for pricing ---
     SEASON_MAP = {
