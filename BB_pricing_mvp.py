@@ -284,9 +284,7 @@ components.html(
                 white-space: normal;
                 font-weight: 500;
             ">
-                Above this point, it costs you more to grow your flowers than it would
-                (on average) to purchase them wholesale. Getting your growing costs down
-                is critical to your profitability potential.
+                ⚠️ 1.0
             </div>
 
             <div style="width: {right_pct}%; text-align: right;">
@@ -297,6 +295,12 @@ components.html(
     </div>
     """,
     height=70,
+)
+
+st.caption(
+    "⚠️ Above a growing efficiency of 1.0, it costs you more to grow your flowers "
+    "than it would (on average) to purchase them wholesale. "
+    "Reducing growing costs is critical to long-term profitability."
 )
 
 st.markdown("---")
