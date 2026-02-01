@@ -209,17 +209,36 @@ total_stems = st.number_input(
     step=1
 )
 
+st.subheader("Growing Efficiency Factor (GEF)")
+
+st.markdown(
+    """
+This reflects how much it costs YOU to grow flowers compared to wholesale benchmark prices.
+If your systems are efficient, with few unsold stems and minimal inputs, your costs are lower.
+If you have unsold stems and/or inefficient processes, your costs are higher.
+"""
+)
+
 gef = st.slider(
-    "Grower Efficiency Factor (GEF)",
+    "How efficient is your growing system?",
     min_value=0.50,
-    max_value=0.75,
-    value=0.65,
+    max_value=1.00,
+    value=0.75,
     step=0.01,
-    help=(
-        "Estimate how efficiently you grow compared to wholesale benchmarks.\n\n"
-        "Lower = more efficient growing systems.\n"
-        "Higher = higher costs, smaller scale, or early-stage systems."
-    ),
+)
+
+# Visual anchors for meaning
+st.markdown(
+    """
+**⬅️ Lower cost**  
+Extremely efficient systems  
+(minimal unused stems, highly efficient production)
+
+**➡️ Higher cost**  
+Low efficiency systems
+(unused stems, high growing costs)
+(At 1.00, your costs are roughly equal to wholesale prices)
+"""
 )
 
 st.subheader("Labor (Bouquet Assembly Only)")
@@ -316,5 +335,8 @@ if st.button("Run Pricing MVP"):
     st.subheader("Cost Summary")
 
     st.write({
-        "Estimated material cost (your flowers)": f"${estimated_material_cost:.2f}",
+        "Estimated flower production cost": f"${estimated_material_cost:.2f}",
+        "Labor per bouquet": f"${labor_cost_per_bouquet:.2f}",
+        "Supplies per bouquet": f"${materials_cost:.2f}",
+        "Total cost per bouquet": f"${total_bouquet_cost:.2f}",
     })
