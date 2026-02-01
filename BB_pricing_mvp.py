@@ -287,11 +287,13 @@ materials_cost = st.slider(
     )
 )
 
+st.markdown("---")
+
 if st.button("Run Pricing MVP"):
     recipe = CANONICAL_RECIPES[season_key]
     recipe_season = SEASON_KEY_TO_RECIPE_SEASON[season_key]
 
-    st.subheader("Ideal Bouquet Recipe (by stem count)")
+    st.subheader("Bouquet Recipe")
 
     recipe_counts = calculate_stem_recipe(
         total_stems=total_stems,
@@ -299,8 +301,6 @@ if st.button("Run Pricing MVP"):
 )
 
     st.write(recipe_counts)
-
-    st.info("This is the ideal seasonal recipe.")
 
         # --- Season mapping for pricing ---
     SEASON_MAP = {
