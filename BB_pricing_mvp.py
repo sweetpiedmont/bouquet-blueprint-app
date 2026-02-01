@@ -279,9 +279,10 @@ components.html(
                 position: absolute;
                 left: {left_pct}%;
                 transform: translateX(-50%);
+                width: 240px;
                 text-align: center;
-                white-space: nowrap;
-                font-weight: 600;
+                white-space: normal;
+                font-weight: 500;
             ">
                 Above this point, it costs you more to grow your flowers than it would
                 (on average) to purchase them wholesale. Getting your growing costs down
