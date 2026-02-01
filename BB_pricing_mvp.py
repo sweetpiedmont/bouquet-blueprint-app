@@ -387,7 +387,6 @@ if "break_even_price" in st.session_state:
     st.markdown(
         """
         <div style="margin-top: 6px;">
-            <!-- Color bar -->
             <div style="display: flex; height: 6px; border-radius: 3px; overflow: hidden;">
                 <div style="flex: 1; background-color: #cc0000;"></div>
                 <div style="flex: 1; background-color: #2e8b57;"></div>
@@ -395,7 +394,6 @@ if "break_even_price" in st.session_state:
                 <div style="flex: 1; background-color: #2b6cb0;"></div>
             </div>
 
-            <!-- Labels -->
             <div style="
                 display: flex;
                 justify-content: space-between;
