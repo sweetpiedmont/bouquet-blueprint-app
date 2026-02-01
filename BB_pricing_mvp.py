@@ -1,9 +1,21 @@
 import streamlit as st
 import pandas as pd
 
+# DEFINITIONS
+
 def invalidate_pricing():
     st.session_state.pop("break_even_price", None)
     st.session_state.pop("recipe_counts", None)
+
+def pricing_zone_from_markup(markup):
+    if markup <= 1.05:
+        return "🔴 Break-even price (covers costs, no profit)"
+    elif markup <= 2.0:
+        return "🟢 Farmers market / subscription zone"
+    elif markup <= 3.0:
+        return "🟠 Made-to-order / Mother’s Day zone"
+    else:
+        return "🟣 Weddings & events zone"
 
 CANONICAL_RECIPES = {
     "early_spring": {
@@ -359,7 +371,7 @@ if "break_even_price" in st.session_state:
 
     st.markdown("---")
 
-    st.markdown("### 💵 Choose Your Selling Price")
+    st.markdown("### 🏷️ Choose Your Selling Price")
 
     max_price = round(break_even_price * 4.0, 0)
 
