@@ -492,12 +492,12 @@ if "break_even_price" in st.session_state:
 
     st.caption(
         f"Markup: {markup:.2f}×  |  "
-        f"Profit per bouquet: ${profit_per_bouquet:.2f}"
+        f"Potential profit per bouquet: ${profit_per_bouquet:.2f}"
     )
 
     st.markdown(
         "<p style='font-size: 0.85em; opacity: 0.75; text-align: center;'>"
-        "<em>Pricing zones are approximate guides, not rules.</em> "
+        "<em>Pricing zones are approximate guides, not rules, and do not include costs associated with selling.</em> "
         "Your final price should reflect what your market will bear "
         "and the profit you need this bouquet to earn. "
         "Use the zones as context — then choose the price that fits your business."
