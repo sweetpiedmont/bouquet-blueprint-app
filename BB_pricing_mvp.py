@@ -387,13 +387,12 @@ if "break_even_price" in st.session_state:
 
     components.html(
         f"""
-        <div style="margin-top: 6px; font-family: sans-serif;">
-            <div style="display: flex; height: 6px; border-radius: 3px; overflow: hidden;">
-                <div style="flex: 1; background-color: #cc0000;"></div>
-                <div style="flex: 1; background-color: #2e8b57;"></div>
-                <div style="flex: 1; background-color: #d16ba5;"></div>
-                <div style="flex: 1; background-color: #2b6cb0;"></div>
-            </div>
+        <div style="display: flex; height: 6px; border-radius: 3px; overflow: hidden;">
+            <div style="flex: 0.5; background-color: rgba(204, 0, 0, 0.45);"></div>
+            <div style="flex: 1.5; background-color: #e6eb99;"></div>
+            <div style="flex: 1; background-color: #ffdee7;"></div>
+            <div style="flex: 1; background-color: #d7f4ff;"></div>
+        </div>
 
             <div style="
                 display: flex;
