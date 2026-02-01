@@ -257,7 +257,7 @@ with middle:
 
 with right:
     st.markdown(
-        "<div style='text-align: right;'>Less➡️</efficient</div>",
+        "<div style='text-align: right;'>Less➡️<br/efficient/>",
         unsafe_allow_html=True
     )
 
