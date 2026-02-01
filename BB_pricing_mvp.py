@@ -97,7 +97,7 @@ def load_master_pricing(local_path: str) -> pd.DataFrame:
     return df
 
 pricing_df = load_master_pricing(
-    "/Users/sharon/Library/CloudStorage/OneDrive-Personal/Bouquet Recipes/CANONICAL Bouquet Recipe Master Sheet.xlsx"
+    "data/CANONICAL Bouquet Recipe Master Sheet.xlsx"
 )
 
 def calculate_stem_recipe(
