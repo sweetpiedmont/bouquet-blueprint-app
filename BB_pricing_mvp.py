@@ -241,25 +241,48 @@ st.caption(
 gef = st.slider(
     "",
     min_value=0.50,
-    max_value=1.00,
+    max_value=1.50,
     value=0.65,
     step=0.05,
     on_change=invalidate_pricing,
 )
 
-left, middle, right = st.columns([1, 6, 1])
+components.html(
+    """
+    <div style="margin-top: 6px; font-family: sans-serif;">
 
-with left:
-    st.caption("⬅️ Very efficient")
+        <!-- Efficiency bar -->
+        <div style="display: flex; height: 6px; border-radius: 3px; overflow: hidden;">
+            <div style="flex: 1; background-color: #d7f4ff;"></div>
+            <div style="flex: 1; background-color: #b22222;"></div>
+        </div>
 
-with middle:
-    st.caption("")
+        <!-- Labels -->
+        <div style="
+            display: flex;
+            font-size: 12px;
+            margin-top: 6px;
+            align-items: flex-start;
+        ">
+            <div style="flex: 1; text-align: left;">
+                Growing below<br/>wholesale cost
+            </div>
 
-with right:
-    st.markdown(
-        "<div style='text-align: right;'>Less➡️<br/>efficient<br/>",
-        unsafe_allow_html=True
-    )
+            <div style="flex: 1; text-align: center;">
+                <strong>1.0</strong><br/>
+                <span style="font-size: 11px; opacity: 0.8;">
+                    Above this point, it costs you more to grow flowers than to purchase them wholesale.
+                </span>
+            </div>
+
+            <div style="flex: 1; text-align: right; color: #7a0000;">
+                Above wholesale<br/>cost
+            </div>
+        </div>
+    </div>
+    """,
+    height=90,
+)
 
 st.markdown("---")
 
