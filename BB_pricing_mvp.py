@@ -385,6 +385,18 @@ if "break_even_price" in st.session_state:
     )
 
     st.markdown(
+        """
+        <div style="display: flex; justify-content: space-between; font-size: 0.85em; margin-top: -10px;">
+            <span>Break-even</span>
+            <span>Market / Subscriptions</span>
+            <span>Mother’s Day</span>
+            <span>Weddings & Events</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    
+    st.markdown(
         f"<h2 style='text-align: center;'>${selling_price:.2f}</h2>",
         unsafe_allow_html=True
     )
