@@ -240,7 +240,7 @@ st.caption(
 
 gef = st.slider(
     "",
-    min_value=0.30,
+    min_value=0.40,
     max_value=1.50,
     value=0.65,
     step=0.05,
