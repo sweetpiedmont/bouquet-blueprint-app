@@ -399,22 +399,22 @@ if "break_even_price" in st.session_state:
                 font-size: 12px;
                 margin-top: 4px;
             ">
-                <div style="flex: 1; text-align: left;">
+                <div style="flex: 0.1; text-align: left;">
                     Break-even<br/>
                     <span style="font-size: 11px; opacity: 0.7;">Zone</span>
                 </div>
 
-                <div style="flex: 1; text-align: center; margin-left: -12px;">
+                <div style="flex: 0.9; text-align: center; margin-left: -12px;">
                     Farmers Market<br/>Subscriptions<br/>
                     <span style="font-size: 11px; opacity: 0.7;">Zone</span>
                 </div>
 
-                <div style="flex: 1; text-align: center;">
+                <div style="flex: 0.6; text-align: center;">
                     Mother’s Day<br/>Made-to-Order<br/>
                     <span style="font-size: 11px; opacity: 0.7;">Zone</span>
                 </div>
 
-                <div style="flex: 1; text-align: center;">
+                <div style="flex: 0.4; text-align: center;">
                     Weddings<br/>Events<br/>
                     <span style="font-size: 11px; opacity: 0.7;">Zone</span>
                 </div>
