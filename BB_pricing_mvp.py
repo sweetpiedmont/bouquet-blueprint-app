@@ -290,7 +290,7 @@ materials_cost = st.slider(
         "Includes only essential supplies like rubber bands "
         "and a basic paper sleeve. "
         "Does NOT include branding or marketing materials."
-    )
+    ),
     on_change=invalidate_pricing,
 )
 
