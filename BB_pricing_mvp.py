@@ -1,6 +1,10 @@
 import streamlit as st
 import pandas as pd
 
+def invalidate_pricing():
+    st.session_state.pop("break_even_price", None)
+    st.session_state.pop("recipe_counts", None)
+
 CANONICAL_RECIPES = {
     "early_spring": {
         "Focal": 0.20,
@@ -187,7 +191,8 @@ season_choice = st.radio(
         "🌷 No — it’s before peony season (early spring)",
         "🌸 Yes — I have peonies available (late spring)",
         "🌻 No — peony season is over (summer / fall)"
-    ]
+    ],
+    on_change=invalidate_pricing,
 )
 
 if "early spring" in season_choice:
@@ -208,7 +213,8 @@ total_stems = st.number_input(
     min_value=10,
     max_value=80,
     value=20,
-    step=1
+    step=1,
+    on_change=invalidate_pricing,
 )
 
 st.markdown("---")
@@ -224,7 +230,8 @@ gef = st.slider(
     min_value=0.50,
     max_value=1.00,
     value=0.65,
-    step=0.01,
+    step=0.05,
+    on_change=invalidate_pricing,
 )
 
 left, middle, right = st.columns([1, 6, 1])
@@ -255,7 +262,8 @@ labor_minutes = st.slider(
         "Includes pulling stems, assembling the bouquet, "
         "and securing it (rubber band / sleeve). "
         "Does NOT include harvesting, processing, marketing, or selling."
-    )
+    ),
+    on_change=invalidate_pricing,
 )
 
 labor_rate_per_hour = st.number_input(
@@ -283,11 +291,12 @@ materials_cost = st.slider(
         "and a basic paper sleeve. "
         "Does NOT include branding or marketing materials."
     )
+    on_change=invalidate_pricing,
 )
 
 st.markdown("---")
 
-if st.button("Run Pricing MVP"):
+if st.button("Lock in My Assumptions"):
     recipe = CANONICAL_RECIPES[season_key]
     recipe_season = SEASON_KEY_TO_RECIPE_SEASON[season_key]
 
@@ -347,6 +356,10 @@ if st.button("Run Pricing MVP"):
 if "break_even_price" in st.session_state:
 
     break_even_price = st.session_state["break_even_price"]
+
+    st.markdown("---")
+    
+    st.markdown("---")
 
     st.markdown("### 💵 Choose Your Selling Price")
 
