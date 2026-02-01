@@ -330,17 +330,38 @@ if st.button("Run Pricing MVP"):
     
     estimated_material_cost = estimated_wholesale_value * gef
 
-    total_bouquet_cost = (
+    # ---- Break-even price (no profit) ----
+    break_even_price_raw = (
         estimated_material_cost
         + labor_cost_per_bouquet
-        + materials_cost
+        + supplies_cost_per_bouquet
     )
 
-    st.subheader("Cost Summary")
+    # Round to nearest $0.10 to remove false precision
+    break_even_price = round(break_even_price_raw, 1)
 
-    st.write({
-        "Estimated flower production cost": f"${estimated_material_cost:.2f}",
-        "Labor per bouquet": f"${labor_cost_per_bouquet:.2f}",
-        "Supplies per bouquet": f"${materials_cost:.2f}",
-        "Total cost per bouquet": f"${total_bouquet_cost:.2f}",
-    })
+st.markdown("### 💵 Choose Your Selling Price")
+
+max_price = round(break_even_price * 4.0, 0)
+
+selling_price = st.slider(
+    label="",
+    min_value=break_even_price,
+    max_value=max_price,
+    value=round(break_even_price * 1.5, 1),
+    step=0.1,
+)
+
+st.markdown("### 🏷️ Your Price")
+st.markdown(
+    f"<h2 style='text-align: center;'>${selling_price:.2f}</h2>",
+    unsafe_allow_html=True
+)
+
+markup = selling_price / break_even_price
+profit_per_bouquet = selling_price - break_even_price
+
+st.caption(
+    f"Markup: {markup:.2f}×  |  "
+    f"Profit per bouquet: ${profit_per_bouquet:.2f}"
+)
