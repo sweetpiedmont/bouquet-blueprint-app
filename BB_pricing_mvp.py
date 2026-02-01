@@ -333,7 +333,7 @@ if st.button("Lock in My Assumptions"):
         "<em>This is an ideal seasonal recipe used for pricing.</em><br/>"
         "Substitutions within supporting ingredients "
         "(fillers, floaters, finishers, foliage) usually have minimal impact on price. "
-        "<strong>Focal flowers are different</strong> — swapping them can significantly "
+        "<strong>Focal flowers are different</strong> — swapping them in or out can significantly "
         "change the value of the bouquet."
         "</p>",
         unsafe_allow_html=True
