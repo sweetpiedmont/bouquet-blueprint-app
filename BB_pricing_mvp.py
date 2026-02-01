@@ -328,6 +328,17 @@ if st.button("Lock in My Assumptions"):
 
     st.table(recipe_df)
 
+    st.markdown(
+        "<p style='font-size: 0.85em; opacity: 0.75;'>"
+        "<em>This is an ideal seasonal recipe used for pricing.</em><br/>"
+        "Substitutions within supporting ingredients "
+        "(fillers, floaters, finishers, foliage) usually have minimal impact on price. "
+        "<strong>Focal flowers are different</strong> — swapping them can significantly "
+        "change the value of the bouquet."
+        "</p>",
+        unsafe_allow_html=True
+    )
+
     # --- Season mapping for pricing ---
     SEASON_MAP = {
         "Early Spring": ["Early Spring"],
