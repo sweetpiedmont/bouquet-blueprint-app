@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import streamlit.components.v1 as components
 
 # DEFINITIONS
 
@@ -384,9 +385,9 @@ if "break_even_price" in st.session_state:
         key="selling_price_slider"
     )
 
-    st.markdown(
-        """
-        <div style="margin-top: 6px;">
+    components.html(
+        f"""
+        <div style="margin-top: 6px; font-family: sans-serif;">
             <div style="display: flex; height: 6px; border-radius: 3px; overflow: hidden;">
                 <div style="flex: 1; background-color: #cc0000;"></div>
                 <div style="flex: 1; background-color: #2e8b57;"></div>
@@ -397,7 +398,7 @@ if "break_even_price" in st.session_state:
             <div style="
                 display: flex;
                 justify-content: space-between;
-                font-size: 0.8em;
+                font-size: 12px;
                 margin-top: 4px;
                 text-align: center;
             ">
@@ -408,7 +409,7 @@ if "break_even_price" in st.session_state:
             </div>
         </div>
         """,
-        unsafe_allow_html=True,
+        height=70,
     )
 
     st.markdown(
