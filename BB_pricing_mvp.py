@@ -253,8 +253,8 @@ components.html(
 
         <!-- Efficiency bar -->
         <div style="display: flex; height: 6px; border-radius: 3px; overflow: hidden;">
-            <div style="flex: 1; background-color: #d7f4ff;"></div>
-            <div style="flex: 1; background-color: #b22222;"></div>
+            <div style="flex: 1; background-color: #e6eb99;"></div>
+            <div style="flex: 1; background-color: #ff4582;"></div>
         </div>
 
         <!-- Labels -->
@@ -264,7 +264,7 @@ components.html(
             margin-top: 6px;
             align-items: flex-start;
         ">
-            <div style="flex: 1; text-align: left;">
+            <div style="flex: 1; text-align: left; color: #e6eb99;">
                 Highly efficient<br/>growing operation
             </div>
 
