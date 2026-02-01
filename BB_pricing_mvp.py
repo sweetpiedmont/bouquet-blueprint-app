@@ -247,41 +247,51 @@ gef = st.slider(
     on_change=invalidate_pricing,
 )
 
-components.html(
-    """
-    <div style="margin-top: 6px; font-family: sans-serif;">
+min_gef = 0.4
+max_gef = 1.5
+breakpoint_gef = 1.0
 
-        <!-- Efficiency bar -->
+left_pct = (breakpoint_gef - min_gef) / (max_gef - min_gef) * 100
+right_pct = 100 - left_pct
+
+components.html(
+    f"""
+    <div style="margin-top: 6px; font-family: sans-serif;">
+        <!-- BAR -->
         <div style="display: flex; height: 6px; border-radius: 3px; overflow: hidden;">
-            <div style="flex: 1; background-color: #e6eb99;"></div>
-            <div style="flex: 1; background-color: #ff4582;"></div>
+            <div style="width: {left_pct}%; background-color: #e6eb99;"></div>
+            <div style="width: {right_pct}%; background-color: #b22222;"></div>
         </div>
 
-        <!-- Labels -->
+        <!-- LABELS -->
         <div style="
             display: flex;
             font-size: 12px;
             margin-top: 6px;
-            align-items: flex-start;
+            position: relative;
         ">
-            <div style="flex: 1; text-align: left; color: #435445;">
-                Highly efficient<br/>growing operation
+            <div style="width: {left_pct}%; text-align: left;">
+                Efficient
             </div>
 
-            <div style="flex: 1; text-align: center;">
-                <strong>1.0</strong><br/>
-                <span style="font-size: 11px; opacity: 0.8;">
-                    Above this point, it costs you more to grow flowers than to purchase them wholesale.
-                </span>
+            <div style="
+                position: absolute;
+                left: {left_pct}%;
+                transform: translateX(-50%);
+                text-align: center;
+                white-space: nowrap;
+                font-weight: 600;
+            ">
+                ≈ wholesale parity (1.0)
             </div>
 
-            <div style="flex: 1; text-align: right; color: #435445;">
-                Highly <u><strong>in</strong></u>efficient<br/>growing operation
+            <div style="width: {right_pct}%; text-align: right;">
+                <u><strong>in</strong></u>efficient
             </div>
         </div>
     </div>
     """,
-    height=90,
+    height=70,
 )
 
 st.markdown("---")
