@@ -222,6 +222,46 @@ gef = st.slider(
     ),
 )
 
+st.subheader("Labor (Bouquet Assembly Only)")
+
+labor_minutes = st.slider(
+    "Time to assemble one bouquet (minutes)",
+    min_value=1,
+    max_value=15,
+    value=3,
+    step=1,
+    help=(
+        "Includes pulling stems, assembling the bouquet, "
+        "and securing it (rubber band / sleeve). "
+        "Does NOT include harvesting, processing, marketing, or selling."
+    )
+)
+
+labor_rate_per_hour = st.number_input(
+    "Hourly labor rate ($/hour)",
+    min_value=10.0,
+    max_value=100.0,
+    value=17.0,
+    step=1.0
+)
+
+labor_cost_per_bouquet = (labor_minutes / 60) * labor_rate_per_hour
+
+st.subheader("Materials (Minimum Supplies)")
+
+materials_cost = st.slider(
+    "Materials cost per bouquet ($)",
+    min_value=0.02,
+    max_value=1.50,
+    value=0.30,
+    step=0.05,
+    help=(
+        "Includes only essential supplies like rubber bands "
+        "and a basic paper sleeve. "
+        "Does NOT include branding or marketing materials."
+    )
+)
+
 if st.button("Run Pricing MVP"):
     recipe = CANONICAL_RECIPES[season_key]
     recipe_season = SEASON_KEY_TO_RECIPE_SEASON[season_key]
@@ -266,6 +306,12 @@ if st.button("Run Pricing MVP"):
     )
     
     estimated_material_cost = estimated_wholesale_value * gef
+
+    total_bouquet_cost = (
+        estimated_material_cost
+        + labor_cost_per_bouquet
+        + materials_cost
+    )
 
     st.subheader("Cost Summary")
 
