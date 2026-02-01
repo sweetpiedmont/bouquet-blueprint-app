@@ -328,13 +328,13 @@ if st.button("Run Pricing MVP"):
         for category in recipe_counts
     )
     
-    estimated_material_cost = estimated_wholesale_value * gef
+    estimated_florals_cost = estimated_wholesale_value * gef
 
     # ---- Break-even price (no profit) ----
     break_even_price_raw = (
-        estimated_material_cost
-        + labor_cost_per_bouquet
-        + supplies_cost_per_bouquet
+        estimated_florals_cost   # flowers (GEF-adjusted)
+        + labor_cost_per_bouquet  # labor
+        + materials_cost          # rubber band + sleeve
     )
 
     # Round to nearest $0.10 to remove false precision
