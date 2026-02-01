@@ -386,11 +386,28 @@ if "break_even_price" in st.session_state:
 
     st.markdown(
         """
-        <div style="display: flex; justify-content: space-between; font-size: 0.85em; margin-top: -10px;">
-            <span><span style="color:#cc0000;">●</span> Break-even</span>
-            <span><span style="color:#2e8b57;">●</span> Market / Subscriptions</span>
-            <span><span style="color:#b565d9;">●</span> Mother’s Day</span>
-            <span><span style="color:#2b6cb0;">●</span> Weddings & Events</span>
+        <div style="margin-top: 6px;">
+            <!-- Color bar -->
+            <div style="display: flex; height: 6px; border-radius: 3px; overflow: hidden;">
+                <div style="flex: 1; background-color: #cc0000;"></div>
+                <div style="flex: 1; background-color: #2e8b57;"></div>
+                <div style="flex: 1; background-color: #d16ba5;"></div>
+                <div style="flex: 1; background-color: #2b6cb0;"></div>
+            </div>
+
+            <!-- Labels -->
+            <div style="
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.8em;
+                margin-top: 4px;
+                text-align: center;
+            ">
+                <div style="flex: 1;">Break-even</div>
+                <div style="flex: 1;">Farmers Market<br/>Subscriptions</div>
+                <div style="flex: 1;">Mother’s Day<br/>Made-to-Order</div>
+                <div style="flex: 1;">Weddings<br/>Events</div>
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
