@@ -240,7 +240,7 @@ st.caption(
 
 gef = st.slider(
     "",
-    min_value=0.50,
+    min_value=0.30,
     max_value=1.50,
     value=0.65,
     step=0.05,
@@ -265,7 +265,7 @@ components.html(
             align-items: flex-start;
         ">
             <div style="flex: 1; text-align: left;">
-                Growing below<br/>wholesale cost
+                Highly efficient<br/>growing operation
             </div>
 
             <div style="flex: 1; text-align: center;">
@@ -276,7 +276,7 @@ components.html(
             </div>
 
             <div style="flex: 1; text-align: right; color: #7a0000;">
-                Above wholesale<br/>cost
+                Highly inefficient<br/>growing operation
             </div>
         </div>
     </div>
