@@ -181,6 +181,8 @@ def calculate_stem_recipe(
 # ------------------------------------------------
 
 # User inputs
+st.header("Choose Your Season")
+
 season_choice = st.radio(
     "Are peonies available for you to harvest and use right now?",
     [
@@ -201,6 +203,8 @@ recipe_season = SEASON_KEY_TO_RECIPE_SEASON[season_key]
 
 st.markdown("---")
 
+st.header("Desired Bouquet Size")
+
 total_stems = st.number_input(
     "How many stems are in this bouquet?",
     min_value=10,
@@ -209,7 +213,7 @@ total_stems = st.number_input(
     step=1
 )
 
-st.subheader("Growing Efficiency Factor (GEF)")
+st.header("Your Growing Efficiency")
 
 st.markdown(
     """
@@ -227,19 +231,11 @@ gef = st.slider(
     step=0.01,
 )
 
-# Visual anchors for meaning
-st.markdown(
-    """
-**⬅️ Lower cost**  
-Extremely efficient systems  
-(minimal unused stems, highly efficient production)
-
-**➡️ Higher cost**  
-Low efficiency systems
-(unused stems, high growing costs)
-(At 1.00, your costs are roughly equal to wholesale prices)
-"""
-)
+col1, col2 = st.columns([1, 1])
+with col1:
+    st.caption("⬅️ Very efficient systems")
+with col2:
+    st.caption("Higher-cost systems ➡️")
 
 st.subheader("Labor (Bouquet Assembly Only)")
 
