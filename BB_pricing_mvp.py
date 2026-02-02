@@ -12,7 +12,7 @@ from core.pricing_data import load_master_pricing
 
 from core.stem_scaling import calculate_stem_recipe
 
-BASE_DIR = Path(__file__).parent.parent
+BASE_DIR = Path(__file__).parent
 DATA_PATH = BASE_DIR / "data" / "CANONICAL Bouquet Recipe Master Sheet.xlsx"
 
 # DEFINITIONS
