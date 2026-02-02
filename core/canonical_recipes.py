@@ -12,7 +12,7 @@ CANONICAL_RECIPES = {
         "Foundation": 0.43,
         "Filler": 0.10,
         "Floater": 0.10,
-        "Finisher": 0.10,
+        "Finisher": 0.10, 
         "Foliage": 0.15,
     },
     "summer_fall": {
