@@ -15,8 +15,6 @@ from core.stem_scaling import calculate_stem_recipe
 BASE_DIR = Path(__file__).parent
 DATA_PATH = BASE_DIR / "data" / "CANONICAL Bouquet Recipe Master Sheet.xlsx"
 
-# DEFINITIONS
-
 def invalidate_pricing():
     st.session_state.pop("break_even_price", None)
     st.session_state.pop("recipe_counts", None)
