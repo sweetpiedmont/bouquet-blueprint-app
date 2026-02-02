@@ -12,6 +12,9 @@ from core.pricing_data import load_master_pricing
 
 from core.stem_scaling import calculate_stem_recipe
 
+BASE_DIR = Path(__file__).parent.parent
+DATA_PATH = BASE_DIR / "data" / "CANONICAL Bouquet Recipe Master Sheet.xlsx"
+
 # DEFINITIONS
 
 def invalidate_pricing():
@@ -28,7 +31,6 @@ def pricing_zone_from_markup(markup):
     else:
         return "🟣 Weddings & events zone"
 
-DATA_PATH = BASE_DIR / "data" / "CANONICAL Bouquet Recipe Master Sheet.xlsx"
 pricing_df = load_master_pricing(DATA_PATH)
 
 # ------------------------------------------------
