@@ -28,9 +28,8 @@ def pricing_zone_from_markup(markup):
     else:
         return "🟣 Weddings & events zone"
 
-pricing_df = load_master_pricing(
-    "data/CANONICAL Bouquet Recipe Master Sheet.xlsx"
-)
+DATA_PATH = BASE_DIR / "data" / "CANONICAL Bouquet Recipe Master Sheet.xlsx"
+pricing_df = load_master_pricing(DATA_PATH)
 
 # ------------------------------------------------
 # Streamlit UI
