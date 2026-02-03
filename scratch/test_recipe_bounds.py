@@ -15,7 +15,7 @@ from core.recipe_bounds import (
 # -------------------------------------------------
 
 BASE_DIR = Path(__file__).parent.parent
-DATA_PATH = BASE_DIR / "data" / "BB Recipe Min-Max.xlsx"
+DATA_PATH = BASE_DIR / "data" / "BB_recipe_bounds.xlsx"
 
 # -------------------------------------------------
 # Load bounds
