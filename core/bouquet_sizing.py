@@ -30,3 +30,29 @@ def estimate_bouquet_stem_count(
         raise ValueError("Average cost per stem must be > 0")
 
     return target_price / avg_cost_per_stem
+
+from typing import Dict
+
+def apply_percentage_bounds(
+    total_stems: float,
+    pct_bounds_for_season: Dict[str, Dict[str, float]],
+) -> Dict[str, Dict[str, float]]:
+    """
+    Convert percentage bounds into continuous stem-count bounds
+    for a given total bouquet stem count.
+
+    Returns floats. No rounding, no clamping.
+    """
+
+    stem_bounds: Dict[str, Dict[str, float]] = {}
+
+    for category, bounds in pct_bounds_for_season.items():
+        stem_bounds[category] = {
+            "design_min": bounds["design_min"] * total_stems,
+            "design_max": bounds["design_max"] * total_stems,
+            "absolute_min": bounds["absolute_min"] * total_stems,
+            "absolute_max": bounds["absolute_max"] * total_stems,
+        }
+
+    return stem_bounds
+
