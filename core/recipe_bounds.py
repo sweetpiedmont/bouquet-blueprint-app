@@ -2,22 +2,25 @@ from pathlib import Path
 from typing import Dict
 import pandas as pd
 
+VALID_CATEGORIES = [
+    "Focal",
+    "Foundation",
+    "Filler",
+    "Floater",
+    "Finisher",
+    "Foliage",
+]
 
-REQUIRED_COLUMNS = {
-    "Category",
-    "Design Min",
-    "Design Max",
-    "Absolute Min",
-    "Absolute Max",
-}
-
-
-IGNORED_SHEETS = {"READ ME"}
+SEASON_SHEETS = [
+    "Early Spring",
+    "Late Spring",
+    "Summer-Fall",
+]
 
 
 def load_recipe_bounds(path: Path) -> Dict[str, Dict[str, Dict[str, int]]]:
     """
-    Load Bouquet Blueprint recipe bounds from Excel.
+    Load recipe bounds from the canonical Excel file.
 
     Returns:
     {
@@ -34,28 +37,25 @@ def load_recipe_bounds(path: Path) -> Dict[str, Dict[str, Dict[str, int]]]:
     }
     """
 
-    # Load all sheets
-    sheets = pd.read_excel(path, sheet_name=None)
-
     bounds: Dict[str, Dict[str, Dict[str, int]]] = {}
 
-    for sheet_name, df in sheets.items():
-        if sheet_name in IGNORED_SHEETS:
-            continue
+    for season in SEASON_SHEETS:
+        df = pd.read_excel(path, sheet_name=season)
 
-        # Normalize column names
+        # Strip column names just in case
         df.columns = df.columns.str.strip()
-
-        missing = REQUIRED_COLUMNS - set(df.columns)
-        if missing:
-            raise ValueError(
-                f"Sheet '{sheet_name}' is missing required columns: {missing}"
-            )
 
         season_bounds: Dict[str, Dict[str, int]] = {}
 
-        for _, row in df.iterrows():
-            category = str(row["Category"]).strip()
+        for category in VALID_CATEGORIES:
+            row = df[df["Category"] == category]
+
+            if row.empty:
+                raise ValueError(
+                    f"Category '{category}' missing from sheet '{season}'"
+                )
+
+            row = row.iloc[0]
 
             season_bounds[category] = {
                 "design_min": int(row["Design Min"]),
@@ -64,6 +64,6 @@ def load_recipe_bounds(path: Path) -> Dict[str, Dict[str, Dict[str, int]]]:
                 "absolute_max": int(row["Absolute Max"]),
             }
 
-        bounds[sheet_name] = season_bounds
+        bounds[season] = season_bounds
 
     return bounds
