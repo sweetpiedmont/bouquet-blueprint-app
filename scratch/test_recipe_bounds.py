@@ -12,8 +12,8 @@ bounds = load_recipe_bounds(DATA_PATH)
 
 print("\nLoaded seasons:")
 for season in bounds:
-    print(f"- {season}")
+    print(season)
 
 print("\nEarly Spring bounds:")
-for category, values in bounds["Early Spring"].items():
-    print(f"{category:12s} → {values}")
+for cat, vals in bounds["Early Spring"].items():
+    print(cat, vals)
