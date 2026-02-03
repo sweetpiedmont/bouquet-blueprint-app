@@ -1,4 +1,9 @@
+import sys
 from pathlib import Path
+
+# Ensure project root is on Python path
+ROOT_DIR = Path(__file__).parent.parent
+sys.path.append(str(ROOT_DIR))
 
 from core.recipe_bounds import (
     load_recipe_bounds,
