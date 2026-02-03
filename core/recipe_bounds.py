@@ -67,3 +67,27 @@ def load_recipe_bounds(path: Path) -> Dict[str, Dict[str, Dict[str, int]]]:
         bounds[season] = season_bounds
 
     return bounds
+
+def convert_bounds_to_percentages(
+    bounds_by_season: dict,
+    reference_stems: int = 25,
+) -> dict:
+    """
+    Convert stem-count bounds to percentage bounds.
+
+    Assumes bounds were defined for `reference_stems`.
+    """
+
+    pct_bounds = {}
+
+    for season, season_bounds in bounds_by_season.items():
+        pct_bounds[season] = {}
+
+        for category, vals in season_bounds.items():
+            pct_bounds[season][category] = {
+                k: v / reference_stems
+                for k, v in vals.items()
+            }
+
+    return pct_bounds
+
