@@ -104,3 +104,31 @@ if st.button("Optimize bouquets"):
         st.json(result["stranded_stems"])
 
         st.caption(f"Waste penalty score: {round(result['waste_penalty'], 2)}")
+
+#prove bounds scaling works
+from pathlib import Path
+from core.recipe_bounds import load_recipe_bounds, scale_bounds_for_bouquet_size
+
+DATA_PATH = Path("data/BB Recipe Min-Max.xlsx")
+
+bounds = load_recipe_bounds(DATA_PATH)
+
+season = "Early Spring"
+bouquet_size = 25
+
+available_stems = {
+    "Foundation": 100,
+    "Focal": 100,
+    "Filler": 100,
+    "Floater": 100,
+    "Finisher": 100,
+    "Foliage": 100,
+}
+
+scaled = scale_bounds_for_bouquet_size(
+    bounds_for_season=bounds[season],
+    bouquet_size=bouquet_size,
+    available_stems=available_stems,
+)
+
+st.write("Scaled bounds:", scaled)
