@@ -126,7 +126,11 @@ def apply_compensation(
 
     # Check if limiting category can be reduced
     current = allocation.get(limiting, 0)
-    min_allowed = stem_bounds[limiting]["absolute_min"]
+    min_allowed = get_effective_lower_bound(
+        category=limiting,
+        stem_bounds=stem_bounds,
+        available_stems=available_stems,
+    )
 
     if current <= min_allowed:
         # Cannot reduce further
