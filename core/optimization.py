@@ -87,6 +87,29 @@ def build_tier_a_allocation(
 
     return allocation
 
+def compute_max_bouquets(
+    available_stems: Dict[str, int],
+    per_bouquet_allocation: Dict[str, int],
+) -> int:
+    """
+    Compute the maximum number of bouquets that can be made
+    given per-bouquet stem requirements.
+    """
+
+    counts = []
+
+    for category, per_bouquet in per_bouquet_allocation.items():
+        if per_bouquet <= 0:
+            continue
+
+        available = available_stems.get(category, 0)
+        counts.append(available // per_bouquet)
+
+    if not counts:
+        return 0
+
+    return min(counts)
+
 # -----------------------------
 # Core planner
 # -----------------------------
