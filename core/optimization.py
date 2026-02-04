@@ -14,6 +14,8 @@ from pathlib import Path
 # Configuration (tunable later)
 # -----------------------------
 
+MIN_BB_STEMS = 10
+
 MIN_TOTAL_STEMS = 15
 MAX_TOTAL_STEMS = 35
 
@@ -26,6 +28,62 @@ WASTE_WEIGHTS = {
     "Focal": 1.0,
     "Foliage": 0.5,
 }
+
+### Tier A Allocation
+
+def build_tier_a_allocation(
+    implied_stems_per_bouquet: float,
+    pct_bounds_for_season: Dict[str, Dict[str, float]],
+) -> Optional[Dict[str, int]]:
+    """
+    Build Tier A (stretch-min) bouquet allocation.
+
+    Returns per-category integer stem counts, or None
+    if Tier A is not feasible.
+    """
+
+    # Enforce minimum viable BB bouquet size
+    if implied_stems_per_bouquet < MIN_BB_STEMS:
+        return None
+
+    total_stems = int(implied_stems_per_bouquet)
+
+    allocation: Dict[str, int] = {}
+    used_stems = 0
+
+    # Step 1: allocate stretch mins (1 stem each)
+    for category, bounds in pct_bounds_for_season.items():
+        if bounds.get("stretch_min") is not None:
+            allocation[category] = 1
+            used_stems += 1
+
+    # Step 2: allocate required category minimums
+    for category, bounds in pct_bounds_for_season.items():
+        if bounds.get("absolute_min", 0) > 0:
+            min_stems = int(round(bounds["absolute_min"] * total_stems))
+            allocation[category] = max(allocation.get(category, 0), min_stems)
+            used_stems += allocation[category] - allocation.get(category, 0)
+
+    # Check feasibility
+    if used_stems > total_stems:
+        return None
+
+    # Step 3: distribute remaining stems proportionally
+    remaining = total_stems - used_stems
+
+    if remaining > 0:
+        flexible_categories = [
+            c for c in pct_bounds_for_season
+            if c not in allocation
+            or allocation[c] < int(pct_bounds_for_season[c]["absolute_max"] * total_stems)
+        ]
+
+        if flexible_categories:
+            per_cat = remaining // len(flexible_categories)
+            for c in flexible_categories:
+                allocation[c] = allocation.get(c, 0) + per_cat
+
+    return allocation
 
 
 # -----------------------------
