@@ -174,7 +174,7 @@ def optimize_bouquets(
         "stem_bounds": stem_bounds,
     }
 
-### PHASE 3C
+### PHASE 3C - Allocation, scarcity and compensation
 
 def allocate_stems_within_bounds(
     stem_bounds: Dict[str, Dict[str, float]],
