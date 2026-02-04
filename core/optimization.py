@@ -113,7 +113,10 @@ def allocate_stems_within_bounds(
     allocations: Dict[str, float] = {}
 
     for category, bounds in stem_bounds.items():
-        allocations[category] = bounds["design_min"]
+        if available_stems.get(category, 0) <= 0:
+            allocations[category] = bounds["absolute_min"]
+        else:
+            allocations[category] = bounds["design_min"]
 
     # Total stems allocated so far
     allocated_total = sum(allocations.values())
