@@ -2,7 +2,13 @@ from typing import Dict, List, Optional
 
 from core.canonical_recipes import CANONICAL_RECIPES
 from core.stem_scaling import calculate_stem_recipe
-
+from core.bouquet_sizing import estimate_bouquet_stem_count
+from core.recipe_bounds import (
+    load_recipe_bounds,
+    convert_bounds_to_percentages,
+)
+from core.bouquet_sizing import apply_percentage_bounds
+from pathlib import Path
 
 # -----------------------------
 # Configuration (tunable later)
@@ -49,78 +55,39 @@ def optimize_bouquets(
     """
 
     recipe_percentages = CANONICAL_RECIPES[season_key]
-    solutions: List[Dict] = []
-
-    for total_stems in range(MIN_TOTAL_STEMS, MAX_TOTAL_STEMS + 1):
-
-        # 1. Build BB-compliant recipe
-        recipe = calculate_stem_recipe(
-            total_stems=total_stems,
-            recipe_percentages=recipe_percentages,
-        )
-
-        # 2. Compute bouquet cost
-        bouquet_cost = 0.0
-        for cat, count in recipe.items():
-            price = avg_wholesale_prices.get(cat)
-            if price is None:
-                bouquet_cost = None
-                break
-            bouquet_cost += count * price
-
-        if bouquet_cost is None:
-            continue
-
-        # 3. Enforce price guardrail
-        if abs(bouquet_cost - target_price) > price_tolerance:
-            continue
-
-        # 4. Determine max bouquets possible
-        try:
-            max_bouquets = min(
-                available_stems[cat] // recipe[cat]
-                for cat in recipe
-                if recipe[cat] > 0
-            )
-        except KeyError:
-            # missing category in available_stems
-            continue
-
-        if max_bouquets <= 0:
-            continue
-
-        # 5. Compute stranded stems
-        stranded = {
-            cat: available_stems[cat] - recipe[cat] * max_bouquets
-            for cat in recipe
-        }
-
-        # 6. Compute weighted waste penalty
-        waste_penalty = sum(
-            stranded.get(cat, 0) * WASTE_WEIGHTS.get(cat, 1.0)
-            for cat in stranded
-        )
-
-        solutions.append({
-            "total_stems": total_stems,
-            "recipe": recipe,
-            "bouquet_cost": round(bouquet_cost, 2),
-            "max_bouquets": max_bouquets,
-            "stranded_stems": stranded,
-            "waste_penalty": waste_penalty,
-        })
-
-    if not solutions:
-        return None
-
-    # 7. Select best solution
-    best = min(
-        solutions,
-        key=lambda s: (
-            s["waste_penalty"],                 # primary
-            -s["max_bouquets"],                 # secondary
-            abs(s["bouquet_cost"] - target_price),  # tertiary
-        )
+    
+    # ----------------------------------
+    # Phase 3A: Bouquet sizing from price
+    # ----------------------------------
+    implied_stems_per_bouquet = estimate_bouquet_stem_count(
+        target_price=target_price,
+        canonical_percentages=recipe_percentages,
+        avg_wholesale_prices=avg_wholesale_prices,
     )
 
-    return best
+    # ----------------------------------
+    # Phase 3B: Apply recipe bounds
+    # ----------------------------------
+
+    BASE_DIR = Path(__file__).parent.parent
+    BOUNDS_PATH = BASE_DIR / "data" / "BB_recipe_bounds.xlsx"
+
+    raw_bounds = load_recipe_bounds(BOUNDS_PATH)
+    pct_bounds = convert_bounds_to_percentages(raw_bounds)
+
+    stem_bounds = apply_percentage_bounds(
+        total_stems=implied_stems_per_bouquet,
+        pct_bounds_for_season=pct_bounds[
+            SEASON_KEY_TO_RECIPE_SEASON[season_key]
+        ],
+    )
+
+    return {
+        "total_stems": round(implied_stems_per_bouquet, 2),
+        "recipe": {},
+        "bouquet_cost": target_price,
+        "max_bouquets": None,
+        "stranded_stems": {},
+        "waste_penalty": 0.0,
+        "stem_bounds": stem_bounds,
+    }
