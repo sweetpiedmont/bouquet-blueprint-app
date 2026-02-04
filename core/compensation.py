@@ -160,3 +160,44 @@ def apply_compensation(
         "allocation": allocation,
         "evaluation": evaluation,
     }
+
+def apply_compensation_until_stable(
+    allocation: dict[str, int],
+    available_stems: dict[str, int],
+    stem_bounds: dict[str, dict[str, float]],
+    compensation_rules: dict[str, set[str]],
+) -> dict:
+    """
+    Phase 3C.2c – iterate compensation until no improvement.
+    """
+
+    current_allocation = allocation
+
+    while True:
+        result = apply_compensation(
+            allocation=current_allocation,
+            available_stems=available_stems,
+            stem_bounds=stem_bounds,
+            compensation_rules=compensation_rules,
+        )
+
+        new_allocation = result["allocation"]
+        new_eval = result["evaluation"]
+
+        old_eval = evaluate_allocation(
+            allocation=current_allocation,
+            available_stems=available_stems,
+        )
+
+        if new_eval["max_bouquets"] <= old_eval["max_bouquets"]:
+            break
+
+        current_allocation = new_allocation
+
+    return {
+        "allocation": current_allocation,
+        "evaluation": evaluate_allocation(
+            allocation=current_allocation,
+            available_stems=available_stems,
+        ),
+    }
