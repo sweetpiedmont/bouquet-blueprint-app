@@ -1,5 +1,5 @@
 from typing import Dict, List, Optional
-
+from core.canonical_recipes import SEASON_KEY_TO_RECIPE_SEASON
 from core.canonical_recipes import CANONICAL_RECIPES
 from core.stem_scaling import calculate_stem_recipe
 from core.bouquet_sizing import estimate_bouquet_stem_count
@@ -91,3 +91,20 @@ def optimize_bouquets(
         "waste_penalty": 0.0,
         "stem_bounds": stem_bounds,
     }
+
+### PHASE 3C
+
+def allocate_stems_within_bounds(
+    stem_bounds: Dict[str, Dict[str, float]],
+    available_stems: Dict[str, int],
+    implied_stems_per_bouquet: float,
+    use_up_priority: List[str],
+) -> Dict[str, float]:
+    """
+    Allocate stems across categories starting from design_min
+    and incrementally distributing remaining stems within bounds.
+
+    Returns:
+        Dict[str, float]: per-category stem allocation (floats)
+    """
+    pass
