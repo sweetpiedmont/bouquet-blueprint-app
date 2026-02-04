@@ -60,9 +60,10 @@ def build_tier_a_allocation(
     # Step 2: allocate required category minimums
     for category, bounds in pct_bounds_for_season.items():
         if bounds.get("absolute_min", 0) > 0:
+            prev = allocation.get(category, 0)
             min_stems = int(round(bounds["absolute_min"] * total_stems))
-            allocation[category] = max(allocation.get(category, 0), min_stems)
-            used_stems += allocation[category] - allocation.get(category, 0)
+            allocation[category] = max(prev, min_stems)
+            used_stems += allocation[category] - prev
 
     # Check feasibility
     if used_stems > total_stems:
@@ -85,7 +86,6 @@ def build_tier_a_allocation(
             i += 1
 
     return allocation
-
 
 # -----------------------------
 # Core planner
