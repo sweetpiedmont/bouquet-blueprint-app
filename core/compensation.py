@@ -168,7 +168,8 @@ def apply_compensation_until_stable(
     compensation_rules: dict[str, set[str]],
 ) -> dict:
     """
-    Phase 3C.2c – iterate compensation until no improvement.
+    Repeatedly apply single-step compensation until
+    no further bouquet-count improvement is possible.
     """
 
     current_allocation = allocation
@@ -189,15 +190,12 @@ def apply_compensation_until_stable(
             available_stems=available_stems,
         )
 
+        # Stop if no improvement
         if new_eval["max_bouquets"] <= old_eval["max_bouquets"]:
-            break
+            return {
+                "allocation": current_allocation,
+                "evaluation": old_eval,
+            }
 
+        # Otherwise accept and keep going
         current_allocation = new_allocation
-
-    return {
-        "allocation": current_allocation,
-        "evaluation": evaluate_allocation(
-            allocation=current_allocation,
-            available_stems=available_stems,
-        ),
-    }
