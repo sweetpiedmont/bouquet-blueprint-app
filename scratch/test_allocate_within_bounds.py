@@ -50,6 +50,9 @@ stem_bounds = apply_percentage_bounds(
     pct_bounds_for_season=pct_bounds[season],
 )
 
+print("\nRaw stem bounds for foliage:")
+print(stem_bounds["Foliage"])
+
 # -----------------------------
 # Run allocation
 # -----------------------------
