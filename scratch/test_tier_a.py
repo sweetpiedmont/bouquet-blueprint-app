@@ -1,4 +1,9 @@
+import sys
 from pathlib import Path
+
+ROOT_DIR = Path(__file__).parent.parent
+sys.path.append(str(ROOT_DIR))
+
 from core.recipe_bounds import load_recipe_bounds, convert_bounds_to_percentages
 from core.optimization import build_tier_a_allocation
 
