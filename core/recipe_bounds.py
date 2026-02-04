@@ -59,11 +59,18 @@ def load_recipe_bounds(path: Path) -> Dict[str, Dict[str, Dict[str, int]]]:
 
             row = row.iloc[0]
 
+            stretch_min = (
+                int(row["Stretch Min"])
+                if "Stretch Min" in row and not pd.isna(row["Stretch Min"])
+                else None
+            )
+
             season_bounds[category] = {
                 "design_min": int(row["Design Min"]),
                 "design_max": int(row["Design Max"]),
                 "absolute_min": int(row["Absolute Min"]),
                 "absolute_max": int(row["Absolute Max"]),
+                "stretch_min": stretch_min,
             }
 
         bounds[season] = season_bounds
@@ -87,7 +94,7 @@ def convert_bounds_to_percentages(
 
         for category, vals in season_bounds.items():
             pct_bounds[season][category] = {
-                k: v / reference_stems
+                k: (v / reference_stems if v is not None else None)
                 for k, v in vals.items()
             }
 
