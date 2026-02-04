@@ -84,6 +84,23 @@ def evaluate_allocation(
         "stranded_stems": stranded_stems,
     }
 
+def get_effective_lower_bound(
+    category: str,
+    stem_bounds: dict[str, dict[str, float]],
+    available_stems: dict[str, int],
+) -> float:
+    bounds = stem_bounds[category]
+
+    stretch_min = bounds.get("stretch_min")
+
+    if stretch_min is not None:
+        # Category has a stretch min
+        if available_stems.get(category, 0) > 0:
+            return stretch_min
+
+    # Fallback (or no stretch min)
+    return bounds["absolute_min"]
+
 def apply_compensation(
     allocation: dict[str, int],
     available_stems: dict[str, int],
