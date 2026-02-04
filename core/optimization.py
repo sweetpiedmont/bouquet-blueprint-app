@@ -188,3 +188,49 @@ def allocate_stems_within_bounds(
         remaining_stems -= allocation
 
     return allocations
+
+def compute_max_bouquets_and_stranded_stems(
+    allocations: Dict[str, float],
+    available_stems: Dict[str, int],
+) -> Dict:
+    """
+    Given per-bouquet allocations and total available stems,
+    compute the maximum number of bouquets and stranded stems.
+
+    Returns:
+        {
+            "max_bouquets": int,
+            "limiting_category": str,
+            "stranded_stems": Dict[str, float],
+        }
+    """
+    bouquet_limits = {}
+
+    for category, per_bouquet in allocations.items():
+        if per_bouquet <= 0:
+            continue
+
+        available = available_stems.get(category, 0)
+        bouquet_limits[category] = available / per_bouquet
+
+    if not bouquet_limits:
+        return {
+            "max_bouquets": 0,
+            "limiting_category": None,
+            "stranded_stems": {},
+        }
+
+    limiting_category = min(bouquet_limits, key=bouquet_limits.get)
+    max_bouquets = int(bouquet_limits[limiting_category])
+
+    stranded_stems = {
+        category: available_stems.get(category, 0)
+        - allocations.get(category, 0) * max_bouquets
+        for category in allocations
+    }
+
+    return {
+        "max_bouquets": max_bouquets,
+        "limiting_category": limiting_category,
+        "stranded_stems": stranded_stems,
+    }
