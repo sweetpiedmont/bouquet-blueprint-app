@@ -89,13 +89,9 @@ def apply_compensation(
     available_stems: dict[str, int],
     stem_bounds: dict[str, dict[str, float]],
     compensation_rules: dict[str, set[str]],
-) -> dict[str, int]:
+) -> dict:
     """
-    Phase 3C.2 (partial)
-
-    Currently:
-    - Evaluate baseline allocation
-    - Return it unchanged
+    Phase 3C.2b – single-step compensation attempt
     """
 
     evaluation = evaluate_allocation(
@@ -103,9 +99,43 @@ def apply_compensation(
         available_stems=available_stems,
     )
 
-    # TEMP: no compensation yet
+    limiting = evaluation["limiting_category"]
+
+    if limiting is None:
+        return {
+            "allocation": allocation,
+            "evaluation": evaluation,
+        }
+
+    # Check if limiting category can be reduced
+    current = allocation.get(limiting, 0)
+    min_allowed = stem_bounds[limiting]["absolute_min"]
+
+    if current <= min_allowed:
+        # Cannot reduce further
+        return {
+            "allocation": allocation,
+            "evaluation": evaluation,
+        }
+
+    # Try reducing limiting category by 1 stem
+    trial_allocation = allocation.copy()
+    trial_allocation[limiting] = current - 1
+
+    trial_eval = evaluate_allocation(
+        allocation=trial_allocation,
+        available_stems=available_stems,
+    )
+
+    # Accept improvement only if bouquet count increases
+    if trial_eval["max_bouquets"] > evaluation["max_bouquets"]:
+        return {
+            "allocation": trial_allocation,
+            "evaluation": trial_eval,
+        }
+
+    # Otherwise, keep original
     return {
         "allocation": allocation,
         "evaluation": evaluation,
     }
-
