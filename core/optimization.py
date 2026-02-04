@@ -74,14 +74,15 @@ def build_tier_a_allocation(
     if remaining > 0:
         flexible_categories = [
             c for c in pct_bounds_for_season
-            if c not in allocation
-            or allocation[c] < int(pct_bounds_for_season[c]["absolute_max"] * total_stems)
+            if allocation.get(c, 0) < int(pct_bounds_for_season[c]["absolute_max"] * total_stems)
         ]
 
-        if flexible_categories:
-            per_cat = remaining // len(flexible_categories)
-            for c in flexible_categories:
-                allocation[c] = allocation.get(c, 0) + per_cat
+        i = 0
+        while remaining > 0 and flexible_categories:
+            c = flexible_categories[i % len(flexible_categories)]
+            allocation[c] = allocation.get(c, 0) + 1
+            remaining -= 1
+            i += 1
 
     return allocation
 
