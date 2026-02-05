@@ -303,7 +303,7 @@ def search_best_allocation(
     available_stems: dict[str, int],
     stem_bounds: dict[str, dict[str, float]],
     compensation_rules: dict[str, set[str]],
-    max_depth: int = 20,
+    max_depth: int = 10,
 ) -> dict:
     """
     Phase 3C.3 – bounded lookahead search for best allocation.

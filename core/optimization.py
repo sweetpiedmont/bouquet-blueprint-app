@@ -165,6 +165,11 @@ def optimize_bouquets(
         ],
     )
 
+    from core.compensation import (
+        initialize_allocation,
+        search_best_allocation,
+    )
+
     return {
         "total_stems": round(implied_stems_per_bouquet, 2),
         "recipe": {},
