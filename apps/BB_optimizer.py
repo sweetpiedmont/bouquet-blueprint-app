@@ -38,6 +38,11 @@ def get_avg_prices_for_season(season_label: str):
         .to_dict()
     )
 
+st.write(
+    pricing_df.groupby(["category", "season_raw"])
+    .size()
+    .reset_index(name="rows")
+)
 
 # -----------------------------
 # Inputs
