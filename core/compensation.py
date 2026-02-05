@@ -226,7 +226,7 @@ def apply_single_compensation_step(
     )
 
     # Cannot reduce further
-    if current <= min_allowed:
+    if current - 1 < min_allowed:
         return None
 
     # Try reduction
