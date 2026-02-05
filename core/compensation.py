@@ -1,6 +1,7 @@
 from math import ceil
 from typing import Dict
 
+MAX_COMPENSATION_DEPTH = 10
 
 def initialize_allocation(
     stem_bounds: Dict[str, Dict[str, float]],
