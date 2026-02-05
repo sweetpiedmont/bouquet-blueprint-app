@@ -99,7 +99,7 @@ if st.button("Optimize bouquets"):
     ### DEBUG CODE
     st.write("Avg wholesale prices:", avg_prices)
 
-    with st.status("Running bouquet optimization…", expanded=True):
+    with st.status("Searching for an optimal bouquet recipe. Please be patient as this can take several minutes.", expanded=True):
         result = optimize_bouquets(
             available_stems=available_stems,
             season_key=season_key,
