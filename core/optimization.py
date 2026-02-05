@@ -210,6 +210,20 @@ def optimize_bouquets(
     best_allocation = compensation_result["allocation"]
     best_eval = compensation_result["evaluation"]
 
+    # ----------------------------------
+    # Phase 3D: Bouquet expansion
+    # ----------------------------------
+
+    from core.bouquet_expansion import expand_bouquet_to_target
+
+    expanded_allocation = expand_bouquet_to_target(
+        base_allocation=best_allocation,
+        max_bouquets=best_eval["max_bouquets"],
+        stem_bounds=stem_bounds,
+        available_stems=available_stems,
+        target_stems=round(implied_stems_per_bouquet),
+    )
+
 def allocate_stems_within_bounds(
     stem_bounds: Dict[str, Dict[str, float]],
     available_stems: Dict[str, int],
