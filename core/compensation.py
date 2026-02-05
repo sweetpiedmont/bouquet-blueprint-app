@@ -384,15 +384,6 @@ def search_best_allocation(
 
                 queue.append((new_alloc, new_eval, depth + 1))
 
-            new_alloc = result["allocation"]
-            new_eval = result["evaluation"]
-            k = key(new_alloc)
-
-            if k in seen:
-                continue
-
-            seen.add(k)
-
             # Update best if strictly better
             if new_eval["max_bouquets"] > best_eval["max_bouquets"]:
                 best_allocation = new_alloc
