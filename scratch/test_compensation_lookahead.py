@@ -4,10 +4,7 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).parent.parent
 sys.path.append(str(ROOT_DIR))
 
-from core.compensation import (
-    initialize_allocation,
-    apply_compensation_with_lookahead,
-)
+from core.compensation import search_best_allocation
 from core.recipe_bounds import load_recipe_bounds, convert_bounds_to_percentages
 
 
