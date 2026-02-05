@@ -4,9 +4,21 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).parent.parent
 sys.path.append(str(ROOT_DIR))
 
-from core.compensation import search_best_allocation
+from core.compensation import (
+    search_best_allocation,
+    initialize_allocation,
+)
+
 from core.recipe_bounds import load_recipe_bounds, convert_bounds_to_percentages
 
+COMPENSATION_RULES = {
+    "Filler": {"Foundation", "Finisher", "Floater"},
+    "Floater": {"Foundation", "Finisher", "Filler"},
+    "Finisher": {"Foundation", "Filler", "Floater"},
+    "Foliage": {"Foundation", "Finisher", "Filler", "Floater"},
+    "Focal": {"Foundation"},
+    "Foundation": set(),
+}
 
 BASE_DIR = Path(__file__).parent.parent
 BOUNDS_PATH = BASE_DIR / "data" / "BB_recipe_bounds.xlsx"
@@ -42,7 +54,7 @@ initial = initialize_allocation(
 print("Initial allocation:", initial)
 
 result = search_best_allocation(
-    initial_allocation=initial_allocation,
+    initial_allocation=initial,
     available_stems=available_stems,
     stem_bounds=stem_bounds,
     compensation_rules=COMPENSATION_RULES,
