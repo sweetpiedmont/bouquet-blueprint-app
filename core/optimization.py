@@ -178,16 +178,6 @@ def optimize_bouquets(
         search_best_allocation,
     )
 
-    return {
-        "total_stems": round(implied_stems_per_bouquet, 2),
-        "recipe": {},
-        "bouquet_cost": target_price,
-        "max_bouquets": None,
-        "stranded_stems": {},
-        "waste_penalty": 0.0,
-        "stem_bounds": stem_bounds,
-    }
-
 ### PHASE 3C - Allocation, scarcity and compensation
 
 def allocate_stems_within_bounds(
