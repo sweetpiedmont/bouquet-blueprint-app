@@ -150,7 +150,14 @@ def optimize_bouquets(
     """
 
     recipe_percentages = CANONICAL_RECIPES[season_key]
-    
+
+    ###debug
+    print("CATEGORIES USED FOR PRICING:", list(avg_prices.keys()))
+    print("AVAILABLE STEM CATEGORIES:", available_stems)
+
+    print("CANONICAL CATEGORIES:",
+      ["Focal","Foundation","Filler","Floater","Finisher","Foliage"])
+
     # ----------------------------------
     # Phase 3A: Bouquet sizing from price
     # ----------------------------------
