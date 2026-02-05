@@ -41,11 +41,12 @@ initial = initialize_allocation(
 
 print("Initial allocation:", initial)
 
-result = apply_compensation_with_lookahead(
-    allocation=initial,
+result = search_best_allocation(
+    initial_allocation=initial_allocation,
     available_stems=available_stems,
     stem_bounds=stem_bounds,
-    compensation_rules={},  # not used yet
+    compensation_rules=COMPENSATION_RULES,
+    max_depth=10,
 )
 
 print("\nBest allocation:")
