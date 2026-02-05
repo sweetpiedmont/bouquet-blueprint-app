@@ -8,6 +8,7 @@ from core.recipe_bounds import (
     convert_bounds_to_percentages,
 )
 from core.bouquet_sizing import apply_percentage_bounds
+from core.bouquet_expansion import expand_bouquet_to_target
 from pathlib import Path
 
 # -----------------------------
