@@ -193,6 +193,23 @@ def optimize_bouquets(
     if tier_a_allocation is None:
         return None
 
+    # ----------------------------------
+    # Phase 3C.2: Compensation search
+    # ----------------------------------
+
+    from core.compensation import search_best_allocation
+
+    compensation_result = search_best_allocation(
+        initial_allocation=tier_a_allocation,
+        available_stems=available_stems,
+        stem_bounds=stem_bounds,
+        compensation_rules={},  # you can wire rules later
+        max_depth=10,
+    )
+
+    best_allocation = compensation_result["allocation"]
+    best_eval = compensation_result["evaluation"]
+
 def allocate_stems_within_bounds(
     stem_bounds: Dict[str, Dict[str, float]],
     available_stems: Dict[str, int],
