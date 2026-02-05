@@ -243,69 +243,60 @@ def apply_single_compensation_step(
         "evaluation": trial_eval,
     }
 
-def apply_compensation_with_lookahead(
+def apply_compensated_step(
     allocation: dict[str, int],
+    reduce_category: str,
     available_stems: dict[str, int],
     stem_bounds: dict[str, dict[str, float]],
     compensation_rules: dict[str, set[str]],
-) -> dict:
+) -> list[dict]:
     """
-    Phase 3C.3 – bounded lookahead compensation search
+    Attempt a compensated move:
+      - reduce reduce_category by 1
+      - increase one allowed compensator by 1
 
-    Explore reductions up to MAX_COMPENSATION_DEPTH
-    and return the allocation with the highest bouquet count.
+    Returns a list of legal {allocation, evaluation} dicts.
     """
 
-    best_allocation = allocation
-    best_eval = evaluate_allocation(
-        allocation=allocation,
+    results = []
+
+    current = allocation.get(reduce_category, 0)
+
+    min_allowed = get_effective_lower_bound(
+        category=reduce_category,
+        stem_bounds=stem_bounds,
         available_stems=available_stems,
     )
 
-    # frontier holds (allocation, depth)
-    frontier = [(allocation, 0)]
+    # Cannot reduce
+    if current - 1 < min_allowed:
+        return results
 
-    seen = set()
+    compensators = compensation_rules.get(reduce_category, set())
 
-    while frontier:
-        current_allocation, depth = frontier.pop(0)
+    for comp in compensators:
+        comp_current = allocation.get(comp, 0)
+        comp_max = stem_bounds[comp]["absolute_max"]
 
-        if depth >= MAX_COMPENSATION_DEPTH:
+        # Cannot increase compensator
+        if comp_current + 1 > comp_max:
             continue
 
-        key = tuple(sorted(current_allocation.items()))
-        if key in seen:
-            continue
-        seen.add(key)
+        trial = allocation.copy()
+        trial[reduce_category] = current - 1
+        trial[comp] = comp_current + 1
 
-        current_eval = evaluate_allocation(
-            allocation=current_allocation,
+        eval_result = evaluate_allocation(
+            allocation=trial,
             available_stems=available_stems,
         )
 
-        if current_eval["max_bouquets"] > best_eval["max_bouquets"]:
-            best_allocation = current_allocation
-            best_eval = current_eval
+        results.append({
+            "allocation": trial,
+            "evaluation": eval_result,
+        })
 
-        # Try reducing each category once
-        for category in current_allocation.keys():
-            result = apply_single_compensation_step(
-                allocation=current_allocation,
-                category=category,
-                available_stems=available_stems,
-                stem_bounds=stem_bounds,
-                compensation_rules=compensation_rules,
-            )
-
-            if result is None:
-                continue
-
-            frontier.append((result["allocation"], depth + 1))
-
-    return {
-        "allocation": best_allocation,
-        "evaluation": best_eval,
-    }
+    return results
 
 def search_best_allocation(
     initial_allocation: dict[str, int],
