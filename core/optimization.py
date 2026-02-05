@@ -14,6 +14,14 @@ from pathlib import Path
 # -----------------------------
 # Configuration (tunable later)
 # -----------------------------
+COMPENSATION_RULES = {
+    "Filler": {"Foundation", "Finisher", "Floater"},
+    "Floater": {"Foundation", "Finisher", "Filler"},
+    "Finisher": {"Foundation", "Filler", "Floater"},
+    "Foliage": {"Foundation", "Finisher", "Filler", "Floater"},
+    "Focal": {"Foundation"},
+    "Foundation": set(),
+}
 
 MIN_BB_STEMS = 10
 
