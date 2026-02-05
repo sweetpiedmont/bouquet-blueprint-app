@@ -335,6 +335,8 @@ def search_best_allocation(
             continue
 
         for category in allocation.keys():
+
+            # 1. Simple reduction
             result = apply_single_compensation_step(
                 allocation=allocation,
                 category=category,
@@ -343,8 +345,44 @@ def search_best_allocation(
                 compensation_rules=compensation_rules,
             )
 
-            if result is None:
-                continue
+            if result is not None:
+                new_alloc = result["allocation"]
+                new_eval = result["evaluation"]
+                k = key(new_alloc)
+
+                if k not in seen:
+                    seen.add(k)
+
+                    if new_eval["max_bouquets"] > best_eval["max_bouquets"]:
+                        best_allocation = new_alloc
+                        best_eval = new_eval
+
+                    queue.append((new_alloc, new_eval, depth + 1))
+
+            # 2. Compensated moves
+            compensated = apply_compensated_step(
+                allocation=allocation,
+                reduce_category=category,
+                available_stems=available_stems,
+                stem_bounds=stem_bounds,
+                compensation_rules=compensation_rules,
+            )
+
+            for result in compensated:
+                new_alloc = result["allocation"]
+                new_eval = result["evaluation"]
+                k = key(new_alloc)
+
+                if k in seen:
+                    continue
+
+                seen.add(k)
+
+                if new_eval["max_bouquets"] > best_eval["max_bouquets"]:
+                    best_allocation = new_alloc
+                    best_eval = new_eval
+
+                queue.append((new_alloc, new_eval, depth + 1))
 
             new_alloc = result["allocation"]
             new_eval = result["evaluation"]
