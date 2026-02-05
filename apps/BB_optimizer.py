@@ -10,6 +10,7 @@ from core.optimization import optimize_bouquets
 from core.canonical_recipes import (
     SEASON_KEY_TO_RECIPE_SEASON,
     SEASON_KEY_TO_DISPLAY_LABEL,
+    SEASON_KEY_TO_PRICING_LABEL,
 )
 from core.pricing_data import load_master_pricing
 from pathlib import Path
@@ -73,7 +74,7 @@ st.write(
 
 season_key = st.selectbox(
     "Season",
-    options=list(SEASON_KEY_TO_RECIPE_SEASON.keys()),
+    options=list(SEASON_KEY_TO_DISPLAY_LABEL.keys()),
     format_func=lambda k: SEASON_KEY_TO_DISPLAY_LABEL[k],
 )
 
@@ -103,9 +104,9 @@ for cat in ["Foundation", "Filler", "Floater", "Finisher", "Focal", "Foliage"]:
 
 if st.button("Optimize bouquets"):
 
-    avg_prices = get_avg_prices_for_season(
-        SEASON_KEY_TO_RECIPE_SEASON[season_key]
-    )
+    season_for_pricing = SEASON_KEY_TO_PRICING_LABEL[season_key]
+
+    avg_prices = get_avg_prices_for_season(season_for_pricing)
 
     ### DEBUG CODE
     st.write("Avg wholesale prices:", avg_prices)
