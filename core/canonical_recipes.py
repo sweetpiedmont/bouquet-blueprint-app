@@ -28,5 +28,11 @@ CANONICAL_RECIPES = {
 SEASON_KEY_TO_RECIPE_SEASON = {
     "early_spring": "Early Spring",
     "late_spring": "Late Spring",
-    "summer_fall": "Summer",
+    "summer_fall": "Summer",   # internal canonical recipe key
+}
+
+SEASON_KEY_TO_DISPLAY_LABEL = {
+    "early_spring": "Early Spring",
+    "late_spring": "Late Spring",
+    "summer_fall": "Summer/Fall",  # 👈 UI label stays correct
 }
