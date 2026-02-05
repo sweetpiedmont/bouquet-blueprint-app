@@ -29,9 +29,19 @@ DATA_PATH = BASE_DIR / "data" / "CANONICAL Bouquet Recipe Master Sheet.xlsx"
 
 pricing_df = load_master_pricing(DATA_PATH)
 
+###debug
+st.write("PRICING DF — RAW CATEGORY COUNTS")
+st.write(pricing_df.groupby("category").size())
+
+st.write("PRICING DF — CATEGORY COUNTS BEFORE AVG")
+st.write(pricing_df.groupby("category").size())
+
 # Build average wholesale price per category for selected season
 def get_avg_prices_for_season(season_label: str):
-    df = pricing_df[pricing_df["season_raw"] == season_label]
+    df = pricing_df[
+        (pricing_df["season_raw"] == season_label)
+        | (pricing_df["season_raw"] == "All Seasons")
+    ]
     return (
         df.groupby("category")["wholesale_price"]
         .mean()
