@@ -199,7 +199,7 @@ def optimize_bouquets(
 
     from core.compensation import search_best_allocation
 
-    print(">>> Starting compensation search")
+    st.write(">>> Optimizing bouquet recipe. Please be patient -- this usually takes a few minutes.")
 
     compensation_result = search_best_allocation(
         initial_allocation=tier_a_allocation,
@@ -385,5 +385,3 @@ def compute_max_bouquets_and_stranded_stems(
         "limiting_category": limiting_category,
         "stranded_stems": stranded_stems,
     }
-
-    print(">>> Compensation search complete")
