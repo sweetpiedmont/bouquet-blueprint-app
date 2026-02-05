@@ -39,9 +39,11 @@ st.write(pricing_df.groupby("category").size())
 # Build average wholesale price per category for selected season
 def get_avg_prices_for_season(season_label: str):
     df = pricing_df[
-        (pricing_df["season_raw"] == season_label)
-        | (pricing_df["season_raw"] == "All Seasons")
+        pricing_df["season_raw"]
+        .str.split(",")
+        .apply(lambda seasons: season_label in [s.strip() for s in seasons])
     ]
+
     return (
         df.groupby("category")["wholesale_price"]
         .mean()
