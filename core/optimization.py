@@ -9,6 +9,10 @@ from core.recipe_bounds import (
 )
 from core.bouquet_sizing import apply_percentage_bounds
 from core.bouquet_expansion import expand_bouquet_to_target
+from core.compensation import (
+    initialize_allocation,
+    search_best_allocation,
+)
 from pathlib import Path
 
 # -----------------------------
@@ -173,12 +177,21 @@ def optimize_bouquets(
         ],
     )
 
-    from core.compensation import (
-        initialize_allocation,
-        search_best_allocation,
+### PHASE 3C - Allocation, scarcity and compensation
+
+    # ----------------------------------
+    # Phase 3C.1: Tier A initialization
+    # ----------------------------------
+
+    tier_a_allocation = build_tier_a_allocation(
+        implied_stems_per_bouquet=implied_stems_per_bouquet,
+        pct_bounds_for_season=pct_bounds[
+            SEASON_KEY_TO_RECIPE_SEASON[season_key]
+        ],
     )
 
-### PHASE 3C - Allocation, scarcity and compensation
+    if tier_a_allocation is None:
+        return None
 
 def allocate_stems_within_bounds(
     stem_bounds: Dict[str, Dict[str, float]],
