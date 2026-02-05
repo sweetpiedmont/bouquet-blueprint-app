@@ -224,6 +224,22 @@ def optimize_bouquets(
         target_stems=round(implied_stems_per_bouquet),
     )
 
+    from core.compensation import evaluate_allocation
+
+    final_eval = evaluate_allocation(
+        allocation=expanded_allocation,
+        available_stems=available_stems,
+    )
+
+    return {
+        "total_stems": sum(expanded_allocation.values()),
+        "recipe": expanded_allocation,
+        "bouquet_cost": target_price,
+        "max_bouquets": final_eval["max_bouquets"],
+        "stranded_stems": final_eval["stranded_stems"],
+        "waste_penalty": 0.0,  # we’ll reintroduce later
+    }
+
 def allocate_stems_within_bounds(
     stem_bounds: Dict[str, Dict[str, float]],
     available_stems: Dict[str, int],

@@ -79,6 +79,9 @@ if st.button("Optimize bouquets"):
         SEASON_KEY_TO_RECIPE_SEASON[season_key]
     )
 
+    ### DEBUG CODE
+    st.write("Avg wholesale prices:", avg_prices)
+
     result = optimize_bouquets(
         available_stems=available_stems,
         season_key=season_key,
