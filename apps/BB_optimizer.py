@@ -7,7 +7,10 @@ sys.path.append(str(ROOT_DIR))
 import streamlit as st
 
 from core.optimization import optimize_bouquets
-from core.canonical_recipes import SEASON_KEY_TO_RECIPE_SEASON
+from core.canonical_recipes import (
+    SEASON_KEY_TO_RECIPE_SEASON,
+    SEASON_KEY_TO_DISPLAY_LABEL,
+)
 from core.pricing_data import load_master_pricing
 from pathlib import Path
 
@@ -71,7 +74,7 @@ st.write(
 season_key = st.selectbox(
     "Season",
     options=list(SEASON_KEY_TO_RECIPE_SEASON.keys()),
-    format_func=lambda k: SEASON_KEY_TO_RECIPE_SEASON[k],
+    format_func=lambda k: SEASON_KEY_TO_DISPLAY_LABEL[k],
 )
 
 target_price = st.number_input(
