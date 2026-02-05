@@ -99,12 +99,13 @@ if st.button("Optimize bouquets"):
     ### DEBUG CODE
     st.write("Avg wholesale prices:", avg_prices)
 
-    result = optimize_bouquets(
-        available_stems=available_stems,
-        season_key=season_key,
-        target_price=target_price,
-        avg_wholesale_prices=avg_prices,
-    )
+    with st.status("Running bouquet optimization…", expanded=True):
+        result = optimize_bouquets(
+            available_stems=available_stems,
+            season_key=season_key,
+            target_price=target_price,
+            avg_wholesale_prices=avg_prices,
+        )
 
     if result is None:
         st.error("No feasible bouquet configuration found at this price.")

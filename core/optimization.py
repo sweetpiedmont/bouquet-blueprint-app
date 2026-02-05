@@ -196,10 +196,8 @@ def optimize_bouquets(
     # ----------------------------------
     # Phase 3C.2: Compensation search
     # ----------------------------------
-
+    
     from core.compensation import search_best_allocation
-
-    st.write(">>> Optimizing bouquet recipe. Please be patient -- this usually takes a few minutes.")
 
     compensation_result = search_best_allocation(
         initial_allocation=tier_a_allocation,
