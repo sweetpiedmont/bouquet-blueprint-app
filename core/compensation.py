@@ -199,3 +199,115 @@ def apply_compensation_until_stable(
 
         # Otherwise accept and keep going
         current_allocation = new_allocation
+
+def apply_single_compensation_step(
+    allocation: dict[str, int],
+    category: str,
+    available_stems: dict[str, int],
+    stem_bounds: dict[str, dict[str, float]],
+    compensation_rules: dict[str, set[str]],
+) -> dict | None:
+    """
+    Attempt to reduce a specific category by 1 stem,
+    respecting effective lower bounds.
+
+    Returns:
+        dict with keys {allocation, evaluation} if legal
+        None if reduction not allowed
+    """
+
+    current = allocation.get(category, 0)
+
+    min_allowed = get_effective_lower_bound(
+        category=category,
+        stem_bounds=stem_bounds,
+        available_stems=available_stems,
+    )
+
+    # Cannot reduce further
+    if current <= min_allowed:
+        return None
+
+    # Try reduction
+    trial_allocation = allocation.copy()
+    trial_allocation[category] = current - 1
+
+    trial_eval = evaluate_allocation(
+        allocation=trial_allocation,
+        available_stems=available_stems,
+    )
+
+    return {
+        "allocation": trial_allocation,
+        "evaluation": trial_eval,
+    }
+
+def search_best_allocation(
+    initial_allocation: dict[str, int],
+    available_stems: dict[str, int],
+    stem_bounds: dict[str, dict[str, float]],
+    compensation_rules: dict[str, set[str]],
+    max_depth: int = 20,
+) -> dict:
+    """
+    Phase 3C.3 – bounded lookahead search for best allocation.
+
+    Explores reductions across all categories, allowing neutral moves,
+    and returns the allocation that maximizes bouquet count.
+    """
+
+    from collections import deque
+
+    best_allocation = initial_allocation
+    best_eval = evaluate_allocation(
+        allocation=initial_allocation,
+        available_stems=available_stems,
+    )
+
+    seen = set()
+    queue = deque([(initial_allocation, best_eval, 0)])
+
+    def key(allocation: dict[str, int]) -> tuple:
+        return tuple(sorted(allocation.items()))
+
+    seen.add(key(initial_allocation))
+
+    while queue:
+        allocation, evaluation, depth = queue.popleft()
+
+        if depth >= max_depth:
+            continue
+
+        for category in allocation.keys():
+            result = apply_single_compensation_step(
+                allocation=allocation,
+                category=category,
+                available_stems=available_stems,
+                stem_bounds=stem_bounds,
+                compensation_rules=compensation_rules,
+            )
+
+            if result is None:
+                continue
+
+            new_alloc = result["allocation"]
+            new_eval = result["evaluation"]
+            k = key(new_alloc)
+
+            if k in seen:
+                continue
+
+            seen.add(k)
+
+            # Update best if strictly better
+            if new_eval["max_bouquets"] > best_eval["max_bouquets"]:
+                best_allocation = new_alloc
+                best_eval = new_eval
+
+            queue.append((new_alloc, new_eval, depth + 1))
+
+    return {
+        "allocation": best_allocation,
+        "evaluation": best_eval,
+    }
+
