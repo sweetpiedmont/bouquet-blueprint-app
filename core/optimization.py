@@ -170,11 +170,12 @@ def optimize_bouquets(
     raw_bounds = load_recipe_bounds(BOUNDS_PATH)
     pct_bounds = convert_bounds_to_percentages(raw_bounds)
 
+    recipe_season = SEASON_KEY_TO_RECIPE_SEASON[season_key]
+    pct_bounds_for_season = pct_bounds[recipe_season]
+
     stem_bounds = apply_percentage_bounds(
         total_stems=implied_stems_per_bouquet,
-        pct_bounds_for_season=pct_bounds[
-            SEASON_KEY_TO_RECIPE_SEASON[season_key]
-        ],
+        pct_bounds_for_season=pct_bounds_for_season,
     )
 
 ### PHASE 3C - Allocation, scarcity and compensation
@@ -185,9 +186,7 @@ def optimize_bouquets(
 
     tier_a_allocation = build_tier_a_allocation(
         implied_stems_per_bouquet=implied_stems_per_bouquet,
-        pct_bounds_for_season=pct_bounds[
-            SEASON_KEY_TO_RECIPE_SEASON[season_key]
-        ],
+        pct_bounds_for_season=pct_bounds_for_season,
     )
 
     if tier_a_allocation is None:
