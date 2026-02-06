@@ -16,7 +16,7 @@ VALID_CATEGORIES = [
 SEASON_SHEETS = [
     "Early Spring",
     "Late Spring",
-    "Summer/Fall",
+    "Summer-Fall",
 ]
 
 
