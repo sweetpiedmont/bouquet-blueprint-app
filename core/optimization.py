@@ -154,6 +154,9 @@ def optimize_bouquets(
 
     Returns None if no feasible configuration exists.
     """
+    
+    UNDERPRICE_TOLERANCE = 1.0
+    OVERPRICE_TOLERANCE = 1.0
 
     recipe_percentages = CANONICAL_RECIPES[season_key]
 
