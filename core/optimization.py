@@ -276,11 +276,14 @@ def optimize_bouquets(
 
     price_delta = bouquet_cost - target_price
 
+    within_tolerance = abs(price_delta) <= price_tolerance
+
     return {
         "total_stems": sum(expanded_allocation.values()),
         "recipe": expanded_allocation,
         "bouquet_cost": round(bouquet_cost, 2),
         "price_delta": round(price_delta, 2),
+        "within_price_tolerance": within_tolerance,
         "max_bouquets": final_eval["max_bouquets"],
         "stranded_stems": final_eval["stranded_stems"],
         "waste_penalty": 0.0,
