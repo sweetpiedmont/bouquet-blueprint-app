@@ -254,7 +254,8 @@ def optimize_bouquets(
         max_bouquets=best_eval["max_bouquets"],
         stem_bounds=stem_bounds,
         available_stems=available_stems,
-        target_stems=round(implied_stems_per_bouquet),
+        avg_wholesale_prices=avg_wholesale_prices,
+        target_price=target_price,
     )
 
     from core.compensation import evaluate_allocation
