@@ -77,7 +77,7 @@ def expand_bouquet_to_target(
         )
 
     # ---- expansion loop (price-driven) ----
-    while bouquet_cost(allocation) < target_price:
+    while bouquet_cost(allocation, avg_wholesale_prices) < target_price:
         candidates = []   # ✅ FIX #1: initialize candidates
 
         for category in allocation.keys():
