@@ -56,7 +56,6 @@ def expand_bouquet_to_target(
     max_bouquets: int,
     stem_bounds: dict[str, dict[str, float]],
     available_stems: dict[str, int],
-    target_stems: int,
     avg_wholesale_prices: dict[str, float],
     target_price: float,
 ) -> dict[str, int]:
@@ -68,8 +67,7 @@ def expand_bouquet_to_target(
     allocation = base_allocation.copy()
 
     while (
-        sum(allocation.values()) < target_stems
-        or bouquet_cost(allocation) < target_price
+        bouquet_cost(allocation) < target_price
     ):
 
         for category in allocation.keys():
