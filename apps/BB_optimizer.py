@@ -97,7 +97,7 @@ for cat in ["Foundation", "Filler", "Floater", "Finisher", "Focal", "Foliage"]:
     available_stems[cat] = st.number_input(
         cat,
         min_value=0,
-        step=10,
+        step=1,
         key=f"available_{cat}",
         value=st.session_state.available_stems[cat],
     )
