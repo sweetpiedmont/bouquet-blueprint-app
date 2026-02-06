@@ -1,3 +1,9 @@
+def bouquet_cost(allocation: dict[str, int]) -> float:
+    return sum(
+        allocation[c] * avg_wholesale_prices[c]
+        for c in allocation
+    )
+
 def can_add_stem(
     allocation: dict[str, int],
     category: str,
@@ -61,8 +67,10 @@ def expand_bouquet_to_target(
 
     allocation = base_allocation.copy()
 
-    while sum(allocation.values()) < target_stems:
-        candidates = []
+    while (
+        sum(allocation.values()) < target_stems
+        or bouquet_cost(allocation) < target_price
+    ):
 
         for category in allocation.keys():
             if can_add_stem(
