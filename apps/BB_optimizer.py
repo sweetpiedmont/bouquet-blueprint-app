@@ -141,7 +141,7 @@ if st.button("Optimize bouquets"):
 
     # Optional but strongly recommended
     if "price_delta" in result:
-        if abs(result["price_delta"]) <= 1.5:
+        if result.get("within_price_tolerance", False):
             st.caption("Price is within an acceptable range of your target.")
         elif result["price_delta"] < 0:
             st.caption(

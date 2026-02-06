@@ -275,7 +275,6 @@ def optimize_bouquets(
     )
 
     price_delta = bouquet_cost - target_price
-
     within_tolerance = abs(price_delta) <= price_tolerance
 
     return {
