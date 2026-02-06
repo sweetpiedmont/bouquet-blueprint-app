@@ -245,13 +245,13 @@ def optimize_bouquets(
         for category in expanded_allocation
     )
 
-    if bouquet_cost < target_price:
-        return None
+    price_delta = bouquet_cost - target_price
 
     return {
         "total_stems": sum(expanded_allocation.values()),
         "recipe": expanded_allocation,
         "bouquet_cost": round(bouquet_cost, 2),
+        "price_delta": round(price_delta, 2),
         "max_bouquets": final_eval["max_bouquets"],
         "stranded_stems": final_eval["stranded_stems"],
         "waste_penalty": 0.0,
