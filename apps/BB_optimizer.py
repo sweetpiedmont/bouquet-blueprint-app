@@ -65,14 +65,14 @@ def get_avg_prices_for_season(season_label: str):
     )
 
 ####debug
-st.markdown("### Pricing rows used for Summer/Fall (exact match)")
+st.markdown("### Pricing rows used (contains Summer or Fall)")
 
-summer_fall_rows = pricing_df[
-    pricing_df["season_raw"] == "Summer/Fall"
+contains_rows = pricing_df[
+    pricing_df["season_raw"].str.contains("Summer|Fall", case=False, na=False)
 ]
 
 st.write(
-    summer_fall_rows
+    contains_rows
     .groupby("category")["wholesale_price"]
     .mean()
 )
