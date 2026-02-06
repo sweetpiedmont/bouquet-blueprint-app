@@ -154,7 +154,7 @@ def optimize_bouquets(
 
     Returns None if no feasible configuration exists.
     """
-    
+
     UNDERPRICE_TOLERANCE = 1.0
     OVERPRICE_TOLERANCE = 1.0
 
@@ -284,12 +284,22 @@ def optimize_bouquets(
     # Phase 3F: Price rescue by relaxing bouquet count
     # ----------------------------------
 
-    UNDERPRICE_TOLERANCE = 1.0  # tighter than UI tolerance
+    UNDERPRICE_TOLERANCE = 1.0
+    OVERPRICE_TOLERANCE = 1.0
+
+    best_candidate = {
+        "allocation": expanded_allocation,
+        "bouquet_cost": bouquet_cost,
+        "price_delta": price_delta,
+        "final_eval": final_eval,
+    }
+
+    best_distance = abs(price_delta)
 
     if price_delta < -UNDERPRICE_TOLERANCE:
         for reduced_bouquets in range(final_eval["max_bouquets"] - 1, 0, -1):
 
-            expanded_allocation = expand_bouquet_to_target(
+            trial_allocation = expand_bouquet_to_target(
                 base_allocation=best_allocation,
                 max_bouquets=reduced_bouquets,
                 stem_bounds=stem_bounds,
@@ -298,22 +308,39 @@ def optimize_bouquets(
                 target_price=target_price,
             )
 
-            final_eval = evaluate_allocation(
-                allocation=expanded_allocation,
+            trial_eval = evaluate_allocation(
+                allocation=trial_allocation,
                 available_stems=available_stems,
             )
 
-            bouquet_cost = sum(
-                expanded_allocation[c] * avg_wholesale_prices[c]
-                for c in expanded_allocation
+            trial_cost = sum(
+                trial_allocation[c] * avg_wholesale_prices[c]
+                for c in trial_allocation
             )
 
-            price_delta = bouquet_cost - target_price
-            within_tolerance = abs(price_delta) <= price_tolerance
+            trial_delta = trial_cost - target_price
+            trial_distance = abs(trial_delta)
 
-            # Stop as soon as we’re close enough
-            if price_delta >= -UNDERPRICE_TOLERANCE:
+            # Keep the closest-to-target candidate
+            if trial_distance < best_distance:
+                best_candidate = {
+                    "allocation": trial_allocation,
+                    "bouquet_cost": trial_cost,
+                    "price_delta": trial_delta,
+                    "final_eval": trial_eval,
+                }
+                best_distance = trial_distance
+
+            # Stop if we've gone too far over
+            if trial_delta > OVERPRICE_TOLERANCE:
                 break
+
+    # Adopt best candidate found
+    expanded_allocation = best_candidate["allocation"]
+    bouquet_cost = best_candidate["bouquet_cost"]
+    price_delta = best_candidate["price_delta"]
+    final_eval = best_candidate["final_eval"]
+    within_tolerance = abs(price_delta) <= price_tolerance
     
     return {
         "total_stems": sum(expanded_allocation.values()),
