@@ -53,7 +53,6 @@ def get_avg_prices_for_season(season_label: str):
     )
 
 ####debug
-st.write("DEBUG season_label:", repr(season_label))
 st.write("DEBUG unique seasons:", pricing_df["season_raw"].unique())
 
 ### Pretty sure this is debug code
