@@ -53,17 +53,8 @@ def get_avg_prices_for_season(season_label: str):
     )
 
 ####debug
-st.markdown("### Pricing rows used (contains Summer or Fall)")
-
-contains_rows = pricing_df[
-    pricing_df["season_raw"].str.contains("Summer|Fall", case=False, na=False)
-]
-
-st.write(
-    contains_rows
-    .groupby("category")["wholesale_price"]
-    .mean()
-)
+st.write("DEBUG season_label:", repr(season_label))
+st.write("DEBUG unique seasons:", pricing_df["season_raw"].unique())
 
 ### Pretty sure this is debug code
 # #st.write(
