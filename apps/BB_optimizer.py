@@ -20,12 +20,21 @@ from pathlib import Path
 # Setup
 # -----------------------------
 
-st.title("Bouquet Blueprint Optimizer (Test Harness)")
+st.title("Bouquet Blueprint Optimizer")
 st.caption("Internal testing tool. Not final UI.")
 
 BASE_DIR = Path(__file__).parent.parent
 DATA_PATH = BASE_DIR / "data" / "CANONICAL Bouquet Recipe Master Sheet.xlsx"
 
+if "available_stems" not in st.session_state:
+    st.session_state.available_stems = {
+        "Foundation": 100,
+        "Filler": 100,
+        "Floater": 100,
+        "Finisher": 100,
+        "Focal": 100,
+        "Foliage": 100,
+    }
 
 # -----------------------------
 # Load pricing data
@@ -83,14 +92,15 @@ target_price = st.number_input(
 st.subheader("Available stems (this week)")
 
 available_stems = {}
+
 for cat in ["Foundation", "Filler", "Floater", "Finisher", "Focal", "Foliage"]:
     available_stems[cat] = st.number_input(
         cat,
         min_value=0,
-        value=100,
         step=10,
+        key=f"available_{cat}",
+        value=st.session_state.available_stems[cat],
     )
-
 
 # -----------------------------
 # Run optimization
