@@ -33,13 +33,6 @@ DATA_PATH = BASE_DIR / "data" / "CANONICAL Bouquet Recipe Master Sheet.xlsx"
 
 pricing_df = load_master_pricing(DATA_PATH)
 
-###debug
-st.write("PRICING DF — RAW CATEGORY COUNTS")
-st.write(pricing_df.groupby("category").size())
-
-st.write("PRICING DF — CATEGORY COUNTS BEFORE AVG")
-st.write(pricing_df.groupby("category").size())
-
 # Build average wholesale price per category for selected season
 def get_avg_prices_for_season(season_label: str):
     # Split UI season into atomic seasons
@@ -62,11 +55,12 @@ def get_avg_prices_for_season(season_label: str):
         .to_dict()
     )
 
-st.write(
-    pricing_df.groupby(["category", "season_raw"])
-    .size()
-    .reset_index(name="rows")
-)
+### Pretty sure this is debug code
+# #st.write(
+    #pricing_df.groupby(["category", "season_raw"])
+    #.size()
+    #.reset_index(name="rows")
+#)
 
 # -----------------------------
 # Inputs
