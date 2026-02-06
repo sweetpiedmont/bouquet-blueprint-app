@@ -102,6 +102,8 @@ for cat in ["Foundation", "Filler", "Floater", "Finisher", "Focal", "Foliage"]:
         value=st.session_state.available_stems[cat],
     )
 
+st.session_state.available_stems = available_stems
+
 # -----------------------------
 # Run optimization
 # -----------------------------
