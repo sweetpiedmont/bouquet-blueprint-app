@@ -51,7 +51,10 @@ def expand_bouquet_to_target(
     stem_bounds: dict[str, dict[str, float]],
     available_stems: dict[str, int],
     target_stems: int,
+    avg_wholesale_prices: dict[str, float],
+    target_price: float,
 ) -> dict[str, int]:
+
     """
     Add stems to a bouquet until we approach target size.
     """
