@@ -167,6 +167,34 @@ def optimize_bouquets(
     )
 
     # ----------------------------------
+    # Hard Stop #1: Minimum viable BB bouquet size
+    # ----------------------------------
+
+    MIN_BB_STEMS = 10
+
+    if implied_stems_per_bouquet < MIN_BB_STEMS:
+        return {
+            "error": (
+                "The Bouquet Blueprint™ does not work well for bouquets under 10 stems. "
+                "Please try a larger bouquet size or higher price point."
+            )
+        }
+
+    # ----------------------------------
+    # Hard Stop #2: Structural core requirements
+    # ----------------------------------
+
+    if available_stems.get("Foundation", 0) <= 0:
+        return {
+            "error": "Bouquets require at least one Foundation stem. Please adjust availability."
+        }
+
+    if available_stems.get("Focal", 0) <= 0:
+        return {
+            "error": "Bouquets require at least one Focal stem. Please adjust availability."
+        }
+    
+    # ----------------------------------
     # Phase 3B: Apply recipe bounds
     # ----------------------------------
 
