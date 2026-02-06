@@ -59,16 +59,23 @@ def expand_bouquet_to_target(
     avg_wholesale_prices: dict[str, float],
     target_price: float,
 ) -> dict[str, int]:
-
     """
-    Add stems to a bouquet until we approach target size.
+    Expand a bouquet by adding stems until target price is met
+    or no further legal additions are possible.
     """
 
     allocation = base_allocation.copy()
 
-    while (
-        bouquet_cost(allocation) < target_price
-    ):
+    # ---- helper: compute bouquet cost ----
+    def bouquet_cost(allocation: dict[str, int]) -> float:
+        return sum(
+            allocation[c] * avg_wholesale_prices[c]
+            for c in allocation
+        )
+
+    # ---- expansion loop (price-driven) ----
+    while bouquet_cost(allocation) < target_price:
+        candidates = []   # ✅ FIX #1: initialize candidates
 
         for category in allocation.keys():
             if can_add_stem(
@@ -93,3 +100,4 @@ def expand_bouquet_to_target(
         allocation[chosen] += 1
 
     return allocation
+
