@@ -43,8 +43,31 @@ if "available_stems" not in st.session_state:
 pricing_df = load_master_pricing(DATA_PATH)
 
 # Build average wholesale price per category for selected season
-def get_avg_prices_for_season(season_label: str):
-    df = pricing_df[pricing_df["season_raw"] == season_label]
+def get_avg_prices_for_season(season_key: str):
+    """
+    Return average wholesale prices per category for the selected season.
+
+    A pricing row is included if the selected season label appears
+    in the row's Season column (comma-separated).
+    """
+
+    # Resolve the canonical pricing label for this season
+    # e.g. "summer_fall" -> "Summer/Fall"
+    season_label = SEASON_KEY_TO_PRICING_LABEL[season_key]
+
+    def row_matches_season(season_raw: str) -> bool:
+        if not isinstance(season_raw, str):
+            return False
+
+        # Split comma-separated season entries
+        tokens = [s.strip() for s in season_raw.split(",")]
+
+        # Membership test (not equality of the full cell)
+        return season_label in tokens
+
+    df = pricing_df[
+        pricing_df["season_raw"].apply(row_matches_season)
+    ]
 
     return (
         df.groupby("category")["wholesale_price"]
