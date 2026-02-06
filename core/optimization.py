@@ -138,7 +138,7 @@ def optimize_bouquets(
     season_key: str,
     target_price: float,
     avg_wholesale_prices: Dict[str, float],
-    price_tolerance: float = 1.5,
+    price_tolerance: float = 1.0,
 ) -> Optional[Dict]:
     """
     Determine the best BB-compliant bouquet configuration
@@ -186,12 +186,12 @@ def optimize_bouquets(
 
     if available_stems.get("Foundation", 0) <= 0:
         return {
-            "error": "Bouquets require at least one Foundation stem. Please adjust availability."
+            "error": "Bouquets require Foundation flowers. Please adjust availability."
         }
 
     if available_stems.get("Focal", 0) <= 0:
         return {
-            "error": "Bouquets require at least one Focal stem. Please adjust availability."
+            "error": "Bouquets require Focal flowers. Please adjust availability."
         }
     
     # ----------------------------------
@@ -277,6 +277,41 @@ def optimize_bouquets(
     price_delta = bouquet_cost - target_price
     within_tolerance = abs(price_delta) <= price_tolerance
 
+    # ----------------------------------
+    # Phase 3F: Price rescue by relaxing bouquet count
+    # ----------------------------------
+
+    UNDERPRICE_TOLERANCE = 1.0  # tighter than UI tolerance
+
+    if price_delta < -UNDERPRICE_TOLERANCE:
+        for reduced_bouquets in range(final_eval["max_bouquets"] - 1, 0, -1):
+
+            expanded_allocation = expand_bouquet_to_target(
+                base_allocation=best_allocation,
+                max_bouquets=reduced_bouquets,
+                stem_bounds=stem_bounds,
+                available_stems=available_stems,
+                avg_wholesale_prices=avg_wholesale_prices,
+                target_price=target_price,
+            )
+
+            final_eval = evaluate_allocation(
+                allocation=expanded_allocation,
+                available_stems=available_stems,
+            )
+
+            bouquet_cost = sum(
+                expanded_allocation[c] * avg_wholesale_prices[c]
+                for c in expanded_allocation
+            )
+
+            price_delta = bouquet_cost - target_price
+            within_tolerance = abs(price_delta) <= price_tolerance
+
+            # Stop as soon as we’re close enough
+            if price_delta >= -UNDERPRICE_TOLERANCE:
+                break
+    
     return {
         "total_stems": sum(expanded_allocation.values()),
         "recipe": expanded_allocation,
