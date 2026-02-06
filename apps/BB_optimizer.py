@@ -113,21 +113,39 @@ if st.button("Optimize bouquets"):
             avg_wholesale_prices=avg_prices,
         )
 
-    if result is None:
-        st.error("No feasible bouquet configuration found at this price.")
-    else:
-        st.success("Feasible bouquet configuration found.")
+   # Handle hard-stop errors from the optimizer
+    if "error" in result:
+        st.error(result["error"])
+        st.stop()
 
-        st.markdown("### Recommended bouquet")
+    # If we get here, a bouquet was found
+    st.success("Bouquet recipe generated.")
 
-        st.write(f"**Total stems per bouquet:** {result['total_stems']}")
-        st.write(f"**Estimated bouquet cost:** ${result['bouquet_cost']}")
-        st.write(f"**Max bouquets possible:** {result['max_bouquets']}")
+    st.markdown("### Recommended bouquet")
 
-        st.markdown("#### Recipe (stems per bouquet)")
-        st.json(result["recipe"])
+    st.write(f"**Total stems per bouquet:** {result['total_stems']}")
+    st.write(f"**Estimated bouquet cost:** ${result['bouquet_cost']}")
+    st.write(f"**Max bouquets possible:** {result['max_bouquets']}")
 
-        st.markdown("#### Stranded stems")
-        st.json(result["stranded_stems"])
+    # Optional but strongly recommended
+    if "price_delta" in result:
+        if abs(result["price_delta"]) <= 1.5:
+            st.caption("Price is within an acceptable range of your target.")
+        elif result["price_delta"] < 0:
+            st.caption(
+                f"This bouquet is ${abs(result['price_delta']):.2f} under your target price. "
+                "This can happen with limited availability or early-season flowers."
+            )
+        else:
+            st.caption(
+                f"This bouquet is ${result['price_delta']:.2f} over your target price. "
+                "This often reflects fuller structure or higher-value stems."
+            )
 
-        st.caption(f"Waste penalty score: {round(result['waste_penalty'], 2)}")
+    st.markdown("#### Recipe (stems per bouquet)")
+    st.json(result["recipe"])
+
+    st.markdown("#### Stranded stems")
+    st.json(result["stranded_stems"])
+
+    st.caption(f"Waste penalty score: {round(result['waste_penalty'], 2)}")
