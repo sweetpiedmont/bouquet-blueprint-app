@@ -28,17 +28,17 @@ CANONICAL_RECIPES = {
 SEASON_KEY_TO_RECIPE_SEASON = {
     "early_spring": "Early Spring",
     "late_spring": "Late Spring",
-    "summer_fall": "Summer-Fall",   # must match recipe_bounds.py
+    "summer_fall": "Summer/Fall",
 }
 
 SEASON_KEY_TO_DISPLAY_LABEL = {
     "early_spring": "Early Spring",
     "late_spring": "Late Spring",
-    "summer_fall": "Summer/Fall",   # what the user sees
+    "summer_fall": "Summer/Fall",
 }
 
 SEASON_KEY_TO_PRICING_LABEL = {
     "early_spring": "Early Spring",
     "late_spring": "Late Spring",
-    "summer_fall": "Summer/Fall",   # used ONLY for pricing
+    "summer_fall": "Summer/Fall",
 }

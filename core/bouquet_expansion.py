@@ -1,4 +1,7 @@
-def bouquet_cost(allocation: dict[str, int]) -> float:
+def bouquet_cost(
+    allocation: dict[str, int],
+    avg_wholesale_prices: dict[str, float],
+) -> float:
     return sum(
         allocation[c] * avg_wholesale_prices[c]
         for c in allocation
