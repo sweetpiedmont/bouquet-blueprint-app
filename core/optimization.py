@@ -230,13 +230,25 @@ def optimize_bouquets(
         available_stems=available_stems,
     )
 
+    # ----------------------------------
+    # Phase 3E: Compute actual bouquet cost
+    # ----------------------------------
+
+    bouquet_cost = sum(
+        expanded_allocation[category] * avg_wholesale_prices[category]
+        for category in expanded_allocation
+    )
+
+    if bouquet_cost < target_price:
+        return None
+
     return {
         "total_stems": sum(expanded_allocation.values()),
         "recipe": expanded_allocation,
-        "bouquet_cost": target_price,
+        "bouquet_cost": round(bouquet_cost, 2),
         "max_bouquets": final_eval["max_bouquets"],
         "stranded_stems": final_eval["stranded_stems"],
-        "waste_penalty": 0.0,  # we’ll reintroduce later
+        "waste_penalty": 0.0,
     }
 
 def allocate_stems_within_bounds(
