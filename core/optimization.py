@@ -29,9 +29,6 @@ COMPENSATION_RULES = {
 
 MIN_BB_STEMS = 10
 
-MIN_TOTAL_STEMS = 15
-MAX_TOTAL_STEMS = 35
-
 # Waste priority weights (higher = worse to strand)
 WASTE_WEIGHTS = {
     "Foundation": 5.0,
