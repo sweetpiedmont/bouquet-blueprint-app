@@ -53,8 +53,17 @@ def build_tier_a_allocation(
     """
 
     # Enforce minimum viable BB bouquet size
+# ----------------------------------
+# Hard Stop #1: Minimum viable BB bouquet size
+# ----------------------------------
+
     if implied_stems_per_bouquet < MIN_BB_STEMS:
-        return None
+        return {
+            "error": (
+                "The Bouquet Blueprint™ does not work well for bouquets under 10 stems. "
+                "Please try a larger bouquet size or higher price point."
+            )
+        }
 
     total_stems = int(implied_stems_per_bouquet)
 
