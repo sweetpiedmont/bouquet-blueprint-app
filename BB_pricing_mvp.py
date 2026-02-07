@@ -39,6 +39,7 @@ if not st.session_state.authenticated:
     st.stop()
 
     st.write("Password loaded:", APP_PASSWORD is not None)
+    st.write("DEBUG – APP_PASSWORD:", repr(APP_PASSWORD))
         
 BASE_DIR = Path(__file__).parent
 
