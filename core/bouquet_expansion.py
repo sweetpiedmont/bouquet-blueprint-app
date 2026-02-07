@@ -69,16 +69,9 @@ def expand_bouquet_to_target(
 
     allocation = base_allocation.copy()
 
-    # ---- helper: compute bouquet cost ----
-    def bouquet_cost(allocation: dict[str, int]) -> float:
-        return sum(
-            allocation[c] * avg_wholesale_prices[c]
-            for c in allocation
-        )
-
     # ---- expansion loop (price-driven) ----
     while bouquet_cost(allocation, avg_wholesale_prices) < target_price:
-        candidates = []   # ✅ FIX #1: initialize candidates
+        candidates = []
 
         for category in allocation.keys():
             if can_add_stem(
@@ -103,4 +96,3 @@ def expand_bouquet_to_target(
         allocation[chosen] += 1
 
     return allocation
-
