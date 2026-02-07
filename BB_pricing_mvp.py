@@ -108,20 +108,34 @@ st.markdown("---")
 
 st.subheader("Your Growing Efficiency")
 
+st.markdown(
+    "<p style='font-size: 0.9em; opacity: 0.85;'>"
+    "<strong>Growing efficiency</strong> reflects how costly it is for <em>your</em> farm "
+    "to produce usable flower stems."
+    "</p>"
+    "<p style='font-size: 0.85em; opacity: 0.75;'>"
+    "Lower values mean tighter systems, better sell-through, and fewer wasted stems. "
+    "Higher values mean more waste, higher labor or input costs, and less efficient systems."
+    "</p>",
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    "<ul style='font-size: 0.85em; opacity: 0.75; margin-top: 0.25em;'>"
+    "<li><strong>0.5–0.7:</strong> Highly efficient growing systems</li>"
+    "<li><strong>0.7–0.9:</strong> Moderately efficient systems</li>"
+    "<li><strong>0.9–1.0:</strong> High-cost growing systems</li>"
+    "<li><strong>Above 1.0:</strong> Growing costs exceed wholesale prices</li>"
+    "</ul>",
+    unsafe_allow_html=True
+)
+
 gef = st.slider(
     "How efficient is your operation?",
     min_value=0.50,
     max_value=1.50,
     value=0.65,
     step=0.05,
-    help=(
-        "• Highly efficient operations (0.5–0.7): tight planting plans, strong sell-through, "
-        "minimal wasted stems, systems dialed in.\n"
-        "• Average efficiency operations (0.7–0.9): some unused stems, minimal systems, "
-        "moderate labor costs.\n"
-        "• INefficient operations (above 0.9): frequent wasted stems, low sell-through, "
-        "high production costs, inefficient or non-existent systems.\n\n"
-    ),
     on_change=invalidate_pricing,
 )
 
