@@ -334,12 +334,15 @@ if "break_even_price" in st.session_state:
 
     components.html(
         f"""
-        <div style="display: flex; height: 6px; border-radius: 3px; overflow: hidden;">
-            <div style="flex: 0.1; background-color: rgba(204, 0, 0, 0.45);"></div>
-            <div style="flex: 0.6; background-color: #e6eb99;"></div>
-            <div style="flex: 0.7; background-color: #ffdee7;"></div>
-            <div style="flex: 0.6; background-color: #d7f4ff;"></div>
-        </div>
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                    Roboto, Helvetica, Arial, sans-serif;">
+
+            <div style="display: flex; height: 6px; border-radius: 3px; overflow: hidden;">
+                <div style="flex: 0.1; background-color: rgba(204, 0, 0, 0.45);"></div>
+                <div style="flex: 0.6; background-color: #e6eb99;"></div>
+                <div style="flex: 0.7; background-color: #ffdee7;"></div>
+                <div style="flex: 0.6; background-color: #d7f4ff;"></div>
+            </div>
 
             <div style="
                 display: flex;
@@ -366,6 +369,7 @@ if "break_even_price" in st.session_state:
                     <span style="font-size: 11px; opacity: 0.7;">Zone</span>
                 </div>
             </div>
+        </div>
         """,
         height=70,
     )
