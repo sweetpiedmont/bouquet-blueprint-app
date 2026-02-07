@@ -204,7 +204,6 @@ labor_rate_per_hour = st.number_input(
     min_value=10.0,
     max_value=100.0,
     value=17.0,
-    format="$%.2f",
     step=1.0
 )
 
