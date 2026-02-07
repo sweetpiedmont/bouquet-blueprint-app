@@ -188,7 +188,7 @@ labor_cost_per_bouquet = (labor_minutes / 60) * labor_rate_per_hour
 
 st.markdown("---")
 
-st.subheader("Materials (Minimum Supplies)")
+st.subheader("Bouquet Packaging")
 
 materials_cost = st.slider(
     "Materials cost per bouquet ($)",
@@ -197,9 +197,13 @@ materials_cost = st.slider(
     value=0.30,
     step=0.05,
     help=(
-        "Includes only essential supplies like rubber bands "
-        "and a basic paper sleeve. "
-        "Does NOT include branding or marketing materials."
+        "Includes essentials like rubber bands "
+        "and a basic paper sleeve (around .30). "
+        "Also consider 'extras' like stickers, "
+        "tags, ink-stamped logos, hydration packs, or "
+        "anything else that is sold with the bouquet. "
+        "Does NOT include buckets, snips, or other production "
+        "equipment that stays on the farm."
     ),
     on_change=invalidate_pricing,
 )
@@ -291,7 +295,7 @@ if "break_even_price" in st.session_state:
     max_price = round(break_even_price * 4.0, 0)
 
     selling_price = st.slider(
-        label="",
+        "Selling price slider",
         min_value=break_even_price,
         max_value=max_price,
         value=round(break_even_price * 1.5, 1),
