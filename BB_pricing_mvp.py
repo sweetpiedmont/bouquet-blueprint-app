@@ -402,7 +402,6 @@ if "break_even_price" in st.session_state:
     st.markdown(
         "<p style='font-size: 0.85em; opacity: 0.75; text-align: left;'>"
         "<em>Pricing zones are approximate guides, not rules, and do not include costs associated with selling, such as bringing bouquets to the farmers market or making deliveries.</em>"
-        "<p style='font-size: 0.85em; opacity: 0.75; text-align: left;'>"
         "Your final price should reflect these costs, as well as what your market will bear "
         "and the profit you need this bouquet to earn."
         "</p>"
