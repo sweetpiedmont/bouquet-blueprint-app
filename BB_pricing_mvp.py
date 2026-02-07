@@ -17,6 +17,13 @@ def invalidate_pricing():
     st.session_state.pop("break_even_price", None)
     st.session_state.pop("recipe_counts", None)
 
+def normalize_pricing_season(recipe_season: str) -> str:
+    """
+    Normalize season labels coming from canonical_recipes
+    to match pricing / Excel conventions.
+    """
+    return recipe_season.replace("-", "/")
+
 # ------------------------------------------------
 # Load pricing data
 # ------------------------------------------------
