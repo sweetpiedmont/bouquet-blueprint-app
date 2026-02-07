@@ -69,8 +69,15 @@ def expand_bouquet_to_target(
 
     allocation = base_allocation.copy()
 
-    # ---- expansion loop (price-driven) ----
-    while bouquet_cost(allocation, avg_wholesale_prices) < target_price:
+     # ---- expansion loop (price-driven) ----
+    MAX_EXPANSION_STEPS = 25
+    steps = 0
+   
+    while (
+        bouquet_cost(allocation, avg_wholesale_prices) < target_price
+        and steps < MAX_EXPANSION_STEPS
+    ):
+
         candidates = []
 
         for category in allocation.keys():
