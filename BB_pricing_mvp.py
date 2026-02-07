@@ -37,6 +37,8 @@ if not st.session_state.authenticated:
             st.error("Incorrect password")
 
     st.stop()
+
+    st.write("Password loaded:", APP_PASSWORD is not None)
         
 BASE_DIR = Path(__file__).parent
 
