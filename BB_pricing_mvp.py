@@ -17,6 +17,14 @@ def invalidate_pricing():
     st.session_state.pop("break_even_price", None)
     st.session_state.pop("recipe_counts", None)
 
+# ------------------------------------------------
+# Load pricing data
+# ------------------------------------------------
+BASE_DIR = Path(__file__).parent
+DATA_PATH = BASE_DIR / "data" / "CANONICAL Bouquet Recipe Master Sheet.xlsx"
+
+pricing_df = load_master_pricing(DATA_PATH)
+
 # --- Password gate ---
 APP_PASSWORD = st.secrets.get("BB_APP_PASSWORD")
 
