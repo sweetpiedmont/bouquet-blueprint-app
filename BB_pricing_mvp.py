@@ -124,7 +124,7 @@ st.markdown(
     "<ul style='font-size: 0.85em; opacity: 0.75; margin-top: 0.25em;'>"
     "<li><strong>0.5–0.7:</strong> Highly efficient growing systems</li>"
     "<li><strong>0.7–0.9:</strong> Moderately efficient systems</li>"
-    "<li><strong>0.9–1.0:</strong> High-cost growing systems</li>"
+    "<li><strong>0.9–1.0:</strong> Higher-cost growing systems</li>"
     "<li><strong>Above 1.0:</strong> ⚠️ Above a growing efficiency of 1.0, it costs you more to grow your flowers "
     "than it would (on average) to purchase them wholesale. "
     "Reducing growing costs is critical to long-term profitability.</li>"
@@ -402,7 +402,6 @@ if "break_even_price" in st.session_state:
     st.markdown(
         "<p style='font-size: 0.85em; opacity: 0.75; text-align: left;'>"
         "<em>Pricing zones are approximate guides, not rules, and do not include costs associated with selling, such as bringing bouquets to the farmers market or making deliveries.</em>"
-        "</p>"
         "<p style='font-size: 0.85em; opacity: 0.75; text-align: left;'>"
         "Your final price should reflect these costs, as well as what your market will bear "
         "and the profit you need this bouquet to earn."
