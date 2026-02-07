@@ -372,7 +372,7 @@ def optimize_bouquets(
     bouquet_cost = best_candidate["bouquet_cost"]
     price_delta = best_candidate["price_delta"]
     final_eval = best_candidate["final_eval"]
-    within_tolerance = abs(price_delta) <= price_tolerance
+    within_tolerance = abs(price_delta) <= PRICE_TOLERANCE
     
     return {
         "total_stems": sum(expanded_allocation.values()),
