@@ -243,26 +243,60 @@ def optimize_bouquets(
     best_eval = compensation_result["evaluation"]
 
     # ----------------------------------
-    # Phase 3D: Bouquet expansion
+    # Phase 3D: Bouquet expansion (price-aware, bouquet-count-flexible)
     # ----------------------------------
 
     from core.bouquet_expansion import expand_bouquet_to_target
-
-    expanded_allocation = expand_bouquet_to_target(
-        base_allocation=best_allocation,
-        max_bouquets=best_eval["max_bouquets"],
-        stem_bounds=stem_bounds,
-        available_stems=available_stems,
-        avg_wholesale_prices=avg_wholesale_prices,
-        target_price=target_price,
-    )
-
     from core.compensation import evaluate_allocation
 
-    final_eval = evaluate_allocation(
-        allocation=expanded_allocation,
-        available_stems=available_stems,
-    )
+    expanded_allocation = None
+    final_eval = None
+    bouquet_cost = None
+    price_delta = None
+
+    # Try current bouquet count, then slightly fewer if needed
+    MAX_BOUQUET_REDUCTION = 3
+
+    for bouquet_count in range(
+        best_eval["max_bouquets"],
+        max(0, best_eval["max_bouquets"] - MAX_BOUQUET_REDUCTION),
+        -1,
+    ):
+        candidate_allocation = expand_bouquet_to_target(
+            base_allocation=best_allocation,
+            max_bouquets=bouquet_count,
+            stem_bounds=stem_bounds,
+            available_stems=available_stems,
+            avg_wholesale_prices=avg_wholesale_prices,
+            target_price=target_price,
+        )
+
+        candidate_eval = evaluate_allocation(
+            allocation=candidate_allocation,
+            available_stems=available_stems,
+        )
+
+        candidate_cost = sum(
+            candidate_allocation[c] * avg_wholesale_prices[c]
+            for c in candidate_allocation
+        )
+
+        candidate_delta = candidate_cost - target_price
+
+        # Accept the first solution within tolerance
+        if abs(candidate_delta) <= price_tolerance:
+            expanded_allocation = candidate_allocation
+            final_eval = candidate_eval
+            bouquet_cost = candidate_cost
+            price_delta = candidate_delta
+            break
+
+    # Fallback: if nothing hit tolerance, use the closest one we saw
+    if expanded_allocation is None:
+        expanded_allocation = candidate_allocation
+        final_eval = candidate_eval
+        bouquet_cost = candidate_cost
+        price_delta = candidate_delta
 
     # ----------------------------------
     # Phase 3E: Compute actual bouquet cost
