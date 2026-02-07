@@ -267,7 +267,7 @@ if st.button("Lock in My Assumptions"):
     SEASON_MAP = {
         "Early Spring": ["Early Spring"],
         "Late Spring": ["Late Spring"],
-        "Summer/Fall": ["Summer", "Fall"],
+        "Summer/Fall": ["Summer/Fall"],
     }
 
     # --- Filter pricing data by recipe season ---
