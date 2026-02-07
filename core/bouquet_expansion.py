@@ -33,26 +33,27 @@ def can_add_stem(
     return True
 
 def score_addition(
-    allocation: dict[str, int],
-    category: str,
-    stem_bounds: dict[str, dict[str, float]],
-    available_stems: dict[str, int],
-) -> float:
-    """
-    Higher score = better candidate for adding a stem.
-    """
-
-    current = allocation[category]
+    allocation,
+    category,
+    stem_bounds,
+    available_stems,
+    avg_wholesale_prices,
+    target_price,
+    current_cost,
+):
     bounds = stem_bounds[category]
 
-    # Distance from design target (prefer closer)
     design_mid = (bounds["design_min"] + bounds["design_max"]) / 2
-    distance_penalty = abs((current + 1) - design_mid)
+    distance_penalty = abs((allocation[category] + 1) - design_mid)
 
-    # Availability pressure (prefer abundant stems)
     availability = available_stems.get(category, 0)
+    stem_price = avg_wholesale_prices[category]
 
-    return availability - distance_penalty * 10
+    # NEW: penalize expensive stems as we approach target price
+    price_pressure = max(0, current_cost - 0.9 * target_price)
+    price_penalty = stem_price * price_pressure
+
+    return availability - distance_penalty * 10 - price_penalty
 
 def expand_bouquet_to_target(
     base_allocation: dict[str, int],
@@ -106,7 +107,11 @@ def expand_bouquet_to_target(
                     category,
                     stem_bounds,
                     available_stems,
+                    avg_wholesale_prices,
+                    target_price,
+                    current_cost,
                 )
+
                 candidates.append((score, category))
 
         if not candidates:
