@@ -13,9 +13,11 @@ def can_add_stem(
     stem_bounds: dict[str, dict[str, float]],
     available_stems: dict[str, int],
     max_bouquets: int,
+    min_bouquets: int = 1,
 ) -> bool:
     """
-    Check whether adding 1 stem to a category is legal.
+    Check whether adding 1 stem to a category is legal,
+    allowing bouquet count to relax if needed.
     """
 
     current = allocation.get(category, 0)
@@ -25,12 +27,13 @@ def can_add_stem(
     if current + 1 > bounds["absolute_max"]:
         return False
 
-    # Must have enough available stems to support all bouquets
-    required_total = (current + 1) * max_bouquets
-    if available_stems.get(category, 0) < required_total:
-        return False
+    # Try supporting the stem across fewer bouquets if needed
+    for bouquets in range(max_bouquets, min_bouquets - 1, -1):
+        required_total = (current + 1) * bouquets
+        if available_stems.get(category, 0) >= required_total:
+            return True
 
-    return True
+    return False
 
 def score_addition(
     allocation,
