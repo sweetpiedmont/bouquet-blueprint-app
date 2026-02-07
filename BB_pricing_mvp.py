@@ -14,7 +14,7 @@ from core.pricing_data import load_master_pricing
 from core.stem_scaling import calculate_stem_recipe
 
 # --- Password gate (DEBUG MODE) ---
-APP_PASSWORD = os.environ.get("BB_APP_PASSWORD")
+APP_PASSWORD = st.secrets.get("BB_APP_PASSWORD")
 
 st.write("DEBUG: APP_PASSWORD from env:", repr(APP_PASSWORD))
 
