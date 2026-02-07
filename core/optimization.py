@@ -138,7 +138,6 @@ def optimize_bouquets(
     season_key: str,
     target_price: float,
     avg_wholesale_prices: Dict[str, float],
-    price_tolerance: float = 1.5,
 ) -> Optional[Dict]:
     """
     Determine the best BB-compliant bouquet configuration
