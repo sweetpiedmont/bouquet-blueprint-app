@@ -109,7 +109,7 @@ st.markdown("---")
 st.subheader("Your Growing Efficiency")
 
 gef = st.slider(
-    "How efficient is your growing system?",
+    "How efficient is your operation?",
     min_value=0.50,
     max_value=1.50,
     value=0.65,
@@ -117,10 +117,8 @@ gef = st.slider(
     help=(
         "• Highly efficient operations (0.5–0.7): tight planting plans, strong sell-through, "
         "minimal wasted stems, systems dialed in.\n"
-        "<br><br>"
-        "• Average efficience operations (0.7–0.9): some inefficiency, some unused stems, "
+        "• Average efficiency operations (0.7–0.9): some unused stems, minimal systems, "
         "moderate labor costs.\n"
-        "<br><br>"
         "• INefficient operations (above 0.9): frequent wasted stems, low sell-through, "
         "high production costs, inefficient or non-existent systems.\n\n"
     ),
