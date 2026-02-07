@@ -204,6 +204,7 @@ labor_rate_per_hour = st.number_input(
     min_value=10.0,
     max_value=100.0,
     value=17.0,
+    format="$%.2f",
     step=1.0
 )
 
@@ -218,6 +219,7 @@ materials_cost = st.slider(
     min_value=0.02,
     max_value=2.00,
     value=0.30,
+    format="$%.2f",
     step=0.05,
     help=(
         "Include essentials like rubber bands "
@@ -329,6 +331,7 @@ if "break_even_price" in st.session_state:
         max_value=max_price,
         value=round(break_even_price * 1.5, 1),
         step=0.1,
+        format="$%.2f",
         key="selling_price_slider"
     )
 
