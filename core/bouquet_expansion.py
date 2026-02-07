@@ -1,3 +1,12 @@
+CATEGORY_EXPANSION_WEIGHT = {
+    "Foundation": 1.4,
+    "Filler": 1.3,
+    "Foliage": 1.2,
+    "Finisher": 1.0,
+    "Floater": 0.9,
+    "Focal": 0.4,   # 👈 intentionally low
+}
+
 def bouquet_cost(
     allocation: dict[str, int],
     avg_wholesale_prices: dict[str, float],
@@ -52,11 +61,16 @@ def score_addition(
     availability = available_stems.get(category, 0)
     stem_price = avg_wholesale_prices[category]
 
-    # NEW: penalize expensive stems as we approach target price
+    # Penalize expensive stems as we approach target price
     price_pressure = max(0, current_cost - 0.9 * target_price)
     price_penalty = stem_price * price_pressure
 
-    return availability - distance_penalty * 10 - price_penalty
+    base_score = availability - distance_penalty * 10 - price_penalty
+
+    # NEW: category preference weighting
+    weight = CATEGORY_EXPANSION_WEIGHT.get(category, 1.0)
+
+    return base_score * weight
 
 def expand_bouquet_to_target(
     base_allocation: dict[str, int],
