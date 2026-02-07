@@ -275,6 +275,15 @@ def optimize_bouquets(
 
     price_delta = bouquet_cost - target_price
     within_tolerance = abs(price_delta) <= price_tolerance
+    
+    # Hard guardrail: reject bouquets too far from target price
+    if abs(price_delta) > price_tolerance:
+        return {
+            "error": (
+                f"Unable to generate a bouquet within ${price_tolerance:.2f} "
+                f"of your target price using the available stems."
+            )
+        }
 
     # ----------------------------------
     # Phase 3F: Price rescue by relaxing bouquet count

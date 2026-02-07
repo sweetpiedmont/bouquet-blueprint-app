@@ -71,32 +71,29 @@ def expand_bouquet_to_target(
 
     PRICE_TOLERANCE = 1.0
     MAX_EXPANSION_STEPS = 25
-    steps = 0
 
     best_allocation = allocation.copy()
     best_delta = abs(bouquet_cost(allocation, avg_wholesale_prices) - target_price)
 
-     # ---- expansion loop (price-driven) ----
+    steps = 0
+
+    # ---- expansion loop (price-driven, closest-wins) ----
     while True:
-        steps += 1
-        if steps > MAX_EXPANSION_STEPS:
-            break
-
         current_cost = bouquet_cost(allocation, avg_wholesale_prices)
-        current_delta = current_cost - target_price
+        current_delta = abs(current_cost - target_price)
 
-        # If we're within tolerance, we're done
-        if abs(current_delta) <= PRICE_TOLERANCE:
+        # Track closest solution seen
+        if current_delta < best_delta:
+            best_delta = current_delta
             best_allocation = allocation.copy()
-            break
 
-        # If we're already over target AND getting worse, stop
-        if current_delta > PRICE_TOLERANCE:
+        # Stop if we're clearly getting worse beyond tolerance
+        if current_cost - target_price > PRICE_TOLERANCE and current_delta > best_delta:
             break
 
         candidates = []
 
-        for category in allocation.keys():
+        for category in allocation:
             if can_add_stem(
                 allocation,
                 category,
@@ -118,12 +115,9 @@ def expand_bouquet_to_target(
         _, chosen = max(candidates)
         allocation[chosen] += 1
 
-        # Track closest solution seen
-        new_cost = bouquet_cost(allocation, avg_wholesale_prices)
-        new_delta = abs(new_cost - target_price)
-
-        if new_delta < best_delta:
-            best_delta = new_delta
-            best_allocation = allocation.copy()
+        steps += 1
+        if steps >= MAX_EXPANSION_STEPS:
+            break
 
     return best_allocation
+
