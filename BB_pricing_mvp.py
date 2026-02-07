@@ -98,14 +98,14 @@ gef = st.slider(
     value=0.65,
     step=0.05,
     help=(
-        "This is a rough self-assessment — not a precise calculation.\n\n"
-        "Examples:\n"
-        "• Highly efficient systems (0.5–0.7): tight planting plans, strong sell-through, "
+        "• Highly efficient operations (0.5–0.7): tight planting plans, strong sell-through, "
         "minimal wasted stems, systems dialed in.\n"
-        "• Average systems (0.7–0.9): some inefficiency, some unused stems, "
+        "<br><br>"
+        "• Average efficience operations (0.7–0.9): some inefficiency, some unused stems, "
         "moderate labor costs.\n"
-        "• High-cost systems (above 0.9): frequent wasted stems, low sell-through, "
-        "high production costs.\n\n"
+        "<br><br>"
+        "• INefficient operations (above 0.9): frequent wasted stems, low sell-through, "
+        "high production costs, inefficient or non-existent systems.\n\n"
     ),
     on_change=invalidate_pricing,
 )
@@ -248,7 +248,7 @@ if st.button("Lock in My Assumptions"):
         "Substitutions within supporting ingredients "
         "(fillers, floaters, finishers, foliage) usually have minimal impact on price."
         "<br><br>"
-        "<strong>Focal flowers are different.</strong> Swapping them in or out can significantly "
+        "<strong>Focal flowers are different.</strong> Swapping them with other flower types can significantly "
         "change the value of the bouquet."
         "</p>",
         unsafe_allow_html=True
