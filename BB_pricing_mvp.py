@@ -222,7 +222,7 @@ if st.button("Lock in My Assumptions"):
     recipe = CANONICAL_RECIPES[season_key]
     recipe_season = SEASON_KEY_TO_RECIPE_SEASON[season_key]
 
-    st.subheader("Bouquet Recipe")
+    st.subheader("Bouquet Blueprint Recipe")
 
     recipe_counts = calculate_stem_recipe(
         total_stems=total_stems,
@@ -235,14 +235,17 @@ if st.button("Lock in My Assumptions"):
         .reset_index()
     )
 
-    st.table(recipe_df)
+    left, _ = st.columns([2, 6])
+
+    with left:
+        st.table(recipe_df)
 
     st.markdown(
-        "<p style='font-size: 0.85em; opacity: 0.75;'>"
-        "<em>This is an ideal seasonal recipe used for pricing.</em><br/>"
+        "<p style='font-size: 0.85em; opacity: 0.75; margin-top: 0.75em;'>"
         "Substitutions within supporting ingredients "
-        "(fillers, floaters, finishers, foliage) usually have minimal impact on price. "
-        "<strong>Focal flowers are different</strong> — swapping them in or out can significantly "
+        "(fillers, floaters, finishers, foliage) usually have minimal impact on price."
+        "<br><br>"
+        "<strong>Focal flowers are different.</strong> Swapping them in or out can significantly "
         "change the value of the bouquet."
         "</p>",
         unsafe_allow_html=True
@@ -303,7 +306,7 @@ if "break_even_price" in st.session_state:
     max_price = round(break_even_price * 4.0, 0)
 
     selling_price = st.slider(
-        "Selling price slider",
+        "Move the slider to see how price affects potential profit",
         min_value=break_even_price,
         max_value=max_price,
         value=round(break_even_price * 1.5, 1),
