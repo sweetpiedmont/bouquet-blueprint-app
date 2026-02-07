@@ -1,16 +1,5 @@
-# macOS
 .DS_Store
-
-# Python cache
-__pycache__/
-*.pyc
-
-# Virtual environments
 .venv/
-
-# VS Code workspace files
-*.code-workspace
-.vscode/
-
-# Excel temp files
-~$*.xlsx
+__pycache__/
+.streamlit/secrets.toml
+bouquet-blueprint-app.code-workspace

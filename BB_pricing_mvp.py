@@ -13,39 +13,28 @@ from core.pricing_data import load_master_pricing
 
 from core.stem_scaling import calculate_stem_recipe
 
-# --- Password gate (DEBUG MODE) ---
+# --- Password gate (Streamlit Cloud / local-safe) ---
 APP_PASSWORD = st.secrets.get("BB_APP_PASSWORD")
-
-st.write("DEBUG: APP_PASSWORD from env:", repr(APP_PASSWORD))
 
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
-st.title("Bouquet Blueprint Pricing Tool (Beta)")
+if not st.session_state.authenticated:
+    st.title("Bouquet Blueprint Pricing Tool (Beta)")
 
-password = st.text_input(
-    "Enter beta access password",
-    type="password"
-)
+    password = st.text_input(
+        "Enter beta access password",
+        type="password"
+    )
 
-st.write("DEBUG: entered password:", repr(password))
+    if password:
+        if password == APP_PASSWORD:
+            st.session_state.authenticated = True
+            st.rerun()
+        else:
+            st.error("Incorrect password")
 
-if password:
-    if password == APP_PASSWORD:
-        st.success("Password matched ✅")
-        st.session_state.authenticated = True
-    else:
-        st.error("Password did NOT match ❌")
-        
-BASE_DIR = Path(__file__).parent
-
-DATA_PATH = BASE_DIR / "data" / "CANONICAL Bouquet Recipe Master Sheet.xlsx"
-
-def invalidate_pricing():
-    st.session_state.pop("break_even_price", None)
-    st.session_state.pop("recipe_counts", None)
-
-pricing_df = load_master_pricing(DATA_PATH)
+    st.stop()
 
 # ------------------------------------------------
 # Streamlit UI

@@ -8,6 +8,7 @@ def load_master_pricing(local_path: str) -> pd.DataFrame:
     - Sheet name: 'Master Variety List'
     - Required columns:
         - Season
+        
         - Category
         - Avg. WS Price
     """
