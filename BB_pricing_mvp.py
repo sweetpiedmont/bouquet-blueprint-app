@@ -95,9 +95,9 @@ gef = st.slider(
         "• Highly efficient systems (0.5–0.7): tight planting plans, strong sell-through, "
         "minimal wasted stems, systems dialed in.\n"
         "• Average systems (0.7–0.9): some inefficiency, some unused stems, "
-        "still broadly sustainable.\n"
+        "moderate labor costs.\n"
         "• High-cost systems (above 0.9): frequent wasted stems, low sell-through, "
-        "or high production costs.\n\n"
+        "high production costs.\n\n"
     ),
     on_change=invalidate_pricing,
 )
