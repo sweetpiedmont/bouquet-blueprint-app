@@ -15,6 +15,7 @@ from core.stem_scaling import calculate_stem_recipe
 
 
 # --- Password gate ---
+# --- Password gate ---
 APP_PASSWORD = os.environ.get("BB_APP_PASSWORD")
 
 if "authenticated" not in st.session_state:
@@ -22,16 +23,20 @@ if "authenticated" not in st.session_state:
 
 if not st.session_state.authenticated:
     st.title("Bouquet Blueprint Pricing Tool (Beta)")
+
     password = st.text_input(
         "Enter beta access password",
         type="password"
     )
 
-    if password == APP_PASSWORD:
-        st.session_state.authenticated = True
-        st.rerun()
-    else:
-        st.stop()
+    if st.button("Enter"):
+        if password == APP_PASSWORD:
+            st.session_state.authenticated = True
+            st.rerun()
+        else:
+            st.error("Incorrect password")
+
+    st.stop()
         
 BASE_DIR = Path(__file__).parent
 
