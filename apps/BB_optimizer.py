@@ -124,9 +124,7 @@ st.session_state.available_stems = available_stems
 
 if st.button("Optimize bouquets"):
 
-    season_for_pricing = SEASON_KEY_TO_PRICING_LABEL[season_key]
-
-    avg_prices = get_avg_prices_for_season(season_for_pricing)
+    avg_prices = get_avg_prices_for_season(season_key)
 
     ### DEBUG CODE
     st.write("Avg wholesale prices:", avg_prices)
