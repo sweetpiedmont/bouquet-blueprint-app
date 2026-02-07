@@ -13,7 +13,7 @@ from core.pricing_data import load_master_pricing
 
 from core.stem_scaling import calculate_stem_recipe
 
-# --- Password gate (Streamlit Cloud / local-safe) ---
+# --- Password gate ---
 APP_PASSWORD = st.secrets.get("BB_APP_PASSWORD")
 
 if "authenticated" not in st.session_state:
