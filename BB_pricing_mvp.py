@@ -125,7 +125,9 @@ st.markdown(
     "<li><strong>0.5–0.7:</strong> Highly efficient growing systems</li>"
     "<li><strong>0.7–0.9:</strong> Moderately efficient systems</li>"
     "<li><strong>0.9–1.0:</strong> High-cost growing systems</li>"
-    "<li><strong>Above 1.0:</strong> Growing costs exceed wholesale prices</li>"
+    "<li><strong>Above 1.0:</strong> ⚠️ Above a growing efficiency of 1.0, it costs you more to grow your flowers "
+    "than it would (on average) to purchase them wholesale. "
+    "Reducing growing costs is critical to long-term profitability.</li>"
     "</ul>",
     unsafe_allow_html=True
 )
@@ -187,12 +189,6 @@ components.html(
     </div>
     """,
     height=70,
-)
-
-st.caption(
-    "⚠️ Above a growing efficiency of 1.0, it costs you more to grow your flowers "
-    "than it would (on average) to purchase them wholesale. "
-    "Reducing growing costs is critical to long-term profitability."
 )
 
 st.markdown("---")
