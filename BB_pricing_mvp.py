@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 import pandas as pd
 import streamlit.components.v1 as components
 from pathlib import Path
@@ -12,7 +13,28 @@ from core.pricing_data import load_master_pricing
 
 from core.stem_scaling import calculate_stem_recipe
 
+
+# --- Password gate ---
+APP_PASSWORD = os.environ.get("BB_APP_PASSWORD")
+
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    st.title("Bouquet Blueprint Pricing Tool (Beta)")
+    password = st.text_input(
+        "Enter beta access password",
+        type="password"
+    )
+
+    if password == APP_PASSWORD:
+        st.session_state.authenticated = True
+        st.rerun()
+    else:
+        st.stop()
+        
 BASE_DIR = Path(__file__).parent
+
 DATA_PATH = BASE_DIR / "data" / "CANONICAL Bouquet Recipe Master Sheet.xlsx"
 
 def invalidate_pricing():
