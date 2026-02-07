@@ -245,6 +245,8 @@ def optimize_bouquets(
     # Phase 3D: Bouquet expansion (price-aware, bouquet-count-flexible)
     # ----------------------------------
 
+    PRICE_TOLERANCE = 1.0
+    
     from core.bouquet_expansion import expand_bouquet_to_target
     from core.compensation import evaluate_allocation
 
@@ -283,7 +285,7 @@ def optimize_bouquets(
         candidate_delta = candidate_cost - target_price
 
         # Accept the first solution within tolerance
-        if abs(candidate_delta) <= price_tolerance:
+        if abs(candidate_delta) <= PRICE_TOLERANCE:
             expanded_allocation = candidate_allocation
             final_eval = candidate_eval
             bouquet_cost = candidate_cost
