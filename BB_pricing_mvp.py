@@ -110,10 +110,10 @@ st.subheader("Your Growing Efficiency")
 
 st.markdown(
     "<p style='font-size: 0.9em; opacity: 0.85;'>"
-    "<strong>Growing efficiency</strong> reflects how costly it is for <em>your</em> farm "
+    "<strong>Growing efficiency</strong> reflects how costly it is for your farm "
     "to produce usable flower stems."
     "</p>"
-    "<p style='font-size: 0.85em; opacity: 0.75;'>"
+    "<p style='font-size: 0.9em; opacity: 0.85;'>"
     "Lower values mean tighter systems, better sell-through, and fewer wasted stems. "
     "Higher values mean more waste, higher labor or input costs, and less efficient systems."
     "</p>",
