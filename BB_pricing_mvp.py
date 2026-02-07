@@ -32,7 +32,11 @@ if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
 if not st.session_state.authenticated:
-    st.title("Bouquet Blueprint Pricing Tool (Beta)")
+    st.markdown(
+    "<h1>Bouquet Blueprint<sup style='font-size: 0.5em;'>™</sup> Pricing Tool</h1>"
+    "<p style='margin-top: -10px; opacity: 0.7;'>Beta test version</p>",
+    unsafe_allow_html=True
+)
 
     password = st.text_input(
         "Enter beta access password",
@@ -51,6 +55,11 @@ if not st.session_state.authenticated:
 # ------------------------------------------------
 # Streamlit UI
 # ------------------------------------------------
+st.markdown(
+    "<h1>Bouquet Blueprint<sup style='font-size: 0.5em;'>™</sup> Pricing Tool "
+    "<span style='font-size: 0.6em; font-weight: 400;'>(Beta Test Version)</span></h1>",
+    unsafe_allow_html=True
+)
 
 # User inputs
 st.subheader("Choose Your Season")
