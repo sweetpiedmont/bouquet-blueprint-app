@@ -222,7 +222,10 @@ if st.button("Lock in My Assumptions"):
     recipe = CANONICAL_RECIPES[season_key]
     recipe_season = SEASON_KEY_TO_RECIPE_SEASON[season_key]
 
-    st.subheader("Bouquet Blueprint Recipe")
+    st.markdown(
+        "<h3>Bouquet Blueprint<sup style='font-size: 0.6em;'>™</sup> Recipe</h3>",
+        unsafe_allow_html=True
+    )
 
     recipe_counts = calculate_stem_recipe(
         total_stems=total_stems,
