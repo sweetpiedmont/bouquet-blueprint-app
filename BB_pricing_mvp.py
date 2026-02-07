@@ -89,6 +89,7 @@ else:
     season_key = "summer_fall"
 
 recipe_season = SEASON_KEY_TO_RECIPE_SEASON[season_key]
+pricing_season = normalize_pricing_season(recipe_season)
 
 st.markdown("---")
 
@@ -278,7 +279,7 @@ if st.button("Lock in My Assumptions"):
     }
 
     # --- Filter pricing data by recipe season ---
-    valid_seasons = SEASON_MAP[recipe_season]
+    valid_seasons = SEASON_MAP[pricing_season]
 
     season_pricing_df = pricing_df[
         pricing_df["season_raw"].str.contains("|".join(valid_seasons), na=False)
