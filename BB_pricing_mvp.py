@@ -83,16 +83,22 @@ st.markdown("---")
 
 st.subheader("Your Growing Efficiency")
 
-st.caption(
-    "This adjusts industry benchmark prices to reflect what it costs *you* to grow flowers."
-)
-
 gef = st.slider(
-    "",
-    min_value=0.40,
+    "How efficient is your growing system?",
+    min_value=0.50,
     max_value=1.50,
     value=0.65,
     step=0.05,
+    help=(
+        "This is a rough self-assessment — not a precise calculation.\n\n"
+        "Examples:\n"
+        "• Highly efficient systems (0.5–0.7): tight planting plans, strong sell-through, "
+        "minimal wasted stems, systems dialed in.\n"
+        "• Average systems (0.7–0.9): some inefficiency, some unused stems, "
+        "still broadly sustainable.\n"
+        "• High-cost systems (above 0.9): frequent wasted stems, low sell-through, "
+        "or high production costs.\n\n"
+    ),
     on_change=invalidate_pricing,
 )
 
