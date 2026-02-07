@@ -171,7 +171,7 @@ st.markdown("---")
 st.subheader("Labor (Bouquet Assembly Only)")
 
 labor_minutes = st.slider(
-    "Time to assemble one bouquet (minutes)",
+    "How much time does it take to assemble one bouquet (in minutes)",
     min_value=1,
     max_value=15,
     value=3,
