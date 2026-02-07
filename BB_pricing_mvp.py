@@ -199,18 +199,18 @@ st.markdown("---")
 st.subheader("Bouquet Packaging")
 
 materials_cost = st.slider(
-    "Materials cost per bouquet ($)",
+    "What materials will be sold with the bouquet (in $)",
     min_value=0.02,
-    max_value=1.50,
+    max_value=2.00,
     value=0.30,
     step=0.05,
     help=(
-        "Includes essentials like rubber bands "
-        "and a basic paper sleeve (around .30). "
+        "Include essentials like rubber bands "
+        "and a basic paper sleeve (around $0.30 total). "
         "Also consider 'extras' like stickers, "
         "tags, ink-stamped logos, hydration packs, or "
         "anything else that is sold with the bouquet. "
-        "Does NOT include buckets, snips, or other production "
+        "Do NOT include buckets, snips, or other production "
         "equipment that stays on the farm."
     ),
     on_change=invalidate_pricing,
