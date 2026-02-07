@@ -13,33 +13,29 @@ from core.pricing_data import load_master_pricing
 
 from core.stem_scaling import calculate_stem_recipe
 
-
-# --- Password gate ---
-# --- Password gate ---
+# --- Password gate (DEBUG MODE) ---
 APP_PASSWORD = os.environ.get("BB_APP_PASSWORD")
+
+st.write("DEBUG: APP_PASSWORD from env:", repr(APP_PASSWORD))
 
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
-if not st.session_state.authenticated:
-    st.title("Bouquet Blueprint Pricing Tool (Beta)")
+st.title("Bouquet Blueprint Pricing Tool (Beta)")
 
-    password = st.text_input(
-        "Enter beta access password",
-        type="password"
-    )
+password = st.text_input(
+    "Enter beta access password",
+    type="password"
+)
 
-    if st.button("Enter"):
-        if password == APP_PASSWORD:
-            st.session_state.authenticated = True
-            st.rerun()
-        else:
-            st.error("Incorrect password")
+st.write("DEBUG: entered password:", repr(password))
 
-    st.stop()
-
-    st.write("Password loaded:", APP_PASSWORD is not None)
-    st.write("DEBUG – APP_PASSWORD:", repr(APP_PASSWORD))
+if password:
+    if password == APP_PASSWORD:
+        st.success("Password matched ✅")
+        st.session_state.authenticated = True
+    else:
+        st.error("Password did NOT match ❌")
         
 BASE_DIR = Path(__file__).parent
 
