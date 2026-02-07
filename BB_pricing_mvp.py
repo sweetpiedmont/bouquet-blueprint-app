@@ -13,6 +13,10 @@ from core.pricing_data import load_master_pricing
 
 from core.stem_scaling import calculate_stem_recipe
 
+def invalidate_pricing():
+    st.session_state.pop("break_even_price", None)
+    st.session_state.pop("recipe_counts", None)
+
 # --- Password gate ---
 APP_PASSWORD = st.secrets.get("BB_APP_PASSWORD")
 
