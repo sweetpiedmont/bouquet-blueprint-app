@@ -251,8 +251,8 @@ if st.button("Lock in My Assumptions"):
 
     recipe_df = (
         pd.DataFrame.from_dict(recipe_counts, orient="index", columns=["Stems"])
-        .rename_axis("Flower Type")
         .reset_index()
+        .rename(columns={"index": "Flower Type"})
     )
 
     left, _ = st.columns([2, 6])
