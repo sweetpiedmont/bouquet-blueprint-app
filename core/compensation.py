@@ -1,7 +1,7 @@
 from math import ceil
 from typing import Dict
 
-MAX_COMPENSATION_DEPTH = 10
+MAX_COMPENSATION_DEPTH = 6
 
 def initialize_allocation(
     stem_bounds: Dict[str, Dict[str, float]],
@@ -303,7 +303,7 @@ def search_best_allocation(
     available_stems: dict[str, int],
     stem_bounds: dict[str, dict[str, float]],
     compensation_rules: dict[str, set[str]],
-    max_depth: int = 10,
+    max_depth=MAX_COMPENSATION_DEPTH,
 ) -> dict:
     """
     Phase 3C.3 – bounded lookahead search for best allocation.

@@ -236,8 +236,7 @@ def optimize_bouquets(
         initial_allocation=tier_a_allocation,
         available_stems=available_stems,
         stem_bounds=stem_bounds,
-        compensation_rules={},  # you can wire rules later
-        max_depth=10,
+        compensation_rules={},
     )
 
     best_allocation = compensation_result["allocation"]
