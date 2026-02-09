@@ -110,7 +110,7 @@ st.subheader("Your Growing Efficiency")
 
 st.markdown(
     "<p style='font-size: 0.9em; opacity: 0.85;'>"
-    "<strong>Growing efficiency</strong> reflects how costly it is for your farm "
+    "<strong>Growing efficiency,</strong> also referred to as your Grower's Efficiency Factor or GEF, reflects how costly it is for your farm "
     "to produce usable flower stems."
     "</p>"
     "<p style='font-size: 0.9em; opacity: 0.85;'>"
