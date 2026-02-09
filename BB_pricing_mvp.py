@@ -46,7 +46,7 @@ if not st.session_state.authenticated:
 )
 
     password = st.text_input(
-        "Enter the password that's inside your Bouquet Blueprint Pricing Companion. Log into the Greenhouse to download the Companion.",
+        "Enter the password that's inside your Bouquet Blueprint Pricing Companion. Log into The Greenhouse to download the Companion.",
         type="password"
     )
 
