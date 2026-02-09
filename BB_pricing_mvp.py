@@ -41,7 +41,7 @@ if "authenticated" not in st.session_state:
 if not st.session_state.authenticated:
     st.markdown(
     "<h1>Bouquet Blueprint<sup style='font-size: 0.5em;'>™</sup> Pricing Tool</h1>"
-    "<p style='margin-top: -10px; opacity: 0.7;'>Beta test version</p>",
+    "<p style='margin-top: -10px; opacity: 0.7;'></p>",
     unsafe_allow_html=True
 )
 
@@ -64,7 +64,7 @@ if not st.session_state.authenticated:
 # ------------------------------------------------
 st.markdown(
     "<h1>Bouquet Blueprint<sup style='font-size: 0.5em;'>™</sup> Pricing Tool "
-    "<span style='font-size: 0.6em; font-weight: 400;'>(Beta Test Version)</span></h1>",
+    "<span style='font-size: 0.6em; font-weight: 400;'></span></h1>",
     unsafe_allow_html=True
 )
 
