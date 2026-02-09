@@ -387,7 +387,7 @@ if "break_even_price" in st.session_state:
             </div>
         </div>
         """,
-        height=100,
+        height=90,
     )
 
     st.markdown(
