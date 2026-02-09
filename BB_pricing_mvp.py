@@ -354,10 +354,10 @@ if "break_even_price" in st.session_state:
                     Roboto, Helvetica, Arial, sans-serif;">
 
             <div style="display: flex; height: 6px; border-radius: 3px; overflow: hidden;">
-                <div style="flex: 0.1; background-color: rgba(204, 0, 0, 0.45);"></div>
-                <div style="flex: 0.6; background-color: #e6eb99;"></div>
-                <div style="flex: 0.7; background-color: #ffdee7;"></div>
-                <div style="flex: 0.6; background-color: #d7f4ff;"></div>
+                <div style="flex: 0.1; background-color: #FECAA8;"></div>
+                <div style="flex: 0.6; background-color: #FFE7A5;"></div>
+                <div style="flex: 0.7; background-color: #D7F4FF;"></div>
+                <div style="flex: 0.6; background-color: #DBD9FF;"></div>
             </div>
 
             <div style="
