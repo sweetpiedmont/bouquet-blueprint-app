@@ -45,8 +45,25 @@ if not st.session_state.authenticated:
     unsafe_allow_html=True
 )
 
+    st.markdown(
+        """
+        <p style="opacity: 0.8; margin-bottom: 6px;">
+            Enter the access password from your <strong>Bouquet Blueprint Pricing Companion</strong>.
+        </p>
+        <p style="opacity: 0.8; margin-top: 0;">
+            Don’t have it handy?
+            <a href="https://greenhouse.sweetpiedmontacademy.com/login"
+            target="_blank"
+            style="text-decoration: underline;">
+            Log into The Greenhouse to download the Companion →
+            </a>
+        </p>
+        """,
+        unsafe_allow_html=True
+    )
+
     password = st.text_input(
-        "Enter the password that's inside your Bouquet Blueprint Pricing Companion. Log into The Greenhouse to download the Companion.",
+        "Password",
         type="password"
     )
 
