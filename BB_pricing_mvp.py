@@ -376,7 +376,7 @@ if "break_even_price" in st.session_state:
                 </div>
 
                 <div style="flex: 0.7; text-align: center;">
-                    Mother’s Day,<br/>Made-to-Order<br/>
+                    Made-to-Order,<br/>Mother's Day<br/>
                     <span style="font-size: 11px; opacity: 0.7;">Mid Mark-Up Zone</span>
                 </div>
 
