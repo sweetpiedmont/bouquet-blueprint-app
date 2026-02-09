@@ -382,7 +382,7 @@ if "break_even_price" in st.session_state:
 
                 <div style="flex: 0.6; text-align: center;">
                     Weddings,<br/>Events<br/>
-                    <span style="font-size: 11px; opacity: 0.7;">Zone</span>
+                    <span style="font-size: 11px; opacity: 0.7;">High Mark-Up Zone</span>
                 </div>
             </div>
         </div>
