@@ -234,7 +234,7 @@ materials_cost = st.slider(
         "Include essentials like rubber bands "
         "and a basic paper sleeve (around $0.30 total). "
         "Also consider 'extras' like stickers, "
-        "tags, ink-stamped logos, hydration packs, or "
+        "tags/gift notes/care instructions, ink-stamped logos, hydration packs, flower food packets, or "
         "anything else that is sold with the bouquet. "
         "Do NOT include buckets, snips, or other production "
         "equipment that stays on the farm."
