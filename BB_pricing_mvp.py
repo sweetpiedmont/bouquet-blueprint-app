@@ -202,7 +202,7 @@ labor_minutes = st.slider(
     value=3,
     step=1,
     help=(
-        "Includes pulling stems, assembling the bouquet, "
+        "Includes pulling stems from the cooler, workstation setup and cleanup, assembling the bouquet, "
         "and securing it (rubber band / sleeve). "
         "Does NOT include harvesting, processing, marketing, or selling."
     ),
