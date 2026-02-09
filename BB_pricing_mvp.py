@@ -371,13 +371,13 @@ if "break_even_price" in st.session_state:
                 </div>
 
                 <div style="flex: 0.6; text-align: center; margin-left: -12px;">
-                    Farmers Market,<br/>Subscriptions<br/>
-                    <span style="font-size: 11px; opacity: 0.7;">Zone</span>
+                    Wholesale,<br/>Subscriptions<br/>,<br/>Farmers Market<br/>
+                    <span style="font-size: 11px; opacity: 0.7;">Low Mark-Up Zone</span>
                 </div>
 
                 <div style="flex: 0.7; text-align: center;">
                     Mother’s Day,<br/>Made-to-Order<br/>
-                    <span style="font-size: 11px; opacity: 0.7;">Zone</span>
+                    <span style="font-size: 11px; opacity: 0.7;">Mid Mark-Up Zone</span>
                 </div>
 
                 <div style="flex: 0.6; text-align: center;">
