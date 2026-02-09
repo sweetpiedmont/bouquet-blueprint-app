@@ -371,7 +371,7 @@ if "break_even_price" in st.session_state:
                 </div>
 
                 <div style="flex: 0.6; text-align: center; margin-left: -12px;">
-                    Wholesale,<br/>Subscriptions,<br/>Farmers Market<br/>
+                    Wholesale Bouquets,<br/>Subscriptions,<br/>Farmers Market<br/>
                     <span style="font-size: 11px; opacity: 0.7;">Low Mark-Up Zone</span>
                 </div>
 
@@ -387,7 +387,7 @@ if "break_even_price" in st.session_state:
             </div>
         </div>
         """,
-        height=70,
+        height=110,
     )
 
     st.markdown(
