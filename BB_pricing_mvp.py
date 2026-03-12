@@ -261,49 +261,14 @@ components.html(
 
 st.markdown("---")
 
-if st.button("Lock in My Assumptions"):
+if st.button("Price My Bouquet"):
+
     recipe = CANONICAL_RECIPES[season_key]
     recipe_season = SEASON_KEY_TO_RECIPE_SEASON[season_key]
-
-    st.markdown(
-        "<h3>Bouquet Blueprint<sup style='font-size: 0.6em;'>™</sup> Recipe</h3>",
-        unsafe_allow_html=True
-    )
 
     recipe_counts = calculate_stem_recipe(
         total_stems=total_stems,
         recipe_percentages=recipe
-)
-
-    recipe_df = (
-        pd.DataFrame.from_dict(recipe_counts, orient="index", columns=["Stems"])
-        .reset_index()
-        .rename(columns={"index": "Flower Type"})
-    )
-
-    left, _ = st.columns([2, 6])
-
-    with left:
-       st.dataframe(
-        recipe_df,
-        use_container_width=True,
-        hide_index=True
-    )
- 
-    st.markdown(
-        "<p style='font-size: 0.85em; opacity: 0.75; margin-top: 0.75em;'>"
-        "Substitutions within supporting ingredients "
-        "(fillers, floaters, finishers, foliage) usually have minimal impact on price. "
-        "<strong>Focal flowers are different.</strong> Swapping them with other flower types can significantly "
-        "change the value of the bouquet."
-        "</p>"
-        "<p style='font-size: 0.85em; opacity: 0.65; margin-top: 0.5em;'>"
-        "Not sure what each flower type means? See the 6F descriptions in your Pricing Companion "
-        "(pp. 19–24) inside "
-        "<a href='https://greenhouse.sweetpiedmontacademy.com/login' target='_blank' "
-        "style='text-decoration: underline;'>The Greenhouse</a>."
-        "</p>",
-        unsafe_allow_html=True
     )
 
     # --- Season mapping for pricing ---
@@ -433,6 +398,44 @@ if "break_even_price" in st.session_state:
         "</p>"
         "<p style='font-size: 0.85em; opacity: 0.75; text-align: left;'>"
         "Use the zones as context — then choose the price that fits your business."
+        "</p>",
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        "<h3>Bouquet Blueprint<sup style='font-size: 0.6em;'>™</sup> Recipe</h3>",
+        unsafe_allow_html=True
+    )
+
+    recipe_counts = st.session_state["recipe_counts"]
+
+    recipe_df = (
+        pd.DataFrame.from_dict(recipe_counts, orient="index", columns=["Stems"])
+        .reset_index()
+        .rename(columns={"index": "Flower Type"})
+    )
+
+    left, _ = st.columns([2, 6])
+
+    with left:
+        st.dataframe(
+            recipe_df,
+            use_container_width=True,
+            hide_index=True
+        )
+
+    st.markdown(
+        "<p style='font-size: 0.85em; opacity: 0.75; margin-top: 0.75em;'>"
+        "Substitutions within supporting ingredients "
+        "(fillers, floaters, finishers, foliage) usually have minimal impact on price. "
+        "<strong>Focal flowers are different.</strong> Swapping them with other flower types can significantly "
+        "change the value of the bouquet."
+        "</p>"
+        "<p style='font-size: 0.85em; opacity: 0.65; margin-top: 0.5em;'>"
+        "Not sure what each flower type means? See the 6F descriptions in your Pricing Companion "
+        "(pages 19–24) inside "
+        "<a href='https://greenhouse.sweetpiedmontacademy.com/login' target='_blank' "
+        "style='text-decoration: underline;'>The Greenhouse</a>."
         "</p>",
         unsafe_allow_html=True
     )
