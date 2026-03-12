@@ -123,6 +123,57 @@ total_stems = st.number_input(
 
 st.markdown("---")
 
+st.subheader("Labor (Bouquet Assembly Only)")
+
+labor_minutes = st.slider(
+    "How much time does it take to assemble one bouquet (in minutes)",
+    min_value=1,
+    max_value=15,
+    value=3,
+    step=1,
+    help=(
+        "Includes pulling stems from the cooler, workstation setup and cleanup, assembling the bouquet, "
+        "and securing it (rubber band / sleeve). "
+        "Does NOT include harvesting, processing, marketing, or selling."
+    ),
+    on_change=invalidate_pricing,
+)
+
+labor_rate_per_hour = st.number_input(
+    "Hourly labor rate ($/hour)",
+    min_value=10.0,
+    max_value=100.0,
+    value=17.0,
+    step=1.0
+)
+
+labor_cost_per_bouquet = (labor_minutes / 60) * labor_rate_per_hour
+
+st.markdown("---")
+
+st.subheader("Bouquet Packaging")
+
+materials_cost = st.slider(
+    "What materials will be sold with the bouquet (in $)",
+    min_value=0.02,
+    max_value=2.00,
+    value=0.30,
+    format="$%.2f",
+    step=0.05,
+    help=(
+        "Include essentials like rubber bands "
+        "and a basic paper sleeve (around $0.30 total). "
+        "Also consider 'extras' like stickers, "
+        "tags/gift notes/care instructions, ink-stamped logos, hydration packs, flower food packets, or "
+        "anything else that is sold with the bouquet. "
+        "Do NOT include buckets, snips, or other production "
+        "equipment that stays on the farm."
+    ),
+    on_change=invalidate_pricing,
+)
+
+st.markdown("---")
+
 st.subheader("Your Growing Efficiency")
 
 st.markdown(
@@ -206,57 +257,6 @@ components.html(
     </div>
     """,
     height=70,
-)
-
-st.markdown("---")
-
-st.subheader("Labor (Bouquet Assembly Only)")
-
-labor_minutes = st.slider(
-    "How much time does it take to assemble one bouquet (in minutes)",
-    min_value=1,
-    max_value=15,
-    value=3,
-    step=1,
-    help=(
-        "Includes pulling stems from the cooler, workstation setup and cleanup, assembling the bouquet, "
-        "and securing it (rubber band / sleeve). "
-        "Does NOT include harvesting, processing, marketing, or selling."
-    ),
-    on_change=invalidate_pricing,
-)
-
-labor_rate_per_hour = st.number_input(
-    "Hourly labor rate ($/hour)",
-    min_value=10.0,
-    max_value=100.0,
-    value=17.0,
-    step=1.0
-)
-
-labor_cost_per_bouquet = (labor_minutes / 60) * labor_rate_per_hour
-
-st.markdown("---")
-
-st.subheader("Bouquet Packaging")
-
-materials_cost = st.slider(
-    "What materials will be sold with the bouquet (in $)",
-    min_value=0.02,
-    max_value=2.00,
-    value=0.30,
-    format="$%.2f",
-    step=0.05,
-    help=(
-        "Include essentials like rubber bands "
-        "and a basic paper sleeve (around $0.30 total). "
-        "Also consider 'extras' like stickers, "
-        "tags/gift notes/care instructions, ink-stamped logos, hydration packs, flower food packets, or "
-        "anything else that is sold with the bouquet. "
-        "Do NOT include buckets, snips, or other production "
-        "equipment that stays on the farm."
-    ),
-    on_change=invalidate_pricing,
 )
 
 st.markdown("---")
