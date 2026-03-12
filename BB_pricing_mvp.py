@@ -80,7 +80,7 @@ if not st.session_state.authenticated:
 # Streamlit UI
 # ------------------------------------------------
 st.markdown(
-    "<h1>Bouquet Blueprint<sup style='font-size: 0.5em;'>™</sup> Pricing Tool "
+    "<h1>Bouquet Blueprint<sup style='font-size: 0.5em;'>™</sup> Pricing App"
     "<span style='font-size: 0.6em; font-weight: 400;'></span></h1>",
     unsafe_allow_html=True
 )
