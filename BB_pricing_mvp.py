@@ -319,14 +319,12 @@ if "break_even_price" in st.session_state:
 
     break_even_price = st.session_state["break_even_price"]
 
-    st.markdown("---")
-
     st.markdown("### 🏷️ Your Bouquet Price")
 
     max_price = round(break_even_price * 4.0, 0)
 
     selling_price = st.slider(
-        "Move the slider to see how price affects potential profit",
+        "Move the slider to see how price affects potential profit for the recipe below",
         min_value=break_even_price,
         max_value=max_price,
         value=round(break_even_price * 1.5, 1),
@@ -401,6 +399,8 @@ if "break_even_price" in st.session_state:
         "</p>",
         unsafe_allow_html=True
     )
+
+    st.markdown("---")
 
     st.markdown(
         "<h3>Bouquet Blueprint<sup style='font-size: 0.6em;'>™</sup> Recipe</h3>",
