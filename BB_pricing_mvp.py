@@ -297,6 +297,12 @@ if st.button("Lock in My Assumptions"):
         "<br><br>"
         "<strong>Focal flowers are different.</strong> Swapping them with other flower types can significantly "
         "change the value of the bouquet."
+        "</p>"
+        "<p style='font-size: 0.8em; opacity: 0.6; margin-top: 0.5em;'>"
+        "Not sure what each flower type means? See the 6F descriptions in your Pricing Companion "
+        "(pp. 19–24) inside "
+        "<a href='https://greenhouse.sweetpiedmontacademy.com/login' target='_blank' "
+        "style='text-decoration: underline;'>The Greenhouse</a>."
         "</p>",
         unsafe_allow_html=True
     )
