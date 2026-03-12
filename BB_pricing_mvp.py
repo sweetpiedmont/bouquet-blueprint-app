@@ -351,7 +351,7 @@ if "break_even_price" in st.session_state:
 
     st.markdown("---")
 
-    st.markdown("### 🏷️ Choose Your Selling Price")
+    st.markdown("### 🏷️ Your Bouquet Price")
 
     max_price = round(break_even_price * 4.0, 0)
 
@@ -416,8 +416,8 @@ if "break_even_price" in st.session_state:
     profit_per_bouquet = selling_price - break_even_price
 
     st.caption(
-        f"Markup: {markup:.2f}×  |  "
-        f"Potential profit per bouquet: ${profit_per_bouquet:.2f}"
+        f"Your Markup Multiplier: {markup:.2f}×  |  "
+        f"Your Potential Profit (per bouquet): ${profit_per_bouquet:.2f}"
     )
 
     st.markdown(
