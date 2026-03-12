@@ -40,7 +40,7 @@ if "authenticated" not in st.session_state:
 
 if not st.session_state.authenticated:
     st.markdown(
-    "<h1>Bouquet Blueprint<sup style='font-size: 0.5em;'>™</sup> Pricing Tool</h1>"
+    "<h1>Bouquet Blueprint<sup style='font-size: 0.5em;'>™</sup> Pricing App</h1>"
     "<p style='margin-top: -10px; opacity: 0.7;'></p>",
     unsafe_allow_html=True
 )
@@ -86,7 +86,7 @@ st.markdown(
 )
 
 # User inputs
-st.subheader("Choose Your Season")
+st.subheader("Season")
 
 season_choice = st.radio(
     "Are peonies available for you to harvest and use right now?",
@@ -110,7 +110,7 @@ pricing_season = normalize_pricing_season(recipe_season)
 
 st.markdown("---")
 
-st.subheader("Desired Bouquet Size")
+st.subheader("Bouquet Size")
 
 total_stems = st.number_input(
     "How many stems are in this bouquet?",
@@ -123,7 +123,7 @@ total_stems = st.number_input(
 
 st.markdown("---")
 
-st.subheader("Labor (Bouquet Assembly Only)")
+st.subheader("Design Time")
 
 labor_minutes = st.slider(
     "How much time does it take to assemble one bouquet (in minutes)",
@@ -151,7 +151,7 @@ labor_cost_per_bouquet = (labor_minutes / 60) * labor_rate_per_hour
 
 st.markdown("---")
 
-st.subheader("Bouquet Packaging")
+st.subheader("Packaging")
 
 materials_cost = st.slider(
     "What materials will be sold with the bouquet (in $)",
@@ -174,7 +174,7 @@ materials_cost = st.slider(
 
 st.markdown("---")
 
-st.subheader("Your Growing Efficiency")
+st.subheader("Growing Efficiency")
 
 st.markdown(
     "<p style='font-size: 0.9em; opacity: 0.85;'>"
