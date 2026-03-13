@@ -200,16 +200,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown(
-    "<p style='font-size: 0.85em; opacity: 0.65; margin-top: 0.5em;'>"
-    "Want to refine your GEF estimate? See the Grower’s Efficiency section in your Pricing Companion "
-    "inside "
-    "<a href='https://greenhouse.sweetpiedmontacademy.com/login' target='_blank' "
-    "style='text-decoration: underline;'>The Greenhouse</a>."
-    "</p>",
-    unsafe_allow_html=True
-)
-
 gef = st.slider(
     "How efficient is your operation?",
     min_value=0.50,
@@ -267,6 +257,16 @@ components.html(
     </div>
     """,
     height=70,
+)
+
+st.markdown(
+    "<p style='font-size: 0.85em; opacity: 0.65; margin-top: 0.5em;'>"
+    "Not sure how to estimate your GEF? See the Grower’s Efficiency section in your Pricing Companion "
+    "inside "
+    "<a href='https://greenhouse.sweetpiedmontacademy.com/login' target='_blank' "
+    "style='text-decoration: underline;'>The Greenhouse</a>."
+    "</p>",
+    unsafe_allow_html=True
 )
 
 st.markdown("---")
