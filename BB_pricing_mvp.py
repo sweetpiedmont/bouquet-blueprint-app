@@ -126,7 +126,7 @@ st.markdown("---")
 st.subheader("Design Time")
 
 labor_minutes = st.slider(
-    "How much time does it take to assemble one bouquet (in minutes)",
+    "How much time does it take to assemble one bouquet (in minutes)?",
     min_value=1,
     max_value=15,
     value=3,
@@ -154,7 +154,7 @@ st.markdown("---")
 st.subheader("Packaging")
 
 materials_cost = st.slider(
-    "What materials will be sold with the bouquet (in $)",
+    "What materials will be sold with the bouquet (in $)?",
     min_value=0.02,
     max_value=2.00,
     value=0.30,
@@ -324,7 +324,7 @@ if "break_even_price" in st.session_state:
     max_price = round(break_even_price * 4.0, 0)
 
     selling_price = st.slider(
-        "Move the slider to see how price affects potential profit for the recipe below",
+        "Move the slider to see how price affects potential profit for the recipe below.",
         min_value=break_even_price,
         max_value=max_price,
         value=round(break_even_price * 1.5, 1),
