@@ -40,7 +40,7 @@ if "authenticated" not in st.session_state:
 
 if not st.session_state.authenticated:
     st.markdown(
-    "<h1>Bouquet Blueprint<sup style='font-size: 0.5em;'>™</sup> Pricing Tool</h1>"
+    "<h1>Bouquet Blueprint<sup style='font-size: 0.5em;'>™</sup> Pricing App</h1>"
     "<p style='margin-top: -10px; opacity: 0.7;'></p>",
     unsafe_allow_html=True
 )
@@ -80,13 +80,13 @@ if not st.session_state.authenticated:
 # Streamlit UI
 # ------------------------------------------------
 st.markdown(
-    "<h1>Bouquet Blueprint<sup style='font-size: 0.5em;'>™</sup> Pricing Tool "
+    "<h1>Bouquet Blueprint<sup style='font-size: 0.5em;'>™</sup> Pricing App"
     "<span style='font-size: 0.6em; font-weight: 400;'></span></h1>",
     unsafe_allow_html=True
 )
 
 # User inputs
-st.subheader("Choose Your Season")
+st.subheader("Season")
 
 season_choice = st.radio(
     "Are peonies available for you to harvest and use right now?",
@@ -110,7 +110,7 @@ pricing_season = normalize_pricing_season(recipe_season)
 
 st.markdown("---")
 
-st.subheader("Desired Bouquet Size")
+st.subheader("Bouquet Size")
 
 total_stems = st.number_input(
     "How many stems are in this bouquet?",
@@ -123,7 +123,58 @@ total_stems = st.number_input(
 
 st.markdown("---")
 
-st.subheader("Your Growing Efficiency")
+st.subheader("Design Time")
+
+labor_minutes = st.slider(
+    "How much time does it take to assemble one bouquet (in minutes)?",
+    min_value=1,
+    max_value=15,
+    value=3,
+    step=1,
+    help=(
+        "Includes pulling stems from the cooler, workstation setup and cleanup, assembling the bouquet, "
+        "and securing it (rubber band / sleeve). "
+        "Does NOT include harvesting, processing, marketing, or selling."
+    ),
+    on_change=invalidate_pricing,
+)
+
+labor_rate_per_hour = st.number_input(
+    "Hourly labor rate ($/hour)",
+    min_value=10.0,
+    max_value=100.0,
+    value=17.0,
+    step=1.0
+)
+
+labor_cost_per_bouquet = (labor_minutes / 60) * labor_rate_per_hour
+
+st.markdown("---")
+
+st.subheader("Packaging")
+
+materials_cost = st.slider(
+    "What materials will be sold with the bouquet (in $)?",
+    min_value=0.02,
+    max_value=2.00,
+    value=0.30,
+    format="$%.2f",
+    step=0.05,
+    help=(
+        "Include essentials like rubber bands "
+        "and a basic paper sleeve (around $0.30 total). "
+        "Also consider 'extras' like stickers, "
+        "tags/gift notes/care instructions, ink-stamped logos, hydration packs, flower food packets, or "
+        "anything else that is sold with the bouquet. "
+        "Do NOT include buckets, snips, or other production "
+        "equipment that stays on the farm."
+    ),
+    on_change=invalidate_pricing,
+)
+
+st.markdown("---")
+
+st.subheader("Growing Efficiency")
 
 st.markdown(
     "<p style='font-size: 0.9em; opacity: 0.85;'>"
@@ -208,97 +259,26 @@ components.html(
     height=70,
 )
 
-st.markdown("---")
-
-st.subheader("Labor (Bouquet Assembly Only)")
-
-labor_minutes = st.slider(
-    "How much time does it take to assemble one bouquet (in minutes)",
-    min_value=1,
-    max_value=15,
-    value=3,
-    step=1,
-    help=(
-        "Includes pulling stems from the cooler, workstation setup and cleanup, assembling the bouquet, "
-        "and securing it (rubber band / sleeve). "
-        "Does NOT include harvesting, processing, marketing, or selling."
-    ),
-    on_change=invalidate_pricing,
-)
-
-labor_rate_per_hour = st.number_input(
-    "Hourly labor rate ($/hour)",
-    min_value=10.0,
-    max_value=100.0,
-    value=17.0,
-    step=1.0
-)
-
-labor_cost_per_bouquet = (labor_minutes / 60) * labor_rate_per_hour
-
-st.markdown("---")
-
-st.subheader("Bouquet Packaging")
-
-materials_cost = st.slider(
-    "What materials will be sold with the bouquet (in $)",
-    min_value=0.02,
-    max_value=2.00,
-    value=0.30,
-    format="$%.2f",
-    step=0.05,
-    help=(
-        "Include essentials like rubber bands "
-        "and a basic paper sleeve (around $0.30 total). "
-        "Also consider 'extras' like stickers, "
-        "tags/gift notes/care instructions, ink-stamped logos, hydration packs, flower food packets, or "
-        "anything else that is sold with the bouquet. "
-        "Do NOT include buckets, snips, or other production "
-        "equipment that stays on the farm."
-    ),
-    on_change=invalidate_pricing,
+st.markdown(
+    "<p style='font-size: 0.85em; opacity: 0.65; margin-top: 0.5em;'>"
+    "Not sure how to estimate your GEF? See the Grower’s Efficiency section in your Pricing Companion "
+    "inside "
+    "<a href='https://greenhouse.sweetpiedmontacademy.com/login' target='_blank' "
+    "style='text-decoration: underline;'>The Greenhouse</a>."
+    "</p>",
+    unsafe_allow_html=True
 )
 
 st.markdown("---")
 
-if st.button("Lock in My Assumptions"):
+if st.button("Price My Bouquet"):
+
     recipe = CANONICAL_RECIPES[season_key]
     recipe_season = SEASON_KEY_TO_RECIPE_SEASON[season_key]
-
-    st.markdown(
-        "<h3>Bouquet Blueprint<sup style='font-size: 0.6em;'>™</sup> Recipe</h3>",
-        unsafe_allow_html=True
-    )
 
     recipe_counts = calculate_stem_recipe(
         total_stems=total_stems,
         recipe_percentages=recipe
-)
-
-    recipe_df = (
-        pd.DataFrame.from_dict(recipe_counts, orient="index", columns=["Stems"])
-        .reset_index()
-        .rename(columns={"index": "Flower Type"})
-    )
-
-    left, _ = st.columns([2, 6])
-
-    with left:
-       st.dataframe(
-        recipe_df,
-        use_container_width=True,
-        hide_index=True
-    )
- 
-    st.markdown(
-        "<p style='font-size: 0.85em; opacity: 0.75; margin-top: 0.75em;'>"
-        "Substitutions within supporting ingredients "
-        "(fillers, floaters, finishers, foliage) usually have minimal impact on price."
-        "<br><br>"
-        "<strong>Focal flowers are different.</strong> Swapping them with other flower types can significantly "
-        "change the value of the bouquet."
-        "</p>",
-        unsafe_allow_html=True
     )
 
     # --- Season mapping for pricing ---
@@ -349,14 +329,12 @@ if "break_even_price" in st.session_state:
 
     break_even_price = st.session_state["break_even_price"]
 
-    st.markdown("---")
-
-    st.markdown("### 🏷️ Choose Your Selling Price")
+    st.markdown("### 🏷️ Your Bouquet Price")
 
     max_price = round(break_even_price * 4.0, 0)
 
     selling_price = st.slider(
-        "Move the slider to see how price affects potential profit",
+        "Move the slider to see how price affects potential profit for the recipe below.",
         min_value=break_even_price,
         max_value=max_price,
         value=round(break_even_price * 1.5, 1),
@@ -416,8 +394,8 @@ if "break_even_price" in st.session_state:
     profit_per_bouquet = selling_price - break_even_price
 
     st.caption(
-        f"Markup: {markup:.2f}×  |  "
-        f"Potential profit per bouquet: ${profit_per_bouquet:.2f}"
+        f"Your Markup Multiplier: {markup:.2f}×  |  "
+        f"Your Potential Profit (per bouquet): ${profit_per_bouquet:.2f}"
     )
 
     st.markdown(
@@ -428,6 +406,46 @@ if "break_even_price" in st.session_state:
         "</p>"
         "<p style='font-size: 0.85em; opacity: 0.75; text-align: left;'>"
         "Use the zones as context — then choose the price that fits your business."
+        "</p>",
+        unsafe_allow_html=True
+    )
+
+    st.markdown("---")
+
+    st.markdown(
+        "<h3>Bouquet Blueprint<sup style='font-size: 0.6em;'>™</sup> Recipe</h3>",
+        unsafe_allow_html=True
+    )
+
+    recipe_counts = st.session_state["recipe_counts"]
+
+    recipe_df = (
+        pd.DataFrame.from_dict(recipe_counts, orient="index", columns=["Stems"])
+        .reset_index()
+        .rename(columns={"index": "Flower Type"})
+    )
+
+    left, _ = st.columns([2, 6])
+
+    with left:
+        st.dataframe(
+            recipe_df,
+            use_container_width=True,
+            hide_index=True
+        )
+
+    st.markdown(
+        "<p style='font-size: 0.85em; opacity: 0.75; margin-top: 0.75em;'>"
+        "Substitutions within supporting ingredients "
+        "(fillers, floaters, finishers, foliage) usually have minimal impact on price. "
+        "<strong>Focal flowers are different.</strong> Swapping them with other flower types can significantly "
+        "change the value of the bouquet."
+        "</p>"
+        "<p style='font-size: 0.85em; opacity: 0.65; margin-top: 0.5em;'>"
+        "Not sure what each flower type means? See the 6F descriptions in your Pricing Companion "
+        "(pages 19–24) inside "
+        "<a href='https://greenhouse.sweetpiedmontacademy.com/login' target='_blank' "
+        "style='text-decoration: underline;'>The Greenhouse</a>."
         "</p>",
         unsafe_allow_html=True
     )
